@@ -1,0 +1,21 @@
+<div class="form-title"><h1>Exams creation</h1></div>
+<div class="form-container">
+  <form [formGroup]="exam" (ngSubmit)="onSubmit()" class="flex-container">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="Name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Level</mat-label>
+      <input matInput placeholder="Level" formControlName="Level" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Description" formControlName="Description" />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </form>
+</div>

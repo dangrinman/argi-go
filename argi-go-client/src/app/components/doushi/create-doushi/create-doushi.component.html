@@ -1,0 +1,71 @@
+<div class="form-title"><h1>Doushi creation</h1></div>
+<div class="form-container">
+  <form [formGroup]="doushi" (ngSubmit)="onSubmit()" class="flex-container">
+    <mat-form-field>
+      <mat-label>Word</mat-label>
+      <input matInput placeholder="Word" formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Kanji</mat-label>
+      <input matInput placeholder="Kanji" formControlName="kanji" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Group</mat-label>
+      <input matInput placeholder="Group" formControlName="group" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Translation</mat-label>
+      <input matInput placeholder="Translation" formControlName="translation" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Chapter</mat-label>
+      <mat-select formControlName="chapters" multiple>
+        <mat-option
+          *ngFor="let chapter of chapters$ | async"
+          [value]="chapter.id"
+        >
+          {{ chapter.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Exam</mat-label>
+      <mat-select formControlName="exams" multiple>
+        <mat-option *ngFor="let exam of exams$ | async" [value]="exam.id">
+          {{ exam.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Examples</mat-label>
+      <mat-chip-grid
+        #chipGrid
+        aria-label="Enter keywords"
+        formControlName="examples"
+      >
+        <mat-chip-row
+          *ngFor="let keyword of keywords"
+          (removed)="removeKeyword(keyword)"
+        >
+          {{ keyword }}
+          <button matChipRemove aria-label="'remove ' + keyword">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </mat-chip-grid>
+      <input
+        placeholder="New keyword..."
+        [matChipInputFor]="chipGrid"
+        (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </form>
+</div>

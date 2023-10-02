@@ -1,0 +1,54 @@
+<form [formGroup]="word" class="form-guess">
+  <div class="form-guess-selects">
+    <mat-form-field>
+      <mat-label> Select the books: </mat-label>
+      <mat-select
+        formControlName="books"
+        multiple
+        (ngModelChange)="changeBooks($event)"
+      >
+        <mat-option *ngFor="let book of books$ | async" [value]="book.id">
+          {{ book.title }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <ng-container *ngIf="booksSelected">
+      <mat-form-field>
+        <mat-label>Select the chapters:</mat-label>
+        <mat-select
+          formControlName="chapters"
+          multiple
+          (ngModelChange)="changeChapters($event)"
+        >
+          <mat-option
+            *ngFor="let chapter of chapters$ | async"
+            [value]="chapter.id"
+          >
+            {{ chapter.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="chaptersSelected">
+    <div class="guess-content">
+      <app-card class="guess-card" [kotoba]="currentWord"></app-card>
+      <div class="guess-input">
+        <mat-form-field>
+          <mat-label>Word</mat-label>
+          <input matInput placeholder="Word" formControlName="name" />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="checkTypedValue()"
+        >
+          Try
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</form>

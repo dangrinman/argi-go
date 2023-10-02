@@ -1,0 +1,62 @@
+.side-navnar{
+    max-width: 300px;
+    height: calc(100% - 16px);;
+    background-color: #424242;
+}
+
+::ng-deep .mat-expansion-panel-header {
+  padding: 0 16px !important;
+}
+
+::ng-deep .mat-nav-list .mat-icon {
+  margin-right: 10px;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important;
+  max-width: 400px;
+}
+
+::ng-deep .mat-expansion-panel-header {
+  height: 48px !important;
+}
+
+::ng-deep .mat-expansion-panel .mat-list-item {
+  padding-left: 15px !important;
+}
+
+::ng-deep .mat-nav-list .is-active {
+  border-left     : 8px solid rgb(139, 137, 133);
+  width           : calc(100% - 8px)!important;;
+}
+
+
+
+::ng-deep .mat-list-base {
+  padding-top: 0 !important;
+}
+
+::ng-deep .mat-nav-list .mat-list-item.is-active .mat-list-item-content {
+  padding: 0 8px;
+}
+
+::ng-deep .mdc-list-item__primary-text{
+  display: flex;
+}
+
+.icon-menu-row {
+  margin-right: 10px;
+}
+
+.panel-menu-row {
+  margin-left: 20px;
+}
+
+.text-menu-row {
+  align-self: center;
+}
+
+.sidebar {
+  display: flex;
+  height: calc(100% - 80px);
+}

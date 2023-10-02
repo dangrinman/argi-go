@@ -1,0 +1,169 @@
+<!-- <mat-drawer-container autosize>
+  <mat-drawer #drawer [opened]="opened" [mode]="sidenavMode">
+    <mat-nav-list>
+      <mat-list-item role="listitem">
+        <button
+          mat-button
+          [disableRipple]="true"
+          [routerLink]="'guess-words'"
+          routerLinkActive="true"
+        >
+          <mat-icon>dashboard</mat-icon>Guess word
+        </button>
+      </mat-list-item>
+      <mat-list-item role="listitem">
+        <button
+          mat-button
+          [disableRipple]="true"
+          [routerLink]="'word-creation'"
+          routerLinkActive="true"
+        >
+          <mat-icon>dashboard</mat-icon>Adds words
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container> -->
+<!-- <div>
+  <argi-topbar
+    [isExpanded]="isExpanded"
+    (toggleMenu)="toggleMenu()"
+  ></argi-topbar>
+  <mat-sidenav-container class="example-container" autosize>
+    <mat-sidenav
+      #sidenav
+      class="example-sidenav"
+      mode="side"
+      opened="isExpanded"
+    >
+      <mat-nav-list>
+        <mat-list-item role="listitem">
+          <button
+            mat-button
+            [disableRipple]="true"
+            [routerLink]="'guess-words'"
+            routerLinkActive="true"
+          >
+            <mat-icon>dashboard</mat-icon>Guess word
+          </button>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <button
+            mat-button
+            [disableRipple]="true"
+            [routerLink]="'word-creation'"
+            routerLinkActive="true"
+          >
+            <mat-icon>dashboard</mat-icon>Adds words
+          </button>
+        </mat-list-item>
+
+        <mat-list-item role="listitem">
+          <button
+            mat-button
+            [disableRipple]="true"
+            [routerLink]="'book-creation'"
+            routerLinkActive="true"
+          >
+            <mat-icon>book_2</mat-icon>Adds book
+          </button>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <button
+            mat-button
+            [disableRipple]="true"
+            [routerLink]="'keiyoushi-creation'"
+            routerLinkActive="true"
+          >
+            <mat-icon>book_2</mat-icon>Adds keiyoushi
+          </button>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <button
+            mat-button
+            [disableRipple]="true"
+            [routerLink]="'chapter-creation'"
+            routerLinkActive="true"
+          >
+            <mat-icon>book_2</mat-icon>Adds Chapter
+          </button>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <button
+            mat-button
+            [disableRipple]="true"
+            [routerLink]="'exam-creation'"
+            routerLinkActive="true"
+          >
+            <mat-icon>book_2</mat-icon>Adds Exam
+          </button>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <button
+            mat-button
+            [disableRipple]="true"
+            [routerLink]="'meishi-creation'"
+            routerLinkActive="true"
+          >
+            <mat-icon>book_2</mat-icon>Adds Meishi
+          </button>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <button
+            mat-button
+            [disableRipple]="true"
+            [routerLink]="'fukushi-creation'"
+            routerLinkActive="true"
+          >
+            <mat-icon>book_2</mat-icon>Adds Fukushi
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-container>
+</div> -->
+<mat-nav-list class="side-navnar">
+  <ng-container *ngFor="let menu of menuList; index as i">
+    <ng-container
+      [ngTemplateOutlet]="menu.children ? childMenu : parentMenu"
+      [ngTemplateOutletContext]="{ menu: menu }"
+    >
+    </ng-container>
+  </ng-container>
+</mat-nav-list>
+
+<ng-template #parentMenu let-menu="menu">
+  <mat-list-item
+    [routerLink]="menu.routerLink"
+    routerLinkActive="is-active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <mat-icon class="icon-menu-row">{{ menu.icon }}</mat-icon>
+    <div class="text-menu-row">{{ menu.text }}</div>
+  </mat-list-item>
+</ng-template>
+
+<ng-template #childMenu let-menu="menu">
+  <mat-expansion-panel [class.mat-elevation-z0]="true">
+    <mat-expansion-panel-header>
+      <mat-icon mat-list-icon class="icon-menu-row">{{ menu.icon }}</mat-icon>
+      <div class="text-menu-row">{{ menu.text }}</div>
+    </mat-expansion-panel-header>
+    <mat-nav-list class="panel-menu-row">
+      <mat-list-item
+        [routerLink]="submenu.routerLink"
+        *ngFor="let submenu of menu.children"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon class="icon-menu-row">{{ submenu.icon }}</mat-icon>
+        <div class="text-menu-row">{{ submenu.text }}</div>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-expansion-panel>
+</ng-template>

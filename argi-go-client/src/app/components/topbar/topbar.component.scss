@@ -1,0 +1,145 @@
+// $menuHeight: 60px;
+// $menuBreakpoint: 768px;
+
+// #my-first {
+//   ul {
+//     margin: 0;
+//     padding: 0;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     background: #fff;
+//     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+//   }
+
+//   .logotype {
+//     a {
+//       padding: 0 8px;
+//       font-size: 1.4rem;
+//       text-decoration: none;
+//       color: #07c;
+//     }
+//   }
+
+//   .burger {
+//     padding: 0 10px;
+//     border-left: 1px solid #eee;
+//     display: none;
+//     cursor: pointer;
+
+//     i {
+//       color: #999;
+//       line-height: $menuHeight;
+//     }
+
+//     @media (max-width: $menuBreakpoint) {
+//       display: block;
+//     }
+//   }
+
+//   .menu {
+//     display: flex;
+//     align-items: center;
+
+//     @media (max-width: $menuBreakpoint) {
+//       display: none;
+
+//       &.is-open {
+//         display: block;
+//         position: absolute;
+//         top: #{$menuHeight + 2};
+//         background: #fff;
+//         width: 100%;
+
+//         .menu-item {
+//           border-bottom: 1px solid #cccccc;
+//         }
+//       }
+//     }
+
+//     .menu-item {
+//       padding: 0 10px;
+//       height: $menuHeight;
+//       line-height: $menuHeight;
+//       text-decoration: none;
+//       display: block;
+//       text-transform: uppercase;
+//       font-size: 0.8rem;
+//       font-weight: 600;
+//       color: #454545;
+//     }
+//   }
+// }
+// .logo-img {
+//   width: 50px;
+//   height: 50px;
+//   margin-right: 6px;
+// }
+
+// .logo-a {
+//   padding-top: 8px;
+//   padding-right: 5px;
+// }
+
+// .logo-container {
+//   display: flex;
+//   align-items: center;
+// }
+
+// .sidebar {
+//   display: flex;
+//   height: calc(100% - 80px);
+// }
+
+.sidebar-container {
+  display       : flex;
+  flex-direction: column;
+  position      : absolute;
+  top           : 0;
+  bottom        : 0;
+  left          : 0;
+  right         : 0;
+}
+
+.sidebar-is-mobile .sidebar-toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index : 2;
+}
+
+.loader-container
+{
+   height:3px
+}
+
+h1.sidebar-app-name {
+  margin-left     : 8px;
+  width           : 185px;
+}
+
+.sidebar-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex            : 1;
+}
+
+.sidebar-is-mobile .sidebar-sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+       `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+
+}
+
+.mat-drawer {
+  width: 250px;
+}
+
+.router-container {
+  padding: 5px 20px;
+  width: 100%;
+}
+
+.sidebar {
+  display: flex;
+  height: calc(100% - 64px);
+}
