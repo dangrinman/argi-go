@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GuessWordsComponent } from './components/guess-words/guess-words.component';
@@ -25,7 +26,7 @@ import { SnackbarService } from './Services/snackbar.service';
   providers: [
     {
       provide: BaseURLToken,
-      useValue: 'https://localhost:44396',
+      useValue: environment.baseURL,
     },
     SnackbarService,
   ],
