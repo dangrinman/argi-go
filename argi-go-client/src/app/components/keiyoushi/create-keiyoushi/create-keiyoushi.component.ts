@@ -6,7 +6,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
@@ -59,7 +59,7 @@ export class CreateKeiyoushiComponent {
   ) {
     this.keiyoushi = this.fb.group({
       name: ['', Validators.required],
-      kanji: ['', Validators.required],
+      kanji: [''],
       keiyoushiType: ['', Validators.required],
       chapters: [''],
       exams: [''],

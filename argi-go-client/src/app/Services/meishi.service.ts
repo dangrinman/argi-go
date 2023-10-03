@@ -46,6 +46,7 @@ export class MeishiService {
   }
 
   ToMeishiData(meishi: Partial<MeishiData>) {
+    if (!meishi.kanji) meishi.kanji = '';
     if (!meishi.chapters || meishi.chapters.length === 0) {
       meishi.chapters = [];
     }

@@ -65,6 +65,7 @@ export class KeiyoushiService {
   }
 
   ToKeiyoushiData(keiyoushi: Partial<KeiyoushiData>) {
+    if (keiyoushi.kanji) keiyoushi.kanji = '';
     if (!keiyoushi.chapters || keiyoushi.chapters.length === 0) {
       keiyoushi.chapters = [];
     }

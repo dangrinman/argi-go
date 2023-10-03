@@ -59,7 +59,7 @@ export class CreateMeishiComponent {
   ) {
     this.meishi = this.fb.group({
       name: ['', Validators.required],
-      kanji: ['', Validators.required],
+      kanji: [''],
       chapters: [''],
       exams: [''],
       examples: [''],

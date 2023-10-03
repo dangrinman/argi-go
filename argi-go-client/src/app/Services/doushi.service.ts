@@ -77,6 +77,7 @@ export class DoushiService {
   }
 
   ToDoushiData(doushi: Partial<DoushiData>) {
+    if (!doushi.kanji) doushi.kanji = '';
     if (!doushi.chapters || doushi.chapters.length === 0) {
       doushi.chapters = [];
     }

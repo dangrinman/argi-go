@@ -60,7 +60,7 @@ export class CreateDoushiComponent implements OnDestroy {
   ) {
     this.doushi = this.fb.group({
       name: ['', Validators.required],
-      kanji: ['', Validators.required],
+      kanji: [''],
       group: ['', Validators.required],
       translation: ['', Validators.required],
       examples: [''],
