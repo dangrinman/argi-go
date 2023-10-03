@@ -20,7 +20,7 @@
   <span>Argi-Go</span>
 </mat-toolbar>
 <mat-sidenav-container class="sidebar-sidenav-container sidebar">
-  <mat-sidenav #snav mode="side" fixedTopGap="56" opened="isExpanded">
+  <mat-sidenav #snav mode="side" fixedTopGap="56" [opened]="isExpanded">
     <argi-sidebar [isExpanded]="isExpanded"></argi-sidebar>
   </mat-sidenav>
   <mat-sidenav-content class="router-container">
