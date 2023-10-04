@@ -97,6 +97,8 @@ export class CreateKeiyoushiComponent {
         .createKeiyoushiData(this.keiyoushi.value)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe();
+
+      this.keiyoushi.reset();
     }
   }
 

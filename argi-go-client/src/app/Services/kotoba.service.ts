@@ -180,9 +180,9 @@ export class KotobaService {
     this.naiDictionary.set('1び', 'ば');
     this.naiDictionary.set('1に', 'な');
     this.naiDictionary.set('1し', 'さ');
-    this.naiDictionary.set('2', 'ない');
-    this.naiDictionary.set('3し', 'しない');
-    this.naiDictionary.set('3き', 'こない');
+    this.naiDictionary.set('2', '');
+    this.naiDictionary.set('3し', 'し');
+    this.naiDictionary.set('3き', 'こ');
   }
 
   private initializeKanoForm() {

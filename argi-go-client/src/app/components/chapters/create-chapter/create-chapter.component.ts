@@ -59,6 +59,7 @@ export class CreateChapterComponent {
       this.snackbarService.openErrorSnackbar('check the forms', 'x');
     } else {
       this.chapterService.createChapter(this.chapter.value);
+      this.chapter.reset();
     }
   }
 }

@@ -1,5 +1,10 @@
 export const listMenu = [
   {
+    text: 'Guess',
+    icon: 'analytics',
+    routerLink: '/guess-words',
+  },
+  {
     text: 'Create words',
     icon: 'edit_note',
     children: [
@@ -47,8 +52,29 @@ export const listMenu = [
     ],
   },
   {
-    text: 'Guess',
-    icon: 'analytics',
-    routerLink: '/guess-words',
+    text: 'Lists',
+    icon: 'list',
+    children: [
+      {
+        text: 'Doushi',
+        icon: '',
+        routerLink: '/doushi-grid',
+      },
+      {
+        text: 'Keiyoushi',
+        icon: '',
+        routerLink: '/keiyoushi-grid',
+      },
+      {
+        text: 'Meishi',
+        icon: '',
+        routerLink: '/meishi-grid',
+      },
+      {
+        text: 'Fukushi',
+        icon: '',
+        routerLink: '/fukushi-grid',
+      },
+    ],
   },
 ];

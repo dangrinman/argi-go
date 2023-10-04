@@ -21,7 +21,7 @@ export class FukushiService {
   }
 
   public getAllFukushi() {
-    return this.http.get<FukushiData[]>(`${this.baseURL}`).subscribe();
+    return this.http.get<FukushiData[]>(`${this.baseURL}`);
   }
 
   public createFukushi(fukushi: Partial<FukushiData>) {

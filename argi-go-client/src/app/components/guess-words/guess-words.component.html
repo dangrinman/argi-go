@@ -34,6 +34,9 @@
 
   <ng-container *ngIf="chaptersSelected">
     <div class="guess-content">
+      <span style="margin: auto; margin-bottom: 10px"
+        >Quantity: {{ kotobaList.length }}</span
+      >
       <app-card class="guess-card" [kotoba]="currentWord"></app-card>
       <div class="guess-input">
         <mat-form-field>

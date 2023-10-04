@@ -1,54 +1,90 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreateBookComponent } from './components/books/create-book/create-book.component';
-import { CreateChapterComponent } from './components/chapters/create-chapter/create-chapter.component';
-import { CreateDoushiComponent } from './components/doushi/create-doushi/create-doushi.component';
-import { CreateExamComponent } from './components/exams/creaet-exam/create-exam.component';
-import { CreateFukushiComponent } from './components/fukushi/create-fukushi/create-fukushi.component';
-import { GuessKotobaComponent } from './components/guess-kotoba/guess-kotoba.component';
-import { CreateKeiyoushiComponent } from './components/keiyoushi/create-keiyoushi/create-keiyoushi.component';
-import { CreateMeishiComponent } from './components/meishi/create-meishi/create-meishi.component';
 
 const routes: Routes = [
   {
     path: 'guess-words',
-    component: GuessKotobaComponent,
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/guess-kotoba/guess-kotoba.component').then(
+        (m) => m.GuessKotobaComponent
+      ),
   },
   {
     path: 'doushi-creation',
-    component: CreateDoushiComponent,
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/doushi/create-doushi/create-doushi.component').then(
+        (m) => m.CreateDoushiComponent
+      ),
   },
   {
     path: 'book-creation',
-    component: CreateBookComponent,
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/books/create-book/create-book.component').then(
+        (m) => m.CreateBookComponent
+      ),
   },
   {
     path: 'chapter-creation',
-    component: CreateChapterComponent,
-    pathMatch: 'full',
+    loadComponent: () =>
+      import(
+        './components/chapters/create-chapter/create-chapter.component'
+      ).then((m) => m.CreateChapterComponent),
   },
   {
     path: 'exam-creation',
-    component: CreateExamComponent,
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/exams/creaet-exam/create-exam.component').then(
+        (m) => m.CreateExamComponent
+      ),
   },
   {
     path: 'keiyoushi-creation',
-    component: CreateKeiyoushiComponent,
-    pathMatch: 'full',
+    loadComponent: () =>
+      import(
+        './components/keiyoushi/create-keiyoushi/create-keiyoushi.component'
+      ).then((m) => m.CreateKeiyoushiComponent),
   },
   {
     path: 'meishi-creation',
-    component: CreateMeishiComponent,
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/meishi/create-meishi/create-meishi.component').then(
+        (m) => m.CreateMeishiComponent
+      ),
   },
   {
     path: 'fukushi-creation',
-    component: CreateFukushiComponent,
-    pathMatch: 'full',
+    loadComponent: () =>
+      import(
+        './components/fukushi/create-fukushi/create-fukushi.component'
+      ).then((m) => m.CreateFukushiComponent),
+  },
+  {
+    path: 'doushi-grid',
+    loadComponent: () =>
+      import('./components/doushi/doushi-grid/doushi-grid.component').then(
+        (m) => m.DoushiGridComponent
+      ),
+  },
+  {
+    path: 'keiyoushi-grid',
+    loadComponent: () =>
+      import(
+        './components/keiyoushi/keiyoushi-grid/keiyoushi-grid.component'
+      ).then((m) => m.KeiyoushiGridComponent),
+  },
+  {
+    path: 'meishi-grid',
+    loadComponent: () =>
+      import('./components/meishi/meishi-grid/meishi-grid.component').then(
+        (m) => m.MeishiGridComponent
+      ),
+  },
+  {
+    path: 'fukushi-grid',
+    loadComponent: () =>
+      import('./components/fukushi/fukushi-grid/fukushi-grid.component').then(
+        (m) => m.FukushiGridComponent
+      ),
   },
   {
     path: '**',

@@ -98,6 +98,8 @@ export class CreateDoushiComponent implements OnDestroy {
         .createDoushiData(this.doushi.value)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe();
+
+      this.doushi.reset();
     }
   }
 

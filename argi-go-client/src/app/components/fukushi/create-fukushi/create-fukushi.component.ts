@@ -97,6 +97,8 @@ export class CreateFukushiComponent {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe();
     }
+
+    this.fukushi.reset();
   }
 
   private validateData(): boolean {

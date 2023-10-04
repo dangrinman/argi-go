@@ -21,9 +21,7 @@ export class MeishiService {
   }
 
   public getAllMeishi() {
-    return this.http
-      .get<MeishiData[]>(`${this.baseURL}`)
-      .subscribe((x) => console.log(x));
+    return this.http.get<MeishiData[]>(`${this.baseURL}`);
   }
 
   public createMeishi(meishi: Partial<MeishiData>) {

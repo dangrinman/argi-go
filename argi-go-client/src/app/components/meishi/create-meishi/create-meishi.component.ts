@@ -96,6 +96,8 @@ export class CreateMeishiComponent {
         .createMeishiData(this.meishi.value)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe();
+
+      this.meishi.reset();
     }
   }
 

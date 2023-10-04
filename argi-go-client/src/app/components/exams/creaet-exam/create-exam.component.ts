@@ -50,6 +50,8 @@ export class CreateExamComponent {
       this.snackbarService.openErrorSnackbar('check the forms', 'x');
     } else {
       this.examService.createExam(this.exam.value);
+
+      this.exam.reset();
     }
   }
 }

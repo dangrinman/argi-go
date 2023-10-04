@@ -1,7 +1,7 @@
 .side-navnar{
-    max-width: 300px;
     height: calc(100% - 16px);;
     background-color: #424242;
+    max-width: 100%;
 }
 
 ::ng-deep .mat-expansion-panel-header {
@@ -59,4 +59,8 @@
 .sidebar {
   display: flex;
   height: calc(100% - 80px);
+}
+
+.list-item {
+  cursor: pointer !important;
 }

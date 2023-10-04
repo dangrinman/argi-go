@@ -21,9 +21,7 @@ export class KeiyoushiService {
   }
 
   public getAllKeiyoushi() {
-    return this.http
-      .get<KeiyoushiData[]>(`${this.baseURL}`)
-      .subscribe((x) => console.log(x));
+    return this.http.get<KeiyoushiData[]>(`${this.baseURL}`);
   }
 
   public createKeiyoushi(keiyoushi: Partial<KeiyoushiData>) {

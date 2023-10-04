@@ -51,6 +51,7 @@ export class CreateBookComponent {
       this.snackbarService.openErrorSnackbar('check the forms', 'x');
     } else {
       this.bookService.createBook(this.book.value);
+      this.book.reset();
     }
   }
 }
