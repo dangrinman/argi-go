@@ -138,7 +138,8 @@ export class GuessWordsComponent implements OnInit, OnDestroy {
   checkTypedValue() {
     if (
       this.word.value != null &&
-      (this.currentWord?.name == this.word.value.name || this.word.value.kanji)
+      (this.currentWord?.name || this.currentWord?.kanji) ==
+        this.word.value.name
     ) {
       if (this.kotobaList.length == 1) {
         this.snackbarService.openSnackbar(
