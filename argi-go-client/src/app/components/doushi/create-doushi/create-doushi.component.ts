@@ -1,9 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule, NgFor } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -49,6 +50,9 @@ export class CreateDoushiComponent implements OnDestroy {
   doushi: FormGroup;
   keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
+  @ViewChild(FormGroupDirective)
+  private formDirective!: FormGroupDirective;
+  private initialFormValue!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -67,6 +71,8 @@ export class CreateDoushiComponent implements OnDestroy {
       chapters: [''],
       exams: [''],
     });
+
+    this.initialFormValue = this.doushi.value;
   }
 
   removeKeyword(keyword: string) {
@@ -99,7 +105,7 @@ export class CreateDoushiComponent implements OnDestroy {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe();
 
-      this.doushi.reset();
+      this.formDirective.resetForm(this.initialFormValue);
     }
   }
 

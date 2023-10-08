@@ -1,18 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'argi-topbar',
-//   templateUrl: './topbar.component.html',
-//   styleUrls: ['./topbar.component.scss'],
-// })
-// export class TopbarComponent {
-//   isMenuOpen = false;
-
-//   toggleMenu(): void {
-//     this.isMenuOpen = !this.isMenuOpen;
-//   }
-// }
-
 import {
   animate,
   state,
@@ -62,5 +47,9 @@ export class TopbarComponent implements OnInit {
 
     this.iconRotateState =
       this.iconRotateState === 'default' ? 'rotated' : 'default';
+  }
+
+  public itemClicked() {
+    this.isExpanded = false;
   }
 }

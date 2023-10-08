@@ -3,6 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: '',
+    loadComponent: () =>
+      import('./components/guess-kotoba/guess-kotoba.component').then(
+        (m) => m.GuessKotobaComponent
+      ),
+  },
+  {
     path: 'guess-words',
     loadComponent: () =>
       import('./components/guess-kotoba/guess-kotoba.component').then(

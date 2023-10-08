@@ -1,8 +1,35 @@
 export const listMenu = [
   {
-    text: 'Guess',
-    icon: 'analytics',
-    routerLink: '/guess-words',
+    text: 'Games',
+    icon: 'videogame_asset',
+    children: [
+      {
+        text: 'Guess words',
+        icon: '',
+        routerLink: '/guess-words',
+      },
+    ],
+  },
+  {
+    text: 'Create resource',
+    icon: 'file_copy',
+    children: [
+      {
+        text: 'Book',
+        icon: '',
+        routerLink: '/book-creation',
+      },
+      {
+        text: 'Chapter',
+        icon: '',
+        routerLink: '/chapter-creation',
+      },
+      {
+        text: 'Exam',
+        icon: '',
+        routerLink: '/exam-creation',
+      },
+    ],
   },
   {
     text: 'Create words',
@@ -27,27 +54,6 @@ export const listMenu = [
         text: 'Fukushi',
         icon: '',
         routerLink: '/fukushi-creation',
-      },
-    ],
-  },
-  {
-    text: 'Create resource',
-    icon: 'file_copy',
-    children: [
-      {
-        text: 'Book',
-        icon: '',
-        routerLink: '/book-creation',
-      },
-      {
-        text: 'Chapter',
-        icon: '',
-        routerLink: '/chapter-creation',
-      },
-      {
-        text: 'Exam',
-        icon: '',
-        routerLink: '/exam-creation',
       },
     ],
   },

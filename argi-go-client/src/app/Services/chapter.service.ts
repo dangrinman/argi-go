@@ -29,6 +29,8 @@ export class ChapterService {
     );
   }
 
+  public toChapters(chaptersData: ChapterData[]) {}
+
   public createChapter(chapter: Partial<ChapterData>) {
     return this.http
       .post<ChapterData>(`${this.chapterURL}/create`, chapter)

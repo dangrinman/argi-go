@@ -1,0 +1,34 @@
+.form-title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  margin-top: 20px;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+mat-form-field{
+  width: 100%;
+  max-width: 600px;
+  margin: 5px 10px 5px 10px;
+}
+
+.form-buttons {
+  max-width: 600px;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}

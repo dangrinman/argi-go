@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -38,6 +39,9 @@ export class CreateChapterComponent {
   books$: Observable<BookData[]> = this.bookService.getAllBooks();
   chapter: FormGroup;
   keywords: string[] = [];
+  @ViewChild(FormGroupDirective)
+  private formDirective!: FormGroupDirective;
+  private initialFormValue!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -52,6 +56,7 @@ export class CreateChapterComponent {
       Number: ['', Validators.required],
       Book: ['', Validators.required],
     });
+    this.initialFormValue = this.chapter.value;
   }
 
   public onSubmit() {
@@ -59,7 +64,7 @@ export class CreateChapterComponent {
       this.snackbarService.openErrorSnackbar('check the forms', 'x');
     } else {
       this.chapterService.createChapter(this.chapter.value);
-      this.chapter.reset();
+      this.formDirective.resetForm(this.initialFormValue);
     }
   }
 }

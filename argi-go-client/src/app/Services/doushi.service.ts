@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, tap } from 'rxjs';
 import { DoushiData } from '../models/Data/DoushiData';
+import { Doushi } from '../models/Entities/Doushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { KotobaService } from './kotoba.service';
 import { SnackbarService } from './snackbar.service';
@@ -55,10 +56,74 @@ export class DoushiService {
     );
   }
 
+  public updateDoushi(id: string, doushi: Partial<DoushiData>) {
+    doushi.id = id;
+
+    return this.http.post<DoushiData>(`${this.doushiURL}/update`, doushi).pipe(
+      tap(() => {
+        this.snackbarService.openSnackbar(
+          'The verb was updated successfully',
+          'X'
+        );
+      }),
+      catchError((error: any) => {
+        this.snackbarService.openErrorSnackbar(
+          'An error occurs, the verb was not updated',
+          'X'
+        );
+        return error;
+      })
+    );
+  }
+
+  public delete(doushiData: DoushiData[]) {
+    return this.http
+      .post<DoushiData>(`${this.doushiURL}/delete`, doushiData)
+      .pipe(
+        tap(() => {
+          this.snackbarService.openSnackbar(
+            'The verb was deleted successfully',
+            'X'
+          );
+        }),
+        catchError((error: any) => {
+          this.snackbarService.openErrorSnackbar(
+            'An error occurs, the verb was not deleted',
+            'X'
+          );
+          return error;
+        })
+      );
+  }
+
+  ToDoushi(doushiData: DoushiData) {
+    const doushi: Doushi = {
+      id: doushiData.id,
+      name: doushiData.name,
+      translation: doushiData.translation,
+      group: doushiData.group,
+      kanji: doushiData.kanji,
+      jishoKei: doushiData.jishoKei,
+      teKei: doushiData.teKei,
+      taKei: doushiData.taKei,
+      naiKei: doushiData.naiKei,
+      kanoKei: doushiData.kanoKei,
+      present: doushiData.present,
+      past: doushiData.past,
+      negative: doushiData.negative,
+      negativePast: doushiData.negativePast,
+      chapters: doushiData.chapters,
+      examples: doushiData.examples,
+      exams: doushiData.exams,
+    };
+
+    return doushi;
+  }
+
   setConjugationData(
     doushi: Partial<DoushiData>,
     doushiName: string,
-    group: string
+    group: number
   ) {
     doushi.jishoKei = this.kotobaService.ToJishoForm(doushiName, group);
     doushi.kanoKei = this.kotobaService.ToKanoForm(doushiName, group);
@@ -95,5 +160,17 @@ export class DoushiService {
   createDoushiData(doushi: Partial<DoushiData>): Observable<unknown> {
     this.ToDoushiData(doushi);
     return this.createDoushi(doushi);
+  }
+
+  updateDoushiData(
+    id: string,
+    doushi: Partial<DoushiData>
+  ): Observable<DoushiData> {
+    this.ToDoushiData(doushi);
+    return this.updateDoushi(id, doushi) as Observable<DoushiData>;
+  }
+
+  deleteDoushi(doushiList: DoushiData[]) {
+    return this.delete(doushiList);
   }
 }

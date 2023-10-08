@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -32,6 +33,9 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
 export class CreateExamComponent {
   exam: FormGroup;
   keywords: string[] = [];
+  @ViewChild(FormGroupDirective)
+  private formDirective!: FormGroupDirective;
+  private initialFormValue!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -43,6 +47,7 @@ export class CreateExamComponent {
       Description: [''],
       Level: ['', Validators.required],
     });
+    this.initialFormValue = this.exam.value;
   }
 
   public onSubmit() {
@@ -50,8 +55,7 @@ export class CreateExamComponent {
       this.snackbarService.openErrorSnackbar('check the forms', 'x');
     } else {
       this.examService.createExam(this.exam.value);
-
-      this.exam.reset();
+      this.formDirective.resetForm(this.initialFormValue);
     }
   }
 }

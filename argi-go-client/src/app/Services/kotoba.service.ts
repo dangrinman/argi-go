@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IKotoba } from '../models/IKotoba';
+import { IKotobaData } from '../models/IKotoba';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +15,12 @@ export class KotobaService {
     this.initializeDictionaries();
   }
 
-  public ToTeForm(name: string, group: string): string {
+  public ToTeForm(name: string, group: number): string {
     if (name == 'いきます') {
-      return `い${this.getWord('いきます', '0', this.teDictionary)}`;
+      return `い${this.getWord('いきます', 0, this.teDictionary)}`;
     }
     const wordWithOutMasu =
-      group != '2'
+      group != 2
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -33,13 +33,13 @@ export class KotobaService {
     return `${wordWithOutMasu}${teWord}`;
   }
 
-  public ToTaForm(name: string, group: string): string {
+  public ToTaForm(name: string, group: number): string {
     if (name == 'いきます') {
-      return `い${this.getWord('いきます', '0', this.taDictionary)}`;
+      return `い${this.getWord('いきます', 0, this.taDictionary)}`;
     }
 
     const wordWithOutMasu =
-      group != '2'
+      group != 2
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -52,9 +52,9 @@ export class KotobaService {
     return `${wordWithOutMasu}${taWord}`;
   }
 
-  public ToJishoForm(name: string, group: string): string {
+  public ToJishoForm(name: string, group: number): string {
     const wordWithOutMasu =
-      group != '2'
+      group != 2
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -67,9 +67,9 @@ export class KotobaService {
     return `${wordWithOutMasu}${jishoWord}`;
   }
 
-  public ToNaiForm(name: string, group: string): string {
+  public ToNaiForm(name: string, group: number): string {
     const wordWithOutMasu =
-      group != '2'
+      group != 2
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -82,9 +82,9 @@ export class KotobaService {
     return `${wordWithOutMasu}${naiWord}ない`;
   }
 
-  public ToKanoForm(name: string, group: string): string {
+  public ToKanoForm(name: string, group: number): string {
     const wordWithOutMasu =
-      group != '2'
+      group != 2
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -96,7 +96,7 @@ export class KotobaService {
     return `${wordWithOutMasu}${kanoWord}ます`;
   }
 
-  public shuffleArray(array: IKotoba[]): IKotoba[] {
+  public shuffleArray(array: IKotobaData[]): IKotobaData[] {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -107,11 +107,11 @@ export class KotobaService {
 
   private getWord(
     name: string,
-    group: string,
+    group: number,
     dictionary: Map<string, string>
   ) {
     const word = name[name.length - 3];
-    const doushiKotoba = group != '2' ? `${group}${word}` : '2';
+    const doushiKotoba = group != 2 ? `${group}${word}` : '2';
     return dictionary.get(doushiKotoba);
   }
 

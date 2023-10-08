@@ -1,9 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -48,6 +49,9 @@ export class CreateMeishiComponent {
   meishi: FormGroup;
   keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
+  @ViewChild(FormGroupDirective)
+  private formDirective!: FormGroupDirective;
+  private initialFormValue!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -65,6 +69,8 @@ export class CreateMeishiComponent {
       examples: [''],
       translation: ['', Validators.required],
     });
+
+    this.initialFormValue = this.meishi.value;
   }
 
   removeKeyword(keyword: string) {
@@ -97,7 +103,7 @@ export class CreateMeishiComponent {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe();
 
-      this.meishi.reset();
+      this.formDirective.resetForm(this.initialFormValue);
     }
   }
 

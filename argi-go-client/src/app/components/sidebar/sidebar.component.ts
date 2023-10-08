@@ -1,28 +1,12 @@
-// import { Component, Input, OnInit } from '@angular/core';
-// import { MatDrawerMode } from '@angular/material/sidenav';
-
-// @Component({
-//   selector: 'argi-sidebar',
-//   templateUrl: './sidebar.component.html',
-//   styleUrls: ['./sidebar.component.scss'],
-// })
-// export class SidebarComponent implements OnInit {
-//   @Input()
-//   sidenavMode: MatDrawerMode = 'side';
-
-//   @Input()
-//   expanded: string = 'true';
-
-//   @Input()
-//   opened: boolean = true;
-
-//   constructor() {}
-
-//   ngOnInit(): void {}
-// }
-
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { MaterialModule } from 'src/app/material.module';
@@ -42,6 +26,8 @@ export class SidebarComponent implements OnInit {
   @Input()
   public isExpanded = true;
 
+  @Output() expandedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   @Input()
   public showSubmenu: boolean = false;
 
@@ -49,13 +35,16 @@ export class SidebarComponent implements OnInit {
   public isShowing = false;
 
   @Input()
-  public showSubSubMenu: boolean = false;
   public menuList: IMenu[] = listMenu;
 
   constructor() {}
 
   public toggleMenu() {
     this.sidenav.toggle();
+  }
+
+  public expandedtoggle() {
+    this.expandedEvent.emit();
   }
 
   ngOnInit(): void {}

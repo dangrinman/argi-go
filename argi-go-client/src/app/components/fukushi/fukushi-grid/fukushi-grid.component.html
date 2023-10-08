@@ -1,9 +1,36 @@
-<mat-form-field>
+<mat-form-field style="margin-top: 15px">
   <mat-label>Filter</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
 </mat-form-field>
 <div class="table-responsive">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Name Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <div style="display: flex">
+          <button
+            mat-icon-button
+            matTooltip="Click to Edit"
+            (click)="editRow(element)"
+            class="iconbutton"
+            color="primary"
+          >
+            <mat-icon aria-label="Edit">edit</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            matTooltip="Click to Edit"
+            (click)="deleteRow(element)"
+            class="iconbutton"
+            color="primary"
+          >
+            <mat-icon aria-label="Delete">delete</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -25,6 +52,54 @@
       <th mat-header-cell *matHeaderCellDef>Translation</th>
       <td mat-cell *matCellDef="let element" class="column-table">
         {{ element.translation }}
+      </td>
+    </ng-container>
+
+    <!-- Translaion Column -->
+    <ng-container matColumnDef="group">
+      <th mat-header-cell *matHeaderCellDef>Group</th>
+      <td mat-cell *matCellDef="let element" class="column-table">
+        {{ element.group }}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="teKei">
+      <th mat-header-cell *matHeaderCellDef>て形</th>
+      <td mat-cell *matCellDef="let element" class="column-table">
+        {{ element.tKei }}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="taKei">
+      <th mat-header-cell *matHeaderCellDef>た形</th>
+      <td mat-cell *matCellDef="let element" class="column-table">
+        {{ element.taKei }}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="jishoKei">
+      <th mat-header-cell *matHeaderCellDef>じしょ形</th>
+      <td mat-cell *matCellDef="let element" class="column-table">
+        {{ element.jishoKei }}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="naiKei">
+      <th mat-header-cell *matHeaderCellDef>ない形</th>
+      <td mat-cell *matCellDef="let element" class="column-table">
+        {{ element.naKei }}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="kanoKei">
+      <th mat-header-cell *matHeaderCellDef>かの形</th>
+      <td mat-cell *matCellDef="let element" class="column-table">
+        {{ element.kanoKei }}
       </td>
     </ng-container>
 
@@ -63,9 +138,7 @@
 
     <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">
-        No data matching the filter "{{ input.value }}"
-      </td>
+      <td class="mat-cell no-value-cell" colspan="16">No data</td>
     </tr>
   </table>
 </div>

@@ -1,9 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -48,6 +49,9 @@ export class CreateKeiyoushiComponent {
   keiyoushi: FormGroup;
   keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
+  @ViewChild(FormGroupDirective)
+  private formDirective!: FormGroupDirective;
+  private initialFormValue!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -66,6 +70,8 @@ export class CreateKeiyoushiComponent {
       examples: [''],
       translation: ['', Validators.required],
     });
+
+    this.initialFormValue = this.keiyoushi.value;
   }
 
   removeKeyword(keyword: string) {
@@ -98,7 +104,7 @@ export class CreateKeiyoushiComponent {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe();
 
-      this.keiyoushi.reset();
+      this.formDirective.resetForm(this.initialFormValue);
     }
   }
 

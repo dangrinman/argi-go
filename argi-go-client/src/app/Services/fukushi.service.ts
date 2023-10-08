@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, tap } from 'rxjs';
 import { FukushiData } from '../models/Data/FukushiData';
+import { Fukushi } from '../models/Entities/Fukushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { KotobaService } from './kotoba.service';
 import { SnackbarService } from './snackbar.service';
@@ -21,7 +22,7 @@ export class FukushiService {
   }
 
   public getAllFukushi() {
-    return this.http.get<FukushiData[]>(`${this.baseURL}`);
+    return this.http.get<FukushiData[]>(`${this.fukushiURL}`);
   }
 
   public createFukushi(fukushi: Partial<FukushiData>) {
@@ -43,6 +44,62 @@ export class FukushiService {
           return error;
         })
       );
+  }
+
+  public updateFukushi(id: string, fukushi: Partial<FukushiData>) {
+    fukushi.id = id;
+
+    return this.http
+      .post<FukushiData>(`${this.fukushiURL}/update`, fukushi)
+      .pipe(
+        tap(() => {
+          this.snackbarService.openSnackbar(
+            'The verb was updated successfully',
+            'X'
+          );
+        }),
+        catchError((error: any) => {
+          this.snackbarService.openErrorSnackbar(
+            'An error occurs, the verb was not updated',
+            'X'
+          );
+          return error;
+        })
+      );
+  }
+
+  public delete(fukushiData: FukushiData[]) {
+    return this.http
+      .post<FukushiData>(`${this.fukushiURL}/delete`, fukushiData)
+      .pipe(
+        tap(() => {
+          this.snackbarService.openSnackbar(
+            'The verb was deleted successfully',
+            'X'
+          );
+        }),
+        catchError((error: any) => {
+          this.snackbarService.openErrorSnackbar(
+            'An error occurs, the verb was not deleted',
+            'X'
+          );
+          return error;
+        })
+      );
+  }
+
+  ToFukushi(fukushiData: FukushiData) {
+    const fukushi: Fukushi = {
+      id: fukushiData.id,
+      name: fukushiData.name,
+      translation: fukushiData.translation,
+      kanji: fukushiData.kanji,
+      chapters: fukushiData.chapters,
+      examples: fukushiData.examples,
+      exams: fukushiData.exams,
+    };
+
+    return fukushi;
   }
 
   ToFukushiData(fukushi: Partial<FukushiData>) {
@@ -73,5 +130,17 @@ export class FukushiService {
     return this.GetFukushiByChapters(chapters).pipe(
       map((x) => this.kotobaService.shuffleArray([...x]))
     );
+  }
+
+  updateFukushiData(
+    id: string,
+    fukushi: Partial<FukushiData>
+  ): Observable<FukushiData> {
+    this.ToFukushiData(fukushi);
+    return this.updateFukushi(id, fukushi) as Observable<FukushiData>;
+  }
+
+  deleteFukushi(fukushiList: FukushiData[]) {
+    return this.delete(fukushiList);
   }
 }

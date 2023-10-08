@@ -1,6 +1,6 @@
-import { IKotoba } from '../IKotoba';
+import { IKotobaData } from '../IKotoba';
 import { IKyougaku } from '../IKyougaku';
 
-export interface MeishiData extends IKotoba, IKyougaku {
-  Id: string;
+export interface MeishiData extends IKotobaData, IKyougaku {
+  id: string;
 }

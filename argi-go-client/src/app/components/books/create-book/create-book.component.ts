@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -32,6 +33,9 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
 export class CreateBookComponent {
   book: FormGroup;
   keywords: string[] = [];
+  @ViewChild(FormGroupDirective)
+  private formDirective!: FormGroupDirective;
+  private initialFormValue!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -44,6 +48,8 @@ export class CreateBookComponent {
       Author: ['', Validators.required],
       Edition: ['', Validators.required],
     });
+
+    this.initialFormValue = this.book.value;
   }
 
   public onSubmit() {
@@ -51,7 +57,7 @@ export class CreateBookComponent {
       this.snackbarService.openErrorSnackbar('check the forms', 'x');
     } else {
       this.bookService.createBook(this.book.value);
-      this.book.reset();
+      this.formDirective.resetForm(this.initialFormValue);
     }
   }
 }

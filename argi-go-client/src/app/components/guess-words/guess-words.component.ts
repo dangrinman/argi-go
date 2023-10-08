@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { BookData } from 'src/app/models/Data/BookData';
 import { ChapterData } from 'src/app/models/Data/ChapterData';
-import { IKotoba } from 'src/app/models/IKotoba';
+import { IKotobaData } from 'src/app/models/IKotoba';
 import { BookService } from 'src/app/Services/book.service';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DoushiService } from 'src/app/Services/doushi.service';
@@ -47,8 +47,8 @@ import { CardComponent } from '../card/card.component';
 export class GuessWordsComponent implements OnInit, OnDestroy {
   chapters$: Observable<ChapterData[]> = this.chaptersService.getAllChapters();
   books$: Observable<BookData[]> = this.booksService.getAllBooks();
-  kotobaList: IKotoba[] = [];
-  currentWord: IKotoba | null = null;
+  kotobaList: IKotobaData[] = [];
+  currentWord: IKotobaData | null = null;
   onDestroy$: Subject<void> = new Subject();
   word: FormGroup;
   booksSelected: boolean = false;
@@ -138,8 +138,8 @@ export class GuessWordsComponent implements OnInit, OnDestroy {
   checkTypedValue() {
     if (
       this.word.value != null &&
-      (this.currentWord?.name || this.currentWord?.kanji) ==
-        this.word.value.name
+      (this.currentWord?.name == this.word.value.name ||
+        this.currentWord?.kanji == this.word.value.name)
     ) {
       if (this.kotobaList.length == 1) {
         this.snackbarService.openSnackbar(
@@ -152,12 +152,13 @@ export class GuessWordsComponent implements OnInit, OnDestroy {
         this.word.reset();
       } else {
         this.snackbarService.openSnackbar(
-          `${this.currentWord?.name} is correct`,
+          `${this.word.value.name} is correct`,
           'X'
         );
 
         this.kotobaList = this.kotobaList.filter(
-          (x) => x.name !== this.word.value.name
+          (x) =>
+            x.name !== this.word.value.name && x.kanji !== this.word.value.name
         );
         this.currentWord = this.kotobaList[0];
         this.word.get('name')!.setValue('');

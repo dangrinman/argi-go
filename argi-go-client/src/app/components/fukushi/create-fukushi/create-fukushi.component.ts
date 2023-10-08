@@ -1,9 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormGroupDirective,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -49,6 +50,10 @@ export class CreateFukushiComponent {
   keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
 
+  @ViewChild(FormGroupDirective)
+  private formDirective!: FormGroupDirective;
+  private initialFormValue!: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     private fukushiService: FukushiService,
@@ -65,6 +70,8 @@ export class CreateFukushiComponent {
       examples: [''],
       translation: ['', Validators.required],
     });
+
+    this.initialFormValue = this.fukushi.value;
   }
 
   removeKeyword(keyword: string) {
@@ -98,7 +105,7 @@ export class CreateFukushiComponent {
         .subscribe();
     }
 
-    this.fukushi.reset();
+    this.formDirective.resetForm(this.initialFormValue);
   }
 
   private validateData(): boolean {

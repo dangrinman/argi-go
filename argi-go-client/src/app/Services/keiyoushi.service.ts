@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, tap } from 'rxjs';
 import { KeiyoushiData } from '../models/Data/KeiyoushiData';
+import { Keiyoushi } from '../models/Entities/Keiyoushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { KotobaService } from './kotoba.service';
 import { SnackbarService } from './snackbar.service';
@@ -21,7 +22,7 @@ export class KeiyoushiService {
   }
 
   public getAllKeiyoushi() {
-    return this.http.get<KeiyoushiData[]>(`${this.baseURL}`);
+    return this.http.get<KeiyoushiData[]>(`${this.keiyoushiURL}`);
   }
 
   public createKeiyoushi(keiyoushi: Partial<KeiyoushiData>) {
@@ -38,6 +39,67 @@ export class KeiyoushiService {
         catchError((error: any) => {
           this.snackbarService.openErrorSnackbar(
             'An error occurs, the adjetive was not created',
+            'X'
+          );
+          return error;
+        })
+      );
+  }
+
+  public updateKeiyoushi(id: string, keiyoushi: Partial<KeiyoushiData>) {
+    keiyoushi.id = id;
+
+    return this.http
+      .post<KeiyoushiData>(`${this.keiyoushiURL}/update`, keiyoushi)
+      .pipe(
+        tap(() => {
+          this.snackbarService.openSnackbar(
+            'The verb was updated successfully',
+            'X'
+          );
+        }),
+        catchError((error: any) => {
+          this.snackbarService.openErrorSnackbar(
+            'An error occurs, the verb was not updated',
+            'X'
+          );
+          return error;
+        })
+      );
+  }
+
+  ToKeiyoushi(keiyoushiData: KeiyoushiData) {
+    const keiyoushi: Keiyoushi = {
+      id: keiyoushiData.id,
+      name: keiyoushiData.name,
+      translation: keiyoushiData.translation,
+      kanji: keiyoushiData.kanji,
+      keiyoushiType: keiyoushiData.keiyoushiType,
+      present: keiyoushiData.present,
+      past: keiyoushiData.past,
+      negative: keiyoushiData.negative,
+      negativePast: keiyoushiData.negativePast,
+      chapters: keiyoushiData.chapters,
+      examples: keiyoushiData.examples,
+      exams: keiyoushiData.exams,
+    };
+
+    return keiyoushi;
+  }
+
+  public delete(keiyoushiData: KeiyoushiData[]) {
+    return this.http
+      .post<KeiyoushiData>(`${this.keiyoushiURL}/delete`, keiyoushiData)
+      .pipe(
+        tap(() => {
+          this.snackbarService.openSnackbar(
+            'The verb was deleted successfully',
+            'X'
+          );
+        }),
+        catchError((error: any) => {
+          this.snackbarService.openErrorSnackbar(
+            'An error occurs, the verb was not deleted',
             'X'
           );
           return error;
@@ -93,5 +155,17 @@ export class KeiyoushiService {
     return this.GetKeiyoushiByChapters(chapters).pipe(
       map((x) => this.kotobaService.shuffleArray([...x]))
     );
+  }
+
+  updateKeiyoushiData(
+    id: string,
+    keiyoushi: Partial<KeiyoushiData>
+  ): Observable<KeiyoushiData> {
+    this.ToKeiyoushiData(keiyoushi);
+    return this.updateKeiyoushi(id, keiyoushi) as Observable<KeiyoushiData>;
+  }
+
+  deleteKeiyoushi(keiyoushiList: KeiyoushiData[]) {
+    return this.delete(keiyoushiList);
   }
 }
