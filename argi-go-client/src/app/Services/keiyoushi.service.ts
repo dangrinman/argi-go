@@ -22,7 +22,9 @@ export class KeiyoushiService {
   }
 
   public getAllKeiyoushi() {
-    return this.http.get<KeiyoushiData[]>(`${this.keiyoushiURL}`);
+    return this.http
+      .get<KeiyoushiData[]>(`${this.keiyoushiURL}`)
+      .pipe(map((x) => this.toKeiyoushiList(x)));
   }
 
   public createKeiyoushi(keiyoushi: Partial<KeiyoushiData>) {
@@ -68,7 +70,7 @@ export class KeiyoushiService {
       );
   }
 
-  ToKeiyoushi(keiyoushiData: KeiyoushiData) {
+  toKeiyoushi(keiyoushiData: KeiyoushiData) {
     const keiyoushi: Keiyoushi = {
       id: keiyoushiData.id,
       name: keiyoushiData.name,
@@ -85,6 +87,10 @@ export class KeiyoushiService {
     };
 
     return keiyoushi;
+  }
+
+  toKeiyoushiList(keiyoushiData: KeiyoushiData[]) {
+    return keiyoushiData.map((x) => this.toKeiyoushi(x));
   }
 
   public delete(keiyoushiData: KeiyoushiData[]) {
@@ -125,7 +131,7 @@ export class KeiyoushiService {
   }
 
   ToKeiyoushiData(keiyoushi: Partial<KeiyoushiData>) {
-    if (keiyoushi.kanji) keiyoushi.kanji = '';
+    if (!keiyoushi.kanji) keiyoushi.kanji = '';
     if (!keiyoushi.chapters || keiyoushi.chapters.length === 0) {
       keiyoushi.chapters = [];
     }

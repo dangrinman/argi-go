@@ -52,7 +52,7 @@ export class CreateChapterComponent {
     this.chapter = this.fb.group({
       Name: ['', Validators.required],
       Description: [''],
-      Tema: ['', Validators.required],
+      topic: ['', Validators.required],
       Number: ['', Validators.required],
       Book: ['', Validators.required],
     });

@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, tap } from 'rxjs';
 import { ChapterData } from '../models/Data/ChapterData';
+import { Chapter } from '../models/Entities/Chapter';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
+import { BookService } from './book.service';
 import { SnackbarService } from './snackbar.service';
 
 @Injectable({
@@ -13,13 +15,16 @@ export class ChapterService {
   constructor(
     @Inject(BaseURLToken) private readonly baseURL: string,
     private http: HttpClient,
+    private bookService: BookService,
     private snackbarService: SnackbarService
   ) {
     this.chapterURL = `${baseURL}/Chapters`;
   }
 
   public getAllChapters() {
-    return this.http.get<ChapterData[]>(this.chapterURL);
+    return this.http
+      .get<ChapterData[]>(this.chapterURL)
+      .pipe(map((x) => this.toChapters(x)));
   }
 
   public getChaptersBybookId(bookIds: string[]) {
@@ -29,7 +34,22 @@ export class ChapterService {
     );
   }
 
-  public toChapters(chaptersData: ChapterData[]) {}
+  public toChapters(chaptersData: ChapterData[]) {
+    return chaptersData.map((element) => this.toChapter(element));
+  }
+
+  public toChapter(chapterData: ChapterData) {
+    const chapter: Chapter = {
+      book: this.bookService.toBook(chapterData.book),
+      description: chapterData.description,
+      id: chapterData.id,
+      name: chapterData.name,
+      number: chapterData.number,
+      topic: chapterData.topic,
+    };
+
+    return chapter;
+  }
 
   public createChapter(chapter: Partial<ChapterData>) {
     return this.http

@@ -17,8 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ChapterData } from 'src/app/models/Data/ChapterData';
 import { ExamData } from 'src/app/models/Data/ExamData';
+import { Chapter } from 'src/app/models/Entities/Chapter';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DoushiService } from 'src/app/Services/doushi.service';
 import { ExamService } from 'src/app/Services/exam.service';
@@ -45,7 +45,7 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   styleUrls: ['./create-doushi.component.scss'],
 })
 export class CreateDoushiComponent implements OnDestroy {
-  chapters$: Observable<ChapterData[]> = this.chapterService.getAllChapters();
+  chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   doushi: FormGroup;
   keywords: string[] = [];
@@ -67,9 +67,9 @@ export class CreateDoushiComponent implements OnDestroy {
       kanji: [''],
       group: ['', Validators.required],
       translation: ['', Validators.required],
-      examples: [''],
-      chapters: [''],
-      exams: [''],
+      examples: [[]],
+      chapters: [[]],
+      exams: [[]],
     });
 
     this.initialFormValue = this.doushi.value;

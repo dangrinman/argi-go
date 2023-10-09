@@ -67,10 +67,12 @@ export class EditFukushiModalComponent {
       name: [this.data.name, Validators.required],
       kanji: [this.data.kanji],
       translation: [this.data.translation, Validators.required],
-      examples: [this.data.examples],
+      examples: [this.data.examples.map((x) => x.example)],
       chapters: [this.data.chapters.map((x) => x.id)],
       exams: [this.data.exams.map((x) => x.id)],
     });
+
+    this.keywords = this.data.examples.map((x) => x.example);
   }
 
   removeKeyword(keyword: string) {

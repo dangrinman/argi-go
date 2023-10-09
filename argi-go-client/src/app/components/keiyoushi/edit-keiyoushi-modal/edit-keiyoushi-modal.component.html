@@ -17,6 +17,11 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Keiyoushi Type</mat-label>
+      <input matInput placeholder="Type" formControlName="keiyoushiType" />
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Chapter</mat-label>
       <mat-select multiple formControlName="chapters">
         <mat-option
@@ -65,7 +70,7 @@
       <button
         mat-button
         color="basic"
-        button="button"
+        type="button"
         style="color: white"
         (click)="onClose()"
       >

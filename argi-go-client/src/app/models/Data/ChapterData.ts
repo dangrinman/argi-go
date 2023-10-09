@@ -3,7 +3,7 @@ import { BookData } from './BookData';
 export interface ChapterData {
   id: string;
   name: string;
-  tema: string;
+  topic: string;
   number: string;
   description: string;
   book: BookData;

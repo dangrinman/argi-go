@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, tap } from 'rxjs';
 import { BookData } from '../models/Data/BookData';
+import { Book } from '../models/Entities/Book';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { SnackbarService } from './snackbar.service';
 
@@ -20,6 +21,18 @@ export class BookService {
 
   public getAllBooks() {
     return this.http.get<BookData[]>(this.bookURL);
+  }
+
+  public toBook(bookData: BookData) {
+    const book: Book = {
+      author: bookData.author,
+      description: bookData.description,
+      edition: bookData.edition,
+      id: bookData.id,
+      title: bookData.title,
+    };
+
+    return book;
   }
 
   public createBook(book: Partial<BookData>) {

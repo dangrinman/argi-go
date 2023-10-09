@@ -1,7 +1,7 @@
-import { IKotobaData } from '../IKotoba';
+import { IKotoba } from '../IKotoba';
 import { IKyougaku } from '../IKyougaku';
 
-export interface Doushi extends IKotobaData, IKyougaku {
+export interface Doushi extends IKotoba, IKyougaku {
   group: number;
   id: string;
   teKei: string;

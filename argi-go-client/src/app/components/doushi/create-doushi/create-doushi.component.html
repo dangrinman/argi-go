@@ -22,7 +22,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Chapter</mat-label>
+      <mat-label>Chapters</mat-label>
       <mat-select formControlName="chapters" multiple>
         <mat-option
           *ngFor="let chapter of chapters$ | async"
@@ -34,7 +34,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Exam</mat-label>
+      <mat-label>Exams</mat-label>
       <mat-select formControlName="exams" multiple>
         <mat-option *ngFor="let exam of exams$ | async" [value]="exam.id">
           {{ exam.name }}

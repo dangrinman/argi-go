@@ -19,8 +19,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { ChapterData } from 'src/app/models/Data/ChapterData';
-import { DoushiData } from 'src/app/models/Data/DoushiData';
 import { ExamData } from 'src/app/models/Data/ExamData';
+import { Doushi } from 'src/app/models/Entities/Doushi';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { DoushiService } from 'src/app/Services/doushi.service';
@@ -62,7 +62,7 @@ export class EditDoushiModalComponent {
     private examService: ExamService,
     private snackbarService: SnackbarService,
     private dialogService: DialogsService,
-    @Inject(MAT_DIALOG_DATA) public data: DoushiData
+    @Inject(MAT_DIALOG_DATA) public data: Doushi
   ) {
     this.doushi = this.fb.group({
       name: [this.data.name, Validators.required],
@@ -71,17 +71,19 @@ export class EditDoushiModalComponent {
       taKei: [this.data.taKei],
       jishoKei: [this.data.jishoKei],
       naiKei: [this.data.naiKei],
-      kakanoKeinji: [this.data.kanoKei],
+      kanoKei: [this.data.kanoKei],
       past: [this.data.past],
       present: [this.data.present],
       negative: [this.data.negative],
       negativePast: [this.data.negativePast],
       group: [this.data.group, Validators.required],
       translation: [this.data.translation, Validators.required],
-      examples: [this.data.examples],
+      examples: [this.data.examples.map((x) => x.example)],
       chapters: [this.data.chapters.map((x) => x.id)],
       exams: [this.data.exams.map((x) => x.id)],
     });
+
+    this.keywords = this.data.examples.map((x) => x.example);
   }
 
   removeKeyword(keyword: string) {
@@ -112,9 +114,7 @@ export class EditDoushiModalComponent {
       this.doushiService
         .updateDoushiData(this.data.id, this.doushi.value)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe((x) => {
-          const data = this.doushiService.ToDoushi(x);
-        });
+        .subscribe();
     }
 
     this.onClose();

@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, tap } from 'rxjs';
-import { DoushiData } from '../models/Data/DoushiData';
+import {
+  DoushiCreationOrUpdateData,
+  DoushiData,
+} from '../models/Data/DoushiData';
 import { Doushi } from '../models/Entities/Doushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { KotobaService } from './kotoba.service';
@@ -56,7 +59,7 @@ export class DoushiService {
     );
   }
 
-  public updateDoushi(id: string, doushi: Partial<DoushiData>) {
+  public updateDoushi(id: string, doushi: DoushiCreationOrUpdateData) {
     doushi.id = id;
 
     return this.http.post<DoushiData>(`${this.doushiURL}/update`, doushi).pipe(
@@ -164,9 +167,8 @@ export class DoushiService {
 
   updateDoushiData(
     id: string,
-    doushi: Partial<DoushiData>
+    doushi: DoushiCreationOrUpdateData
   ): Observable<DoushiData> {
-    this.ToDoushiData(doushi);
     return this.updateDoushi(id, doushi) as Observable<DoushiData>;
   }
 

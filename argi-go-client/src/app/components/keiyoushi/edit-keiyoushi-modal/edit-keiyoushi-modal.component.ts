@@ -20,7 +20,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { ChapterData } from 'src/app/models/Data/ChapterData';
 import { ExamData } from 'src/app/models/Data/ExamData';
-import { KeiyoushiData } from 'src/app/models/Data/KeiyoushiData';
+import { Keiyoushi } from 'src/app/models/Entities/Keiyoushi';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { ExamService } from 'src/app/Services/exam.service';
@@ -62,16 +62,19 @@ export class EditKeiyoushiModalComponent {
     private examService: ExamService,
     private snackbarService: SnackbarService,
     private dialogService: DialogsService,
-    @Inject(MAT_DIALOG_DATA) public data: KeiyoushiData
+    @Inject(MAT_DIALOG_DATA) public data: Keiyoushi
   ) {
     this.keiyoushi = this.fb.group({
       name: [this.data.name, Validators.required],
       kanji: [this.data.kanji],
+      keiyoushiType: [this.data.keiyoushiType],
       translation: [this.data.translation, Validators.required],
-      examples: [this.data.examples],
+      examples: [this.data.examples.map((x) => x.example)],
       chapters: [this.data.chapters.map((x) => x.id)],
       exams: [this.data.exams.map((x) => x.id)],
     });
+
+    this.keywords = this.data.examples.map((x) => x.example);
   }
 
   removeKeyword(keyword: string) {
@@ -102,9 +105,7 @@ export class EditKeiyoushiModalComponent {
       this.keiyoushiService
         .updateKeiyoushiData(this.data.id, this.keiyoushi.value)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe((x) => {
-          const data = this.keiyoushiService.ToKeiyoushi(x);
-        });
+        .subscribe();
     }
 
     this.onClose();
