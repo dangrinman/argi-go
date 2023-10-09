@@ -44,7 +44,7 @@ namespace ArgiGo.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Book", (string)null);
                 });
 
             modelBuilder.Entity("ArgiGo.Model.Entities.Chapter", b =>
@@ -68,7 +68,7 @@ namespace ArgiGo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tema")
+                    b.Property<string>("Topic")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -76,7 +76,7 @@ namespace ArgiGo.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Chapters", (string)null);
+                    b.ToTable("Chapter", (string)null);
                 });
 
             modelBuilder.Entity("ArgiGo.Model.Entities.Doushi", b =>
@@ -93,7 +93,7 @@ namespace ArgiGo.Migrations
 
                     b.Property<string>("Kanji")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("KanoKei")
                         .HasColumnType("nvarchar(max)");
@@ -129,6 +129,9 @@ namespace ArgiGo.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Kanji")
+                        .IsUnique();
+
                     b.ToTable("Doushi", (string)null);
                 });
 
@@ -151,7 +154,7 @@ namespace ArgiGo.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exams", (string)null);
+                    b.ToTable("Exam", (string)null);
                 });
 
             modelBuilder.Entity("ArgiGo.Model.Entities.Example", b =>
@@ -185,7 +188,7 @@ namespace ArgiGo.Migrations
 
                     b.HasIndex("MeishiId");
 
-                    b.ToTable("Examples", (string)null);
+                    b.ToTable("Example", (string)null);
                 });
 
             modelBuilder.Entity("ArgiGo.Model.Entities.Fukushi", b =>
@@ -195,7 +198,7 @@ namespace ArgiGo.Migrations
 
                     b.Property<string>("Kanji")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -207,6 +210,9 @@ namespace ArgiGo.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Kanji")
+                        .IsUnique();
+
                     b.ToTable("Fukushi", (string)null);
                 });
 
@@ -217,7 +223,7 @@ namespace ArgiGo.Migrations
 
                     b.Property<string>("Kanji")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("KeiyoushiType")
                         .IsRequired()
@@ -249,6 +255,9 @@ namespace ArgiGo.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Kanji")
+                        .IsUnique();
+
                     b.ToTable("Keiyoushi", (string)null);
                 });
 
@@ -259,7 +268,7 @@ namespace ArgiGo.Migrations
 
                     b.Property<string>("Kanji")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -270,6 +279,9 @@ namespace ArgiGo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Kanji")
+                        .IsUnique();
 
                     b.ToTable("Meishi", (string)null);
                 });
@@ -397,7 +409,7 @@ namespace ArgiGo.Migrations
             modelBuilder.Entity("ArgiGo.Model.Entities.Chapter", b =>
                 {
                     b.HasOne("ArgiGo.Model.Entities.Book", "Book")
-                        .WithMany()
+                        .WithMany("Chapters")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -407,21 +419,33 @@ namespace ArgiGo.Migrations
 
             modelBuilder.Entity("ArgiGo.Model.Entities.Example", b =>
                 {
-                    b.HasOne("ArgiGo.Model.Entities.Doushi", null)
+                    b.HasOne("ArgiGo.Model.Entities.Doushi", "Doushi")
                         .WithMany("Examples")
-                        .HasForeignKey("DoushiId");
+                        .HasForeignKey("DoushiId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ArgiGo.Model.Entities.Fukushi", null)
+                    b.HasOne("ArgiGo.Model.Entities.Fukushi", "Fukushi")
                         .WithMany("Examples")
-                        .HasForeignKey("FukushiId");
+                        .HasForeignKey("FukushiId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ArgiGo.Model.Entities.Keiyoushi", null)
+                    b.HasOne("ArgiGo.Model.Entities.Keiyoushi", "Keiyoushi")
                         .WithMany("Examples")
-                        .HasForeignKey("KeiyoushiId");
+                        .HasForeignKey("KeiyoushiId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ArgiGo.Model.Entities.Meishi", null)
+                    b.HasOne("ArgiGo.Model.Entities.Meishi", "Meishi")
                         .WithMany("Examples")
-                        .HasForeignKey("MeishiId");
+                        .HasForeignKey("MeishiId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Doushi");
+
+                    b.Navigation("Fukushi");
+
+                    b.Navigation("Keiyoushi");
+
+                    b.Navigation("Meishi");
                 });
 
             modelBuilder.Entity("ChapterDoushi", b =>
@@ -542,6 +566,11 @@ namespace ArgiGo.Migrations
                         .HasForeignKey("MeishiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ArgiGo.Model.Entities.Book", b =>
+                {
+                    b.Navigation("Chapters");
                 });
 
             modelBuilder.Entity("ArgiGo.Model.Entities.Doushi", b =>

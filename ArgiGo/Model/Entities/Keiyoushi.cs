@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace ArgiGo.Model.Entities
 {
@@ -13,7 +14,6 @@ namespace ArgiGo.Model.Entities
             this.Id = id;
         }
 
-        [Key]
         public string Id { get; set; }
 
         public string Translation { get; set; }
@@ -57,6 +57,26 @@ namespace ArgiGo.Model.Entities
         public void AddChapters(IEnumerable<Chapter> keiyoushiExamples)
         {
             foreach (var chapter in keiyoushiExamples)
+            {
+                chapters.Add(chapter);
+            }
+        }
+
+        public void UpdateExams(IEnumerable<Exam> keiyoushiExams)
+        {
+            exams.Clear();
+
+            foreach (var exam in keiyoushiExams)
+            {
+                exams.Add(exam);
+            }
+        }
+
+        public void UpdateChapters(IEnumerable<Chapter> keiyoushiChapters)
+        {
+            chapters.Clear();
+
+            foreach (var chapter in keiyoushiChapters)
             {
                 chapters.Add(chapter);
             }

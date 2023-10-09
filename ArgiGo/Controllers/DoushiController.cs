@@ -38,5 +38,21 @@ namespace ArgiGo.Controllers
 
             return doushiService.ToDoushiData(doushi);
         }
+
+        [HttpPost("update")]
+        public DoushiData UpdateDoushi(DoushiCreationOrUpdate doushiData)
+        {
+            var doushi = doushiService.UpdateDoushi(doushiData);
+
+            return doushiService.ToDoushiData(doushi);
+        }
+
+        [HttpPost("delete")]
+        public void DeleteDoushi(IEnumerable<DoushiData> doushiList)
+        {
+            var doushi = doushiService.ToDoushiList(doushiList);
+
+            doushiService.DeleteDoushiList(doushi);
+        }
     }
 }

@@ -1,6 +1,9 @@
 using ArgiGo.Database.Mapping;
 using ArgiGo.Services;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,8 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.WithOrigins("http://localhost:4200").AllowAnyHeader();
+                          policy.WithOrigins("www.argigo.com").AllowAnyHeader();
+                          policy.WithOrigins("https://zealous-stone-0941ec500.3.azurestaticapps.net").AllowAnyHeader();
                       });
 });
 
@@ -31,8 +36,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllersWithViews().AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
 builder.Services.AddDbContext<ArgiGoContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ArgiGoConnection"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ProdConnection"))
 );
 
 var app = builder.Build();
@@ -45,21 +55,12 @@ using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<ArgiGoContext>();
 
-    if (dataContext.Database.EnsureCreated()) 
-    {
-        dataContext.Database.Migrate();
-    }
-
+    dataContext.Database.EnsureCreated();
 }
-
-
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

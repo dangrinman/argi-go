@@ -1,4 +1,5 @@
-﻿using ArgiGo.Model.Entities;
+﻿using ArgiGo.Database.ClassMappings;
+using ArgiGo.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArgiGo.Database.Mapping
@@ -28,15 +29,14 @@ namespace ArgiGo.Database.Mapping
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Doushi>().ToTable(nameof(Doushi));
-            modelBuilder.Entity<Keiyoushi>().ToTable(nameof(Keiyoushi));
-            modelBuilder.Entity<Meishi>().ToTable(nameof(Meishi));
-            modelBuilder.Entity<Fukushi>().ToTable(nameof(Fukushi));
-            modelBuilder.Entity<Example>().ToTable(nameof(Examples));
-            modelBuilder.Entity<Book>().ToTable(nameof(Books));
-            modelBuilder.Entity<Chapter>().ToTable(nameof(Chapters));
-            modelBuilder.Entity<Exam>().ToTable(nameof(Exams));
-
+            modelBuilder.ApplyConfiguration(new DoushiConfiguration());
+            modelBuilder.ApplyConfiguration(new KeiyoushiConfiguration());
+            modelBuilder.ApplyConfiguration(new MeishiConfiguration());
+            modelBuilder.ApplyConfiguration(new FukushiConfiguration());
+            modelBuilder.ApplyConfiguration(new ExampleConfiguration());
+            modelBuilder.ApplyConfiguration(new ExamConfiguration());
+            modelBuilder.ApplyConfiguration(new BookConfiguration());
+            modelBuilder.ApplyConfiguration(new ChapterConfiguration());
         }
     }
 }

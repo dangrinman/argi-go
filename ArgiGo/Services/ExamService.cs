@@ -15,7 +15,7 @@ namespace ArgiGo.Services
 
         public IEnumerable<Exam> GetExamsData()
         {
-            var examList = _context.Exams.ToList();
+            var examList = _context.Exams.OrderBy(x => x.Name).ToList();
 
             return examList;
         }
@@ -103,6 +103,27 @@ namespace ArgiGo.Services
             };
 
             return examData;
+        }
+
+        public IEnumerable<Exam> UpdateExams(IEnumerable<Exam> exams, IEnumerable<string> examsIds)
+        {
+            if (exams.Count() > 0)
+            {
+                _context.RemoveRange(exams);
+            }
+
+            List<Exam> examsToBeCreated = new List<Exam>();
+
+            var examsList = GetExamsDataByIds(examsIds);
+
+            foreach (var exam in examsList)
+            {
+                examsToBeCreated.Add(exam);
+            }
+
+            _context.SaveChanges();
+
+            return examsToBeCreated;
         }
     }
 }

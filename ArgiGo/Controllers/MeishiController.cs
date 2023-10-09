@@ -1,5 +1,5 @@
 ﻿using ArgiGo.Model.Entities;
-using ArgiGo.Model.ModelData.Keiyoushi;
+using ArgiGo.Model.ModelData.Meishi;
 using ArgiGo.Model.ModelData.Meishi;
 using ArgiGo.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +38,22 @@ namespace ArgiGo.Controllers
             var meishi = meishiService.createMeishi(meishiData);
 
             return meishiService.ToMeishiData(meishi);
+        }
+
+        [HttpPost("update")]
+        public MeishiData UpdateMeishi(MeishiCreationOrUpdateData meishiData)
+        {
+            var meishi = meishiService.UpdateMeishi(meishiData);
+
+            return meishiService.ToMeishiData(meishi);
+        }
+
+        [HttpPost("delete")]
+        public void DeleteMeishi(IEnumerable<MeishiData> meishiList)
+        {
+            var meishi = meishiService.ToMeishiList(meishiList);
+
+            meishiService.DeleteMeishiList(meishi);
         }
     }
 }

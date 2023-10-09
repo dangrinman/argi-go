@@ -1,6 +1,5 @@
 ﻿using ArgiGo.Database.Mapping;
 using ArgiGo.Model.Entities;
-using ArgiGo.Model.ModelData.Doushi;
 using ArgiGo.Model.ModelData.Meishi;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +26,8 @@ namespace ArgiGo.Services
                                              .Include(x => x.Exams)
                                              .Include(x => x.Chapters)
                                              .ThenInclude(x => x.Book)
-                                             .AsQueryable();
+                                             .AsQueryable()
+                                             .OrderBy(x => x.Name);
 
             return meishiList;
         }
@@ -35,6 +35,13 @@ namespace ArgiGo.Services
         public IQueryable<Meishi> GetMeishiByChapters(IEnumerable<string> chaptersIds)
         {
             var meishiList = GetMeishiList().Where(d => d.Chapters.Any(c => chaptersIds.Any(c2 => c.Id == c2)));
+
+            return meishiList;
+        }
+
+        public IQueryable<Meishi> GetMeishiByIds(IEnumerable<string> ids)
+        {
+            var meishiList = GetMeishiList().Where(d => ids.Contains(d.Id));
 
             return meishiList;
         }
@@ -62,6 +69,50 @@ namespace ArgiGo.Services
 
             _context.SaveChanges();
             return meishi;
+        }
+
+        public Meishi UpdateMeishi(MeishiCreationOrUpdateData meishiUpdate)
+        {
+            var meishi = this.GetMeishiByIds(new List<string>() { meishiUpdate.Id! }).FirstOrDefault();
+
+            if (meishiUpdate.Name != meishi.Name)
+            {
+                meishi.Name = meishiUpdate.Name;
+            }
+
+            if (meishiUpdate.Kanji != meishi.Kanji)
+            {
+                meishi.Kanji = meishiUpdate.Kanji;
+            }
+
+            if (meishiUpdate.Translation != meishi.Translation)
+            {
+                meishi.Translation = meishiUpdate.Translation;
+            }
+
+            var examples = kotobaServices.UpdateExamples(meishi.Examples, meishiUpdate.Examples);
+            var exams = examService.GetExamsDataByIds(meishiUpdate.Exams);
+            var chapters = chapterService.GetChaptersDataByIds(meishiUpdate.Chapters);
+
+            meishi.AddExamples(examples);
+            meishi.UpdateExams(exams);
+            meishi.UpdateChapters(chapters);
+
+            _context.Update(meishi);
+
+            _context.SaveChanges();
+            return meishi;
+        }
+
+        public void DeleteMeishiList(IEnumerable<Meishi> meishiList)
+        {
+            foreach (var meishi in meishiList)
+            {
+                _context.Meishi.Remove(meishi);
+            }
+
+            _context.SaveChanges();
+
         }
 
         public IEnumerable<Meishi> ToMeishiList(IEnumerable<MeishiData> meishiListData)

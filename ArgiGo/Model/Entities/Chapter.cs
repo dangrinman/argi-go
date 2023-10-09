@@ -19,7 +19,7 @@ namespace ArgiGo.Model.Entities
 
         public virtual string Name { get; set; }
 
-        public virtual string Tema { get; set; }
+        public virtual string Topic { get; set; }
 
         public virtual string Number { get; set; }
 

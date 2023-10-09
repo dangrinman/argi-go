@@ -1,5 +1,4 @@
-﻿using ArgiGo.Model.ModelData.Fukushi;
-using ArgiGo.Model.ModelData.Keiyoushi;
+﻿using ArgiGo.Model.ModelData.Keiyoushi;
 using ArgiGo.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +36,22 @@ namespace ArgiGo.Controllers
             var keiyoushi = keiyoushiService.createKeiyoushi(keiyoushiData);
 
             return keiyoushiService.ToKeiyoushiData(keiyoushi);
+        }
+
+        [HttpPost("update")]
+        public KeiyoushiData UpdateKeiyoushi(KeiyoushiCreationOrUpdateData keiyoushiData)
+        {
+            var keiyoushi = keiyoushiService.UpdateKeiyoushi(keiyoushiData);
+
+            return keiyoushiService.ToKeiyoushiData(keiyoushi);
+        }
+
+        [HttpPost("delete")]
+        public void DeleteKeiyoushi(IEnumerable<KeiyoushiData> keiyoushiList)
+        {
+            var keiyoushi = keiyoushiService.ToKeiyoushiList(keiyoushiList);
+
+            keiyoushiService.DeleteKeiyoushiList(keiyoushi);
         }
     }
 }

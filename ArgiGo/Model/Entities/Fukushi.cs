@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace ArgiGo.Model.Entities
 {
@@ -13,7 +14,6 @@ namespace ArgiGo.Model.Entities
             this.Id = id;
         }
 
-        [Key]
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -28,25 +28,45 @@ namespace ArgiGo.Model.Entities
 
         public IEnumerable<Chapter> Chapters => chapters;
 
-        public void AddExamples(IEnumerable<Example> doushiExamples)
+        public void AddExamples(IEnumerable<Example> fukushiExamples)
         {
-            foreach (var example in doushiExamples)
+            foreach (var example in fukushiExamples)
             {
                 examples.Add(example);
             }
         }
 
-        public void AddExams(IEnumerable<Exam> doushiExams)
+        public void AddExams(IEnumerable<Exam> fukushiExams)
         {
-            foreach (var exam in doushiExams)
+            foreach (var exam in fukushiExams)
             {
                 exams.Add(exam);
             }
         }
 
-        public void AddChapters(IEnumerable<Chapter> doushiChapters)
+        public void AddChapters(IEnumerable<Chapter> fukushiChapters)
         {
-            foreach (var chapter in doushiChapters)
+            foreach (var chapter in fukushiChapters)
+            {
+                chapters.Add(chapter);
+            }
+        }
+
+        public void UpdateExams(IEnumerable<Exam> fukushiExams)
+        {
+            exams.Clear();
+
+            foreach (var exam in fukushiExams)
+            {
+                exams.Add(exam);
+            }
+        }
+
+        public void UpdateChapters(IEnumerable<Chapter> fukushiChapters)
+        {
+            chapters.Clear();
+
+            foreach (var chapter in fukushiChapters)
             {
                 chapters.Add(chapter);
             }

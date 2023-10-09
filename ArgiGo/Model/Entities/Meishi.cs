@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace ArgiGo.Model.Entities
 {
@@ -13,7 +14,6 @@ namespace ArgiGo.Model.Entities
             this.Id = id;
         }
 
-        [Key]
         public string Id { get; set; }
 
         public string Translation { get; set; }
@@ -27,25 +27,45 @@ namespace ArgiGo.Model.Entities
         public IEnumerable<Exam> Exams => exams;
 
         public IEnumerable<Chapter> Chapters => chapters;
-        public void AddExamples(IEnumerable<Example> doushiExamples)
+        public void AddExamples(IEnumerable<Example> meishiExamples)
         {
-            foreach (var example in doushiExamples)
+            foreach (var example in meishiExamples)
             {
                 examples.Add(example);
             }
         }
 
-        public void AddExams(IEnumerable<Exam> doushiExams)
+        public void AddExams(IEnumerable<Exam> meishiExams)
         {
-            foreach (var exam in doushiExams)
+            foreach (var exam in meishiExams)
             {
                 exams.Add(exam);
             }
         }
 
-        public void AddChapters(IEnumerable<Chapter> doushiChapters)
+        public void AddChapters(IEnumerable<Chapter> meishiChapters)
         {
-            foreach (var chapter in doushiChapters)
+            foreach (var chapter in meishiChapters)
+            {
+                chapters.Add(chapter);
+            }
+        }
+
+        public void UpdateExams(IEnumerable<Exam> meishiExams)
+        {
+            exams.Clear();
+
+            foreach (var exam in meishiExams)
+            {
+                exams.Add(exam);
+            }
+        }
+
+        public void UpdateChapters(IEnumerable<Chapter> meishiChapters)
+        {
+            chapters.Clear();
+
+            foreach (var chapter in meishiChapters)
             {
                 chapters.Add(chapter);
             }

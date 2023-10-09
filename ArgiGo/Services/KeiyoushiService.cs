@@ -26,14 +26,22 @@ namespace ArgiGo.Services
                                              .Include(x => x.Exams)
                                              .Include(x => x.Chapters)
                                              .ThenInclude(x => x.Book)
-                                             .AsQueryable();
+                                             .AsQueryable()
+                                             .OrderBy(x => x.Name);
 
             return keiyoushiList;
         }
 
         public IQueryable<Keiyoushi> GetKeiyoushiListByChaptersId(IEnumerable<string> chaptersIds)
         {
-            var keiyoushiList = GetKeiyoushiList().Where(d => d.Chapters.Any(c => chaptersIds.Any(c2 => c.Id == c2)));
+            var KeiyoushiList = GetKeiyoushiList().Where(d => d.Chapters.Any(c => chaptersIds.Any(c2 => c.Id == c2)));
+
+            return KeiyoushiList;
+        }
+
+        public IQueryable<Keiyoushi> GetKeiyoushiByIds(IEnumerable<string> ids)
+        {
+            var keiyoushiList = GetKeiyoushiList().Where(d => ids.Contains(d.Id));
 
             return keiyoushiList;
         }
@@ -67,6 +75,50 @@ namespace ArgiGo.Services
             return keiyoushi;
         }
 
+        public Keiyoushi UpdateKeiyoushi(KeiyoushiCreationOrUpdateData keiyoushiUpdate)
+        {
+            var keiyoushi = this.GetKeiyoushiByIds(new List<string>() { keiyoushiUpdate.Id! }).FirstOrDefault();
+
+            if (keiyoushiUpdate.Name != keiyoushi.Name)
+            {
+                keiyoushi.Name = keiyoushiUpdate.Name;
+            }
+
+            if (keiyoushiUpdate.Kanji != keiyoushi.Kanji)
+            {
+                keiyoushi.Kanji = keiyoushiUpdate.Kanji;
+            }
+
+            if (keiyoushiUpdate.Translation != keiyoushi.Translation)
+            {
+                keiyoushi.Translation = keiyoushiUpdate.Translation;
+            }
+
+            var examples = kotobaServices.UpdateExamples(keiyoushi.Examples, keiyoushiUpdate.Examples);
+            var exams = examService.GetExamsDataByIds(keiyoushiUpdate.Exams);
+            var chapters = chapterService.GetChaptersDataByIds(keiyoushiUpdate.Chapters);
+
+            keiyoushi.AddExamples(examples);
+            keiyoushi.UpdateExams(exams);
+            keiyoushi.UpdateChapters(chapters);
+
+            _context.Update(keiyoushi);
+
+            _context.SaveChanges();
+            return keiyoushi;
+        }
+
+        public void DeleteKeiyoushiList(IEnumerable<Keiyoushi> keiyoushiList)
+        {
+            foreach (var keiyoushi in keiyoushiList)
+            {
+                _context.Keiyoushi.Remove(keiyoushi);
+            }
+
+            _context.SaveChanges();
+
+        }
+
         public IEnumerable<Keiyoushi> ToKeiyoushiList(IEnumerable<KeiyoushiData> keiyoushiData)
         {
             List<Keiyoushi> keiyoushiList = new List<Keiyoushi>();
@@ -94,6 +146,14 @@ namespace ArgiGo.Services
                 KeiyoushiType = keiyoushiData.KeiyoushiType,
                 Translation = keiyoushiData.Translation,
             };
+
+            var examples = kotobaServices.GetExamplesById(keiyoushiData.Examples.Select(x => x.Id));
+            var exams = examService.GetExamsDataByIds(keiyoushiData.Exams.Select(x => x.Id));
+            var chapters = chapterService.GetChaptersDataByIds(keiyoushiData.Chapters.Select(x => x.Id));
+
+            keiyoushi.AddExamples(examples);
+            keiyoushi.AddExams(exams);
+            keiyoushi.AddChapters(chapters);
 
             return keiyoushi;
         }

@@ -21,7 +21,8 @@ namespace ArgiGo.Services
 
         public IQueryable<Chapter> GetChapters()
         {
-            var chapters = _context.Chapters.Include(x => x.Book).AsQueryable();
+            var chapters = _context.Chapters.Include(x => x.Book).AsQueryable()
+                                             .OrderBy(x => x.Number);
 
             return chapters;
         }
@@ -58,16 +59,16 @@ namespace ArgiGo.Services
                 Description = chapterCreateOrUpdate.Description,
                 Name = chapterCreateOrUpdate.Name,
                 Number = chapterCreateOrUpdate.Number,
-                Tema = chapterCreateOrUpdate.Tema,
+                Topic = chapterCreateOrUpdate.Topic,
             };
 
             var book = bookService.GetBookDataById(chapterCreateOrUpdate.Book).FirstOrDefault();
 
             if (book == null) throw new Exception("Book not found");
 
-            chapter.Book = book;
+            book.AddChapter(chapter);
 
-            _context.Add(chapter).Context.ContextId.InstanceId.ToString();
+            _context.Add(chapter);
 
             _context.SaveChanges();
             return chapter;
@@ -94,7 +95,7 @@ namespace ArgiGo.Services
                 Description = chapterData.Description,
                 Name = chapterData.Name,
                 Number = chapterData.Number,
-                Tema = chapterData.Tema,
+                Topic = chapterData.Topic,
                 Book = bookService.ToBook(chapterData.Book)
             };
             
@@ -123,12 +124,33 @@ namespace ArgiGo.Services
                 Description = chapter.Description,
                 Name = chapter.Name,
                 Number = chapter.Number,
-                Tema = chapter.Tema,
+                Topic = chapter.Topic,
                 Id = chapter.Id,
                 Book = bookService.toBookData(chapter.Book)
             };
 
             return chapterData;
+        }
+
+        public IEnumerable<Chapter> UpdateChapters(IEnumerable<Chapter> chapters, IEnumerable<string> chaptersIds)
+        {
+            if (chapters.Count() > 0)
+            {
+                _context.RemoveRange(chapters);
+            }
+
+            List<Chapter> chaptersToBeCreated = new List<Chapter>();
+
+            var chaptersList = GetChaptersDataByIds(chaptersIds);
+
+            foreach (var chapter in chaptersList)
+            {
+                chaptersToBeCreated.Add(chapter);
+            }
+
+            _context.SaveChanges();
+
+            return chaptersToBeCreated;
         }
     }
 }

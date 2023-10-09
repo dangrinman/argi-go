@@ -29,6 +29,26 @@ namespace ArgiGo.Services
             return examples;
         }
 
+        public IEnumerable<Example> UpdateExamples(IEnumerable<Example> examples, IEnumerable<string> examplesData)
+        {
+            if (examples.Count() > 0) {
+                _context.RemoveRange(examples);
+            }
+
+            List<Example> examplesList = new List<Example>();
+
+            foreach (var exampleData in examplesData)
+            {
+                var example = CreateExample(exampleData);
+
+                examplesList.Add(example);
+            }
+
+            _context.SaveChanges();
+
+            return examplesList;
+        }
+
         public Example CreateExample(string exampleData) 
         {
             var id = Guid.NewGuid().ToString();

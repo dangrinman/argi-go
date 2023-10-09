@@ -15,7 +15,7 @@ namespace ArgiGo.Services
 
         public IEnumerable<BookData> GetBooksData()
         {
-            var bookList = _context.Books.ToList();
+            var bookList = _context.Books.OrderBy(x => x.Title).ToList();
 
             var booksData = ToBooksData(bookList);
 

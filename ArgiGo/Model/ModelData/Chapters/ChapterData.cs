@@ -8,7 +8,7 @@ namespace ArgiGo.Model.ModelData.Chapters
 
         public string Name { get; set; }
 
-        public string Tema { get; set; }
+        public string Topic { get; set; }
 
         public string Number { get; set; }
 

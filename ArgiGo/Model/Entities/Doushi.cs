@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace ArgiGo.Model.Entities
 {
@@ -13,7 +14,6 @@ namespace ArgiGo.Model.Entities
             this.Id = id;
         }
 
-        [Key]
         public string Id { get; set; }
         
         public string Translation { get; set; }
@@ -56,6 +56,16 @@ namespace ArgiGo.Model.Entities
             }
         }
 
+        public void UpdateExamples(IEnumerable<Example> doushiExamples)
+        {
+            examples.Clear();
+
+            foreach (var example in doushiExamples)
+            {
+                examples.Add(example);
+            }
+        }
+
         public void AddExams(IEnumerable<Exam> doushiExams)
         {
             foreach (var exam in doushiExams)
@@ -64,8 +74,28 @@ namespace ArgiGo.Model.Entities
             }
         }
 
+        public void UpdateExams(IEnumerable<Exam> doushiExams)
+        {
+            exams.Clear();
+
+            foreach (var exam in doushiExams)
+            {
+                exams.Add(exam);
+            }
+        }
+
         public void AddChapters(IEnumerable<Chapter> doushiChapters)
         {
+            foreach (var chapter in doushiChapters)
+            {
+                chapters.Add(chapter);
+            }
+        }
+
+        public void UpdateChapters(IEnumerable<Chapter> doushiChapters)
+        {
+            chapters.Clear();
+
             foreach (var chapter in doushiChapters)
             {
                 chapters.Add(chapter);

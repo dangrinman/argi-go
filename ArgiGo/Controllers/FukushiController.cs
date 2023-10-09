@@ -1,6 +1,6 @@
 ﻿using ArgiGo.Database.Mapping;
 using ArgiGo.Model.Entities;
-using ArgiGo.Model.ModelData.Doushi;
+using ArgiGo.Model.ModelData.Fukushi;
 using ArgiGo.Model.ModelData.Fukushi;
 using ArgiGo.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +39,23 @@ namespace ArgiGo.Controllers
             var fukushi = fukushiService.CreateFukushi(createFukushi);
 
             return fukushiService.ToFukushiData(fukushi);
+        }
+
+
+        [HttpPost("update")]
+        public FukushiData UpdateFukushi(FukushiCreationOrUpdateData fukushiData)
+        {
+            var fukushi = fukushiService.UpdateFukushi(fukushiData);
+
+            return fukushiService.ToFukushiData(fukushi);
+        }
+
+        [HttpPost("delete")]
+        public void DeleteFukushi(IEnumerable<FukushiData> fukushiList)
+        {
+            var fukushi = fukushiService.ToFukushiList(fukushiList);
+
+            fukushiService.DeleteFukushiList(fukushi);
         }
     }
 }

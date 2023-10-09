@@ -9,9 +9,16 @@ namespace ArgiGo.Model.Entities
             this.Id = id;
         }
 
-        [Key]
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
 
-        public string value { get; set; }
+        public virtual string value { get; set; }
+
+        public virtual Doushi Doushi{ get; set;}
+
+        public virtual Keiyoushi Keiyoushi { get; set;}
+
+        public virtual Meishi Meishi { get; set; }
+
+        public virtual Fukushi Fukushi { get; set; }
     }
 }

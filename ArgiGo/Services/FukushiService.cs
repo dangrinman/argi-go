@@ -1,6 +1,5 @@
 ﻿using ArgiGo.Database.Mapping;
 using ArgiGo.Model.Entities;
-using ArgiGo.Model.ModelData.Doushi;
 using ArgiGo.Model.ModelData.Fukushi;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +26,8 @@ namespace ArgiGo.Services
                                              .Include(x => x.Exams)
                                              .Include(x => x.Chapters)
                                              .ThenInclude(x => x.Book)
-                                             .AsQueryable();
+                                             .AsQueryable()
+                                             .OrderBy(x => x.Name);
 
             return FukushiList;
         }
@@ -37,6 +37,13 @@ namespace ArgiGo.Services
             var FukushiList = GetFukushiList().Where(d => d.Chapters.Any(c => chaptersIds.Any(c2 => c.Id == c2)));
 
             return FukushiList;
+        }
+
+        public IQueryable<Fukushi> GetFukushiByIds(IEnumerable<string> ids)
+        {
+            var fukushiList = GetFukushiList().Where(d => ids.Contains(d.Id));
+
+            return fukushiList;
         }
 
         public Fukushi CreateFukushi(FukushiCreationOrUpdateData fukushiData)
@@ -64,18 +71,62 @@ namespace ArgiGo.Services
             return fukushi;
         }
 
-        public IEnumerable<Fukushi> ToFukushiList(IEnumerable<FukushiData> doushiListData)
+        public Fukushi UpdateFukushi(FukushiCreationOrUpdateData fukushiUpdate)
         {
-            List<Fukushi> fukushiData = new List<Fukushi>();
+            var fukushi = this.GetFukushiByIds(new List<string>() { fukushiUpdate.Id! }).FirstOrDefault();
 
-            foreach (var doushiData in doushiListData)
+            if (fukushiUpdate.Name != fukushi.Name)
             {
-                var doushi = ToFukushi(doushiData);
-
-                fukushiData.Add(doushi);
+                fukushi.Name = fukushiUpdate.Name;
             }
 
-            return fukushiData;
+            if (fukushiUpdate.Kanji != fukushi.Kanji)
+            {
+                fukushi.Kanji = fukushiUpdate.Kanji;
+            }
+
+            if (fukushiUpdate.Translation != fukushi.Translation)
+            {
+                fukushi.Translation = fukushiUpdate.Translation;
+            }
+
+            var examples = kotobaServices.UpdateExamples(fukushi.Examples, fukushiUpdate.Examples);
+            var exams = examService.GetExamsDataByIds(fukushiUpdate.Exams);
+            var chapters = chapterService.GetChaptersDataByIds(fukushiUpdate.Chapters);
+
+            fukushi.AddExamples(examples);
+            fukushi.UpdateExams(exams);
+            fukushi.UpdateChapters(chapters);
+
+            _context.Update(fukushi);
+
+            _context.SaveChanges();
+            return fukushi;
+        }
+
+        public void DeleteFukushiList(IEnumerable<Fukushi> fukushiList)
+        {
+            foreach (var fukushi in fukushiList)
+            {
+                _context.Fukushi.Remove(fukushi);
+            }
+
+            _context.SaveChanges();
+
+        }
+
+        public IEnumerable<Fukushi> ToFukushiList(IEnumerable<FukushiData> fukushiListData)
+        {
+            List<Fukushi> fukushiList = new List<Fukushi>();
+
+            foreach (var fukushiData in fukushiListData)
+            {
+                var fukushi = ToFukushi(fukushiData);
+
+                fukushiList.Add(fukushi);
+            }
+
+            return fukushiList;
         }
 
         public Fukushi ToFukushi(FukushiData fukushiData)
@@ -115,7 +166,7 @@ namespace ArgiGo.Services
 
         public FukushiData ToFukushiData(Fukushi fukushi)
         {
-            var doushiData = new FukushiData()
+            var fukushiData = new FukushiData()
             {
                 Examples = kotobaServices.toExampleData(fukushi.Examples),
                 Chapters = chapterService.ToChaptersData(fukushi.Chapters),
@@ -126,7 +177,7 @@ namespace ArgiGo.Services
                 Name = fukushi.Name
             };
 
-            return doushiData;
+            return fukushiData;
         }
     }
 }
