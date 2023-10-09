@@ -48,7 +48,7 @@ export class GuessWordsComponent implements OnInit, OnDestroy {
   chapters$: Observable<ChapterData[]> = this.chaptersService.getAllChapters();
   books$: Observable<BookData[]> = this.booksService.getAllBooks();
   kotobaList: IKotobaData[] = [];
-  currentWord: IKotobaData | null = null;
+  currentWord!: IKotobaData;
   onDestroy$: Subject<void> = new Subject();
   word: FormGroup;
   booksSelected: boolean = false;
@@ -156,10 +156,15 @@ export class GuessWordsComponent implements OnInit, OnDestroy {
           'X'
         );
 
-        this.kotobaList = this.kotobaList.filter(
-          (x) =>
-            x.name !== this.word.value.name && x.kanji !== this.word.value.name
-        );
+        console.log(this.kotobaList);
+        console.log(this.currentWord);
+        this.kotobaList = this.kotobaList.filter((x) => {
+          const value1 =
+            x.name == this.word.value.name && x.kanji == this.currentWord.kanji;
+          const value2 = x.kanji == this.word.value.name;
+
+          return !(value1 || value2);
+        });
         this.currentWord = this.kotobaList[0];
         this.word.get('name')!.setValue('');
       }

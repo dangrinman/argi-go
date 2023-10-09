@@ -79,7 +79,7 @@ export class KotobaService {
       return '';
     }
 
-    return `${wordWithOutMasu}${naiWord}ない`;
+    return `${wordWithOutMasu}${naiWord}`;
   }
 
   public ToKanoForm(name: string, group: number): string {
@@ -171,18 +171,18 @@ export class KotobaService {
   }
 
   private initializeNaiForm() {
-    this.naiDictionary.set('1い', 'わ');
-    this.naiDictionary.set('1ち', 'た');
-    this.naiDictionary.set('1り', 'ら');
-    this.naiDictionary.set('1き', 'か');
-    this.naiDictionary.set('1ぎ', 'が');
-    this.naiDictionary.set('1み', 'ま');
-    this.naiDictionary.set('1び', 'ば');
-    this.naiDictionary.set('1に', 'な');
-    this.naiDictionary.set('1し', 'さ');
-    this.naiDictionary.set('2', '');
-    this.naiDictionary.set('3し', 'し');
-    this.naiDictionary.set('3き', 'こ');
+    this.naiDictionary.set('1い', 'わない');
+    this.naiDictionary.set('1ち', 'たない');
+    this.naiDictionary.set('1り', 'らない');
+    this.naiDictionary.set('1き', 'かない');
+    this.naiDictionary.set('1ぎ', 'がない');
+    this.naiDictionary.set('1み', 'まない');
+    this.naiDictionary.set('1び', 'ばない');
+    this.naiDictionary.set('1に', 'なない');
+    this.naiDictionary.set('1し', 'さない');
+    this.naiDictionary.set('2', 'ない');
+    this.naiDictionary.set('3し', 'しない');
+    this.naiDictionary.set('3き', 'こない');
   }
 
   private initializeKanoForm() {
