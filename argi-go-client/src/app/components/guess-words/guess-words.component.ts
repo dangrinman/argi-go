@@ -22,6 +22,7 @@ import { ChapterService } from 'src/app/Services/chapter.service';
 import { DoushiService } from 'src/app/Services/doushi.service';
 import { FukushiService } from 'src/app/Services/fukushi.service';
 import { KeiyoushiService } from 'src/app/Services/keiyoushi.service';
+import { KotobaService } from 'src/app/Services/kotoba.service';
 import { MeishiService } from 'src/app/Services/meishi.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
 import { CardComponent } from '../card/card.component';
@@ -65,7 +66,8 @@ export class GuessWordsComponent implements OnInit, OnDestroy {
     private keiyoushiService: KeiyoushiService,
     private snackbarService: SnackbarService,
     private chaptersService: ChapterService,
-    private booksService: BookService
+    private booksService: BookService,
+    private kotobaService: KotobaService
   ) {
     this.word = this.fb.group({
       name: [''],
@@ -102,7 +104,7 @@ export class GuessWordsComponent implements OnInit, OnDestroy {
             this.currentWord = this.kotobaList[0];
           });
         break;
-      case 'meishi':
+      case 'fukushi':
         this.fukushiService
           .getSuffleFukushiList(value)
           .pipe(takeUntil(this.onDestroy$))
@@ -111,9 +113,18 @@ export class GuessWordsComponent implements OnInit, OnDestroy {
             this.currentWord = this.kotobaList[0];
           });
         break;
-      case 'fukushi':
+      case 'meishi':
         this.meishiService
           .getSuffleMeishiList(value)
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe((x) => {
+            this.kotobaList = x;
+            this.currentWord = this.kotobaList[0];
+          });
+        break;
+      case 'zenbu':
+        this.kotobaService
+          .GetKotobaByChapters(value)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((x) => {
             this.kotobaList = x;

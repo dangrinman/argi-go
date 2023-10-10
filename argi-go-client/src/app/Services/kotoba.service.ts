@@ -1,5 +1,11 @@
-import { Injectable } from '@angular/core';
-import { IKotobaData } from '../models/IKotoba';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { map } from 'rxjs';
+import { IKotoba, IKotobaData } from '../models/IKotoba';
+import { BaseURLToken } from '../models/Tokens/BaseURLToken';
+import { ChapterService } from './chapter.service';
+import { ExamService } from './exam.service';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +16,27 @@ export class KotobaService {
   private taDictionary = new Map<string, string>();
   private naiDictionary = new Map<string, string>();
   private kanoDictionary = new Map<string, string>();
+  public kotobaURL: string;
 
-  constructor() {
+  constructor(
+    @Inject(BaseURLToken) private readonly baseURL: string,
+    private http: HttpClient,
+    private snackbarService: SnackbarService,
+    private chaptersService: ChapterService,
+    private examsService: ExamService
+  ) {
+    this.kotobaURL = `${baseURL}/Kotoba`;
     this.initializeDictionaries();
+  }
+
+  public GetKotobaByChapters(chapters: string[]) {
+    return this.http.post<IKotoba[]>(`${this.kotobaURL}/by-chapters`, chapters);
+  }
+
+  public getSuffleFukushiList(chapters: string[]) {
+    return this.GetKotobaByChapters(chapters).pipe(
+      map((x) => this.shuffleArray([...x]))
+    );
   }
 
   public ToTeForm(name: string, group: number): string {
@@ -103,6 +127,23 @@ export class KotobaService {
     }
 
     return array;
+  }
+
+  public toKotobaList(kotobaDataList: IKotobaData[]) {
+    return kotobaDataList.map((element) => this.ToKotoba(element));
+  }
+
+  public ToKotoba(kotobaData: IKotobaData) {
+    const kotoba: IKotoba = {
+      chapters: this.chaptersService.toChapters(kotobaData.chapters),
+      exams: this.examsService.toExams(kotobaData.exams),
+      examples: kotobaData.examples,
+      kanji: kotobaData.kanji,
+      name: kotobaData.name,
+      translation: kotobaData.translation,
+    };
+
+    return kotoba;
   }
 
   private getWord(

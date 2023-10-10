@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, tap } from 'rxjs';
 import { ExamData } from '../models/Data/ExamData';
+import { Exam } from '../models/Entities/Exam';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { SnackbarService } from './snackbar.service';
 
@@ -20,6 +21,21 @@ export class ExamService {
 
   public getAllExams() {
     return this.http.get<ExamData[]>(this.examURL);
+  }
+
+  public toExams(examsData: ExamData[]) {
+    return examsData.map((element) => this.toExam(element));
+  }
+
+  public toExam(examData: ExamData) {
+    const exam: Exam = {
+      description: examData.description,
+      id: examData.id,
+      name: examData.name,
+      level: examData.level,
+    };
+
+    return exam;
   }
 
   public createExam(exam: Partial<ExamData>) {
