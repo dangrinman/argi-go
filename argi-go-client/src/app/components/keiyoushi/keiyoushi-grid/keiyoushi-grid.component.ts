@@ -9,7 +9,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
-import { KeiyoushiData } from 'src/app/models/Data/KeiyoushiData';
 import { Keiyoushi } from 'src/app/models/Entities/Keiyoushi';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { KeiyoushiService } from 'src/app/Services/keiyoushi.service';
@@ -33,7 +32,7 @@ import { EditKeiyoushiModalComponent } from '../edit-keiyoushi-modal/edit-keiyou
 export class KeiyoushiGridComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
-  public dataSource = new MatTableDataSource<KeiyoushiData>();
+  public dataSource = new MatTableDataSource<Keiyoushi>();
   onDestroy$: Subject<void> = new Subject();
 
   constructor(

@@ -20,18 +20,22 @@ export class ChapterService {
   ) {
     this.chapterURL = `${baseURL}/Chapters`;
   }
-
   public getAllChapters() {
     return this.http
       .get<ChapterData[]>(this.chapterURL)
       .pipe(map((x) => this.toChapters(x)));
   }
 
+  public getChaptersOrderedByDate() {
+    return this.http
+      .get<ChapterData[]>(`${this.chapterURL}/by-date`)
+      .pipe(map((x) => this.toChapters(x)));
+  }
+
   public getChaptersBybookId(bookIds: string[]) {
-    return this.http.post<ChapterData[]>(
-      `${this.chapterURL}/by-books`,
-      bookIds
-    );
+    return this.http
+      .post<ChapterData[]>(`${this.chapterURL}/by-books`, bookIds)
+      .pipe(map((x) => this.toChapters(x)));
   }
 
   public toChapters(chaptersData: ChapterData[]) {
@@ -46,9 +50,28 @@ export class ChapterService {
       name: chapterData.name,
       number: chapterData.number,
       topic: chapterData.topic,
+      created: chapterData.created,
     };
 
     return chapter;
+  }
+
+  public toChaptersData(chapters: Chapter[]) {
+    return chapters.map((element) => this.toChapterData(element));
+  }
+
+  public toChapterData(chapter: Chapter) {
+    const chapterData: ChapterData = {
+      book: this.bookService.toBookData(chapter.book),
+      description: chapter.description,
+      id: chapter.id,
+      name: chapter.name,
+      number: chapter.number,
+      topic: chapter.topic,
+      created: chapter.created,
+    };
+
+    return chapterData;
   }
 
   public createChapter(chapter: Partial<ChapterData>) {
@@ -69,7 +92,6 @@ export class ChapterService {
           );
           return error;
         })
-      )
-      .subscribe();
+      );
   }
 }

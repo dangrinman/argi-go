@@ -7,6 +7,8 @@ import {
 } from '../models/Data/DoushiData';
 import { Doushi } from '../models/Entities/Doushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
+import { ChapterService } from './chapter.service';
+import { ExamService } from './exam.service';
 import { KotobaService } from './kotoba.service';
 import { SnackbarService } from './snackbar.service';
 
@@ -19,13 +21,23 @@ export class DoushiService {
     @Inject(BaseURLToken) private readonly baseURL: string,
     private http: HttpClient,
     private kotobaService: KotobaService,
+    private chaptersService: ChapterService,
+    private examsService: ExamService,
     private snackbarService: SnackbarService
   ) {
     this.doushiURL = `${baseURL}/Doushi`;
   }
 
   public getAllDoushi() {
-    return this.http.get<DoushiData[]>(`${this.doushiURL}`);
+    return this.http
+      .get<DoushiData[]>(`${this.doushiURL}`)
+      .pipe(map((x) => this.toDoushiList(x)));
+  }
+
+  public getDoushiOrderedByDate() {
+    return this.http
+      .get<DoushiData[]>(`${this.doushiURL}/by-date`)
+      .pipe(map((x) => this.toDoushiList(x)));
   }
 
   public GetDoushiByChapters(chapters: string[]) {
@@ -99,7 +111,11 @@ export class DoushiService {
       );
   }
 
-  ToDoushi(doushiData: DoushiData) {
+  public toDoushiList(doushiListData: DoushiData[]) {
+    return doushiListData.map((x) => this.toDoushi(x));
+  }
+
+  toDoushi(doushiData: DoushiData) {
     const doushi: Doushi = {
       id: doushiData.id,
       name: doushiData.name,
@@ -115,12 +131,42 @@ export class DoushiService {
       past: doushiData.past,
       negative: doushiData.negative,
       negativePast: doushiData.negativePast,
-      chapters: doushiData.chapters,
+      chapters: this.chaptersService.toChapters(doushiData.chapters),
       examples: doushiData.examples,
-      exams: doushiData.exams,
+      exams: this.examsService.toExams(doushiData.exams),
+      created: doushiData.created,
     };
 
     return doushi;
+  }
+
+  public toDoushiListData(doushiList: Doushi[]) {
+    return doushiList.map((x) => this.toDoushiData(x));
+  }
+
+  toDoushiData(doushi: Doushi) {
+    const doushiData: DoushiData = {
+      id: doushi.id,
+      name: doushi.name,
+      translation: doushi.translation,
+      group: doushi.group,
+      kanji: doushi.kanji,
+      jishoKei: doushi.jishoKei,
+      teKei: doushi.teKei,
+      taKei: doushi.taKei,
+      naiKei: doushi.naiKei,
+      kanoKei: doushi.kanoKei,
+      present: doushi.present,
+      past: doushi.past,
+      negative: doushi.negative,
+      negativePast: doushi.negativePast,
+      chapters: this.chaptersService.toChaptersData(doushi.chapters),
+      examples: doushi.examples,
+      exams: this.examsService.toExamsData(doushi.exams),
+      created: doushi.created,
+    };
+
+    return doushiData;
   }
 
   setConjugationData(
@@ -172,7 +218,8 @@ export class DoushiService {
     return this.updateDoushi(id, doushi) as Observable<DoushiData>;
   }
 
-  deleteDoushi(doushiList: DoushiData[]) {
-    return this.delete(doushiList);
+  deleteDoushi(doushiList: Doushi[]) {
+    const doushiListData = this.toDoushiListData(doushiList);
+    return this.delete(doushiListData);
   }
 }

@@ -4,6 +4,8 @@ import { catchError, map, Observable, tap } from 'rxjs';
 import { FukushiData } from '../models/Data/FukushiData';
 import { Fukushi } from '../models/Entities/Fukushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
+import { ChapterService } from './chapter.service';
+import { ExamService } from './exam.service';
 import { KotobaService } from './kotoba.service';
 import { SnackbarService } from './snackbar.service';
 
@@ -16,13 +18,23 @@ export class FukushiService {
     @Inject(BaseURLToken) private readonly baseURL: string,
     private http: HttpClient,
     private kotobaService: KotobaService,
+    private chaptersService: ChapterService,
+    private examsService: ExamService,
     private snackbarService: SnackbarService
   ) {
     this.fukushiURL = `${baseURL}/Fukushi`;
   }
 
   public getAllFukushi() {
-    return this.http.get<FukushiData[]>(`${this.fukushiURL}`);
+    return this.http
+      .get<FukushiData[]>(`${this.fukushiURL}`)
+      .pipe(map((x) => this.toFukushiList(x)));
+  }
+
+  public getFukushiOrderedByDate() {
+    return this.http
+      .get<FukushiData[]>(`${this.fukushiURL}/by-date`)
+      .pipe(map((x) => this.toFukushiList(x)));
   }
 
   public createFukushi(fukushi: Partial<FukushiData>) {
@@ -88,18 +100,42 @@ export class FukushiService {
       );
   }
 
-  ToFukushi(fukushiData: FukushiData) {
+  public toFukushiList(fukushiListData: FukushiData[]) {
+    return fukushiListData.map((x) => this.toFukushi(x));
+  }
+
+  toFukushi(fukushiData: FukushiData) {
     const fukushi: Fukushi = {
       id: fukushiData.id,
       name: fukushiData.name,
       translation: fukushiData.translation,
       kanji: fukushiData.kanji,
-      chapters: fukushiData.chapters,
+      chapters: this.chaptersService.toChapters(fukushiData.chapters),
       examples: fukushiData.examples,
-      exams: fukushiData.exams,
+      exams: this.examsService.toExams(fukushiData.exams),
+      created: fukushiData.created,
     };
 
     return fukushi;
+  }
+
+  public toFukushiListData(fukushiList: Fukushi[]) {
+    return fukushiList.map((x) => this.toFukushiData(x));
+  }
+
+  toFukushiData(fukushi: Fukushi) {
+    const fukushiData: FukushiData = {
+      id: fukushi.id,
+      name: fukushi.name,
+      translation: fukushi.translation,
+      kanji: fukushi.kanji,
+      chapters: this.chaptersService.toChaptersData(fukushi.chapters),
+      examples: fukushi.examples,
+      exams: this.examsService.toExamsData(fukushi.exams),
+      created: fukushi.created,
+    };
+
+    return fukushiData;
   }
 
   ToFukushiData(fukushi: Partial<FukushiData>) {
@@ -140,7 +176,8 @@ export class FukushiService {
     return this.updateFukushi(id, fukushi) as Observable<FukushiData>;
   }
 
-  deleteFukushi(fukushiList: FukushiData[]) {
-    return this.delete(fukushiList);
+  deleteFukushi(fukushiList: Fukushi[]) {
+    const fukushiListData = this.toFukushiListData(fukushiList);
+    return this.delete(fukushiListData);
   }
 }

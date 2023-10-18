@@ -9,7 +9,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
-import { MeishiData } from 'src/app/models/Data/MeishiData';
 import { Meishi } from 'src/app/models/Entities/Meishi';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { MeishiService } from 'src/app/Services/meishi.service';
@@ -33,7 +32,7 @@ import { EditMeishiModalComponent } from '../edit-meishi-modal/edit-meishi-modal
 export class MeishiGridComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
-  public dataSource = new MatTableDataSource<MeishiData>();
+  public dataSource = new MatTableDataSource<Meishi>();
   onDestroy$: Subject<void> = new Subject();
 
   constructor(

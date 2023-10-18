@@ -18,9 +18,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { ChapterData } from 'src/app/models/Data/ChapterData';
 import { ExamData } from 'src/app/models/Data/ExamData';
 import { FukushiData } from 'src/app/models/Data/FukushiData';
+import { Chapter } from 'src/app/models/Entities/Chapter';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { ExamService } from 'src/app/Services/exam.service';
@@ -47,7 +47,7 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   styleUrls: ['./edit-fukushi-modal.component.scss'],
 })
 export class EditFukushiModalComponent {
-  chapters$: Observable<ChapterData[]> = this.chapterService.getAllChapters();
+  chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   fukushi!: FormGroup;
   keywords: string[] = [];
@@ -104,7 +104,7 @@ export class EditFukushiModalComponent {
         .updateFukushiData(this.data.id, this.fukushi.value)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((x) => {
-          const data = this.fukushiService.ToFukushi(x);
+          const data = this.fukushiService.toFukushi(x);
         });
 
       this.onClose();

@@ -30,7 +30,10 @@ export class KotobaService {
   }
 
   public GetKotobaByChapters(chapters: string[]) {
-    return this.http.post<IKotoba[]>(`${this.kotobaURL}/by-chapters`, chapters);
+    return this.http.post<IKotobaData[]>(
+      `${this.kotobaURL}/by-chapters`,
+      chapters
+    );
   }
 
   public getSuffleFukushiList(chapters: string[]) {
@@ -135,12 +138,14 @@ export class KotobaService {
 
   public ToKotoba(kotobaData: IKotobaData) {
     const kotoba: IKotoba = {
+      id: kotobaData.id,
       chapters: this.chaptersService.toChapters(kotobaData.chapters),
       exams: this.examsService.toExams(kotobaData.exams),
       examples: kotobaData.examples,
       kanji: kotobaData.kanji,
       name: kotobaData.name,
       translation: kotobaData.translation,
+      created: kotobaData.created,
     };
 
     return kotoba;

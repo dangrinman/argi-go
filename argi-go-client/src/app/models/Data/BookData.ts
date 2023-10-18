@@ -1,5 +1,6 @@
-export interface BookData {
-  id: string;
+import { IBaseData } from '../IKotoba';
+
+export interface BookData extends IBaseData {
   title: string;
   description: string;
   author: string;

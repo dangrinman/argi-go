@@ -18,8 +18,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { ChapterData } from 'src/app/models/Data/ChapterData';
 import { ExamData } from 'src/app/models/Data/ExamData';
+import { Chapter } from 'src/app/models/Entities/Chapter';
 import { Doushi } from 'src/app/models/Entities/Doushi';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DialogsService } from 'src/app/Services/dialogs.service';
@@ -48,7 +48,7 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditDoushiModalComponent {
-  chapters$: Observable<ChapterData[]> = this.chapterService.getAllChapters();
+  chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   doushi!: FormGroup;
   keywords: string[] = [];

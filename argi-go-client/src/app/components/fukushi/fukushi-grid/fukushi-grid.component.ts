@@ -14,7 +14,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
-import { FukushiData } from 'src/app/models/Data/FukushiData';
 import { Fukushi } from 'src/app/models/Entities/Fukushi';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { FukushiService } from 'src/app/Services/fukushi.service';
@@ -39,7 +38,7 @@ import { EditFukushiModalComponent } from '../edit-fukushi-modal/edit-fukushi-mo
 export class FukushiGridComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
-  public dataSource = new MatTableDataSource<FukushiData>();
+  public dataSource = new MatTableDataSource<Fukushi>();
   onDestroy$: Subject<void> = new Subject();
 
   constructor(

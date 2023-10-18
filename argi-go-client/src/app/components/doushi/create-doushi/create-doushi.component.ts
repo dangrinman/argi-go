@@ -23,6 +23,7 @@ import { ChapterService } from 'src/app/Services/chapter.service';
 import { DoushiService } from 'src/app/Services/doushi.service';
 import { ExamService } from 'src/app/Services/exam.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
+import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.component';
 
 @Component({
   standalone: true,
@@ -38,6 +39,7 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
     MatSelectModule,
     FormsModule,
     NgFor,
+    CreationGridComponent,
   ],
   providers: [SnackbarService],
   selector: 'argi-doushi-creation',
@@ -50,6 +52,7 @@ export class CreateDoushiComponent implements OnDestroy {
   doushi: FormGroup;
   keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
+  public refresh = new Subject<void>();
   @ViewChild(FormGroupDirective)
   private formDirective!: FormGroupDirective;
   private initialFormValue!: FormGroup;
@@ -103,9 +106,10 @@ export class CreateDoushiComponent implements OnDestroy {
       this.doushiService
         .createDoushiData(this.doushi.value)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe();
+        .subscribe(() => this.refresh.next());
 
       this.formDirective.resetForm(this.initialFormValue);
+      this.keywords = [];
     }
   }
 
@@ -132,5 +136,7 @@ export class CreateDoushiComponent implements OnDestroy {
   ngOnDestroy() {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+    this.refresh.next();
+    this.refresh.complete();
   }
 }

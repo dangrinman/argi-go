@@ -18,9 +18,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { ChapterData } from 'src/app/models/Data/ChapterData';
 import { ExamData } from 'src/app/models/Data/ExamData';
 import { MeishiData } from 'src/app/models/Data/MeishiData';
+import { Chapter } from 'src/app/models/Entities/Chapter';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { ExamService } from 'src/app/Services/exam.service';
@@ -48,7 +48,7 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditMeishiModalComponent {
-  chapters$: Observable<ChapterData[]> = this.chapterService.getAllChapters();
+  chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   meishi!: FormGroup;
   keywords: string[] = [];
@@ -105,7 +105,7 @@ export class EditMeishiModalComponent {
         .updateMeishiData(this.data.id, this.meishi.value)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((x) => {
-          const data = this.meishiService.ToMeishi(x);
+          const data = this.meishiService.toMeishi(x);
         });
     }
 

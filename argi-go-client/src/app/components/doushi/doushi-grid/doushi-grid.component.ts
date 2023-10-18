@@ -9,7 +9,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
-import { DoushiData } from 'src/app/models/Data/DoushiData';
 import { Doushi } from 'src/app/models/Entities/Doushi';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { DoushiService } from 'src/app/Services/doushi.service';
@@ -33,7 +32,7 @@ import { EditDoushiModalComponent } from '../edit-doushi-modal/edit-doushi-modal
 export class DoushiGridComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
-  public dataSource = new MatTableDataSource<DoushiData>();
+  public dataSource = new MatTableDataSource<Doushi>();
   onDestroy$: Subject<void> = new Subject();
 
   constructor(

@@ -1,0 +1,25 @@
+/* Structure */
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow-x: auto;
+}
+
+.column-table {
+  min-width: 160px;
+}
+
+.no-value-cell {
+  padding: 20px;
+  text-align: center;
+}

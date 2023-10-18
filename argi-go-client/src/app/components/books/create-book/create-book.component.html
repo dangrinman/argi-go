@@ -1,26 +1,40 @@
-<div class="form-container"><h1>Book creation</h1></div>
-<div class="form-container">
-  <form [formGroup]="book" (ngSubmit)="onSubmit()" class="flex-container">
-    <mat-form-field>
-      <mat-label>Title</mat-label>
-      <input matInput placeholder="Title" formControlName="Title" />
-    </mat-form-field>
+<div class="content">
+  <div class="form-container form-area">
+    <div class="form-title"><h1>Book creation</h1></div>
+    <form [formGroup]="book" (ngSubmit)="onSubmit()" class="flex-container">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Title" formControlName="Title" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Author</mat-label>
-      <input matInput placeholder="Author" formControlName="Author" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Author</mat-label>
+        <input matInput placeholder="Author" formControlName="Author" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Edition</mat-label>
-      <input matInput placeholder="Edition" formControlName="Edition" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Edition</mat-label>
+        <input matInput placeholder="Edition" formControlName="Edition" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <input matInput placeholder="Description" formControlName="Description" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          placeholder="Description"
+          formControlName="Description"
+        />
+      </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Submit</button>
-  </form>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </form>
+  </div>
+  <mat-divider class="responsive-size"></mat-divider>
+  <div class="creation-container">
+    <h3 style="text-align: center">Last books added</h3>
+    <div class="table-container">
+      <argi-creation-grid [kotobaType]="'book'" [refreshTable]="refresh$">
+      </argi-creation-grid>
+    </div>
+  </div>
 </div>

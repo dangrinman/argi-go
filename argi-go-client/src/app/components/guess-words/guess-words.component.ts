@@ -14,8 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { BookData } from 'src/app/models/Data/BookData';
-import { ChapterData } from 'src/app/models/Data/ChapterData';
+import { Book } from 'src/app/models/Entities/Book';
+import { Chapter } from 'src/app/models/Entities/Chapter';
 import { IKotobaData } from 'src/app/models/IKotoba';
 import { BookService } from 'src/app/Services/book.service';
 import { ChapterService } from 'src/app/Services/chapter.service';
@@ -46,8 +46,8 @@ import { CardComponent } from '../card/card.component';
   styleUrls: ['./guess-words.component.scss'],
 })
 export class GuessWordsComponent implements OnInit, OnDestroy {
-  chapters$: Observable<ChapterData[]> = this.chaptersService.getAllChapters();
-  books$: Observable<BookData[]> = this.booksService.getAllBooks();
+  chapters$: Observable<Chapter[]> = this.chaptersService.getAllChapters();
+  books$: Observable<Book[]> = this.booksService.getAllBooks();
   kotobaList: IKotobaData[] = [];
   currentWord!: IKotobaData;
   onDestroy$: Subject<void> = new Subject();

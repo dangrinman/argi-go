@@ -4,6 +4,8 @@ import { catchError, map, Observable, tap } from 'rxjs';
 import { MeishiData } from '../models/Data/MeishiData';
 import { Meishi } from '../models/Entities/Meishi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
+import { ChapterService } from './chapter.service';
+import { ExamService } from './exam.service';
 import { KotobaService } from './kotoba.service';
 import { SnackbarService } from './snackbar.service';
 
@@ -16,13 +18,23 @@ export class MeishiService {
     @Inject(BaseURLToken) private readonly baseURL: string,
     private http: HttpClient,
     private kotobaService: KotobaService,
+    private chaptersService: ChapterService,
+    private examsService: ExamService,
     private snackbarService: SnackbarService
   ) {
     this.meishiURL = `${baseURL}/Meishi`;
   }
 
   public getAllMeishi() {
-    return this.http.get<MeishiData[]>(`${this.meishiURL}`);
+    return this.http
+      .get<MeishiData[]>(`${this.meishiURL}`)
+      .pipe(map((x) => this.toMeishiList(x)));
+  }
+
+  public getMeishiOrderedByDate() {
+    return this.http
+      .get<MeishiData[]>(`${this.meishiURL}/by-date`)
+      .pipe(map((x) => this.toMeishiList(x)));
   }
 
   public createMeishi(meishi: Partial<MeishiData>) {
@@ -97,12 +109,39 @@ export class MeishiService {
     }
   }
 
+  public toMeishiListData(meishiList: Meishi[]) {
+    return meishiList.map((x) => this.toMeishiData(x));
+  }
+
+  toMeishiData(meishi: Meishi) {
+    const meishiData: MeishiData = {
+      id: meishi.id,
+      name: meishi.name,
+      translation: meishi.translation,
+      kanji: meishi.kanji,
+      present: meishi.present,
+      past: meishi.past,
+      negative: meishi.negative,
+      negativePast: meishi.negativePast,
+      chapters: this.chaptersService.toChaptersData(meishi.chapters),
+      examples: meishi.examples,
+      exams: this.examsService.toExams(meishi.exams),
+      created: meishi.created,
+    };
+
+    return meishiData;
+  }
+
   createMeishiData(meishi: Partial<MeishiData>): Observable<unknown> {
     this.ToMeishiData(meishi);
     return this.createMeishi(meishi);
   }
 
-  ToMeishi(meishiData: MeishiData) {
+  toMeishiList(meishiListData: MeishiData[]) {
+    return meishiListData.map((x) => this.toMeishi(x));
+  }
+
+  toMeishi(meishiData: MeishiData) {
     const meishi: Meishi = {
       id: meishiData.id,
       name: meishiData.name,
@@ -112,9 +151,10 @@ export class MeishiService {
       past: meishiData.past,
       negative: meishiData.negative,
       negativePast: meishiData.negativePast,
-      chapters: meishiData.chapters,
+      chapters: this.chaptersService.toChapters(meishiData.chapters),
       examples: meishiData.examples,
-      exams: meishiData.exams,
+      exams: this.examsService.toExams(meishiData.exams),
+      created: meishiData.created,
     };
 
     return meishi;
@@ -141,7 +181,8 @@ export class MeishiService {
     return this.updateMeishi(id, meishi) as Observable<MeishiData>;
   }
 
-  deleteMeishi(meishiList: MeishiData[]) {
-    return this.delete(meishiList);
+  deleteMeishi(meishiList: Meishi[]) {
+    const meishiListData = this.toMeishiListData(meishiList);
+    return this.delete(meishiListData);
   }
 }

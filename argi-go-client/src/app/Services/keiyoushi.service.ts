@@ -4,6 +4,8 @@ import { catchError, map, Observable, tap } from 'rxjs';
 import { KeiyoushiData } from '../models/Data/KeiyoushiData';
 import { Keiyoushi } from '../models/Entities/Keiyoushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
+import { ChapterService } from './chapter.service';
+import { ExamService } from './exam.service';
 import { KotobaService } from './kotoba.service';
 import { SnackbarService } from './snackbar.service';
 
@@ -16,6 +18,8 @@ export class KeiyoushiService {
     @Inject(BaseURLToken) private readonly baseURL: string,
     private http: HttpClient,
     private kotobaService: KotobaService,
+    private chaptersService: ChapterService,
+    private examsService: ExamService,
     private snackbarService: SnackbarService
   ) {
     this.keiyoushiURL = `${baseURL}/Keiyoushi`;
@@ -24,6 +28,12 @@ export class KeiyoushiService {
   public getAllKeiyoushi() {
     return this.http
       .get<KeiyoushiData[]>(`${this.keiyoushiURL}`)
+      .pipe(map((x) => this.toKeiyoushiList(x)));
+  }
+
+  public getKeiyoushiOrderedByDate() {
+    return this.http
+      .get<KeiyoushiData[]>(`${this.keiyoushiURL}/by-date`)
       .pipe(map((x) => this.toKeiyoushiList(x)));
   }
 
@@ -81,9 +91,10 @@ export class KeiyoushiService {
       past: keiyoushiData.past,
       negative: keiyoushiData.negative,
       negativePast: keiyoushiData.negativePast,
-      chapters: keiyoushiData.chapters,
+      chapters: this.chaptersService.toChapters(keiyoushiData.chapters),
       examples: keiyoushiData.examples,
-      exams: keiyoushiData.exams,
+      exams: this.examsService.toExams(keiyoushiData.exams),
+      created: keiyoushiData.created,
     };
 
     return keiyoushi;
@@ -91,6 +102,30 @@ export class KeiyoushiService {
 
   toKeiyoushiList(keiyoushiData: KeiyoushiData[]) {
     return keiyoushiData.map((x) => this.toKeiyoushi(x));
+  }
+
+  toKeiyoushiData(keiyoush: Keiyoushi) {
+    const keiyoushiData: KeiyoushiData = {
+      id: keiyoush.id,
+      name: keiyoush.name,
+      translation: keiyoush.translation,
+      kanji: keiyoush.kanji,
+      keiyoushiType: keiyoush.keiyoushiType,
+      present: keiyoush.present,
+      past: keiyoush.past,
+      negative: keiyoush.negative,
+      negativePast: keiyoush.negativePast,
+      chapters: this.chaptersService.toChaptersData(keiyoush.chapters),
+      examples: keiyoush.examples,
+      exams: this.examsService.toExamsData(keiyoush.exams),
+      created: keiyoush.created,
+    };
+
+    return keiyoushiData;
+  }
+
+  toKeiyoushiListData(keiyoushi: Keiyoushi[]) {
+    return keiyoushi.map((x) => this.toKeiyoushiData(x));
   }
 
   public delete(keiyoushiData: KeiyoushiData[]) {
@@ -171,7 +206,8 @@ export class KeiyoushiService {
     return this.updateKeiyoushi(id, keiyoushi) as Observable<KeiyoushiData>;
   }
 
-  deleteKeiyoushi(keiyoushiList: KeiyoushiData[]) {
-    return this.delete(keiyoushiList);
+  deleteKeiyoushi(keiyoushiList: Keiyoushi[]) {
+    const keiyoushiListData = this.toKeiyoushiListData(keiyoushiList);
+    return this.delete(keiyoushiListData);
   }
 }

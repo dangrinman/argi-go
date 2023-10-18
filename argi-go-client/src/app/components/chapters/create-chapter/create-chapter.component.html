@@ -1,35 +1,49 @@
-<div class="form-title"><h1>Chapter creation</h1></div>
-<div class="form-container">
-  <form [formGroup]="chapter" (ngSubmit)="onSubmit()" class="flex-container">
-    <mat-form-field>
-      <mat-label>Name</mat-label>
-      <input matInput placeholder="Name" formControlName="Name" />
-    </mat-form-field>
+<div class="content">
+  <div class="form-container form-area">
+    <div class="form-title"><h1>Chapter creation</h1></div>
+    <form [formGroup]="chapter" (ngSubmit)="onSubmit()" class="flex-container">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Name" formControlName="Name" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>topic</mat-label>
-      <input matInput placeholder="topic" formControlName="topic" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>topic</mat-label>
+        <input matInput placeholder="topic" formControlName="topic" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Numero</mat-label>
-      <input matInput placeholder="Number" formControlName="Number" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Numero</mat-label>
+        <input matInput placeholder="Number" formControlName="Number" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <input matInput placeholder="Description" formControlName="Description" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          placeholder="Description"
+          formControlName="Description"
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Book</mat-label>
-      <mat-select formControlName="Book">
-        <mat-option *ngFor="let book of books$ | async" [value]="book.id">
-          {{ book.title }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Book</mat-label>
+        <mat-select formControlName="Book">
+          <mat-option *ngFor="let book of books$ | async" [value]="book.id">
+            {{ book.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Submit</button>
-  </form>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </form>
+  </div>
+  <mat-divider class="responsive-size"></mat-divider>
+  <div class="creation-container">
+    <h3 style="text-align: center">Last chapters added</h3>
+    <div class="table-container">
+      <argi-creation-grid [kotobaType]="'chapter'" [refreshTable]="refresh$">
+      </argi-creation-grid>
+    </div>
+  </div>
 </div>

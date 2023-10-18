@@ -17,12 +17,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ChapterData } from 'src/app/models/Data/ChapterData';
 import { ExamData } from 'src/app/models/Data/ExamData';
+import { Chapter } from 'src/app/models/Entities/Chapter';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { ExamService } from 'src/app/Services/exam.service';
 import { FukushiService } from 'src/app/Services/fukushi.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
+import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.component';
 
 @Component({
   standalone: true,
@@ -37,6 +38,7 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
     ReactiveFormsModule,
     FormsModule,
     MatSelectModule,
+    CreationGridComponent,
     NgFor,
   ],
   selector: 'app-create-fukushi',
@@ -44,11 +46,12 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   styleUrls: ['./create-fukushi.component.scss'],
 })
 export class CreateFukushiComponent {
-  chapters$: Observable<ChapterData[]> = this.chapterService.getAllChapters();
+  chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   fukushi: FormGroup;
   keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
+  public refresh$ = new Subject<void>();
 
   @ViewChild(FormGroupDirective)
   private formDirective!: FormGroupDirective;
@@ -106,6 +109,7 @@ export class CreateFukushiComponent {
     }
 
     this.formDirective.resetForm(this.initialFormValue);
+    this.keywords = [];
   }
 
   private validateData(): boolean {
@@ -131,5 +135,7 @@ export class CreateFukushiComponent {
   ngOnDestroy() {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+    this.refresh$.next();
+    this.refresh$.complete();
   }
 }
