@@ -135,5 +135,7 @@ export class CreateMeishiComponent implements OnDestroy {
   ngOnDestroy() {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+    this.refresh$.next();
+    this.refresh$.complete();
   }
 }

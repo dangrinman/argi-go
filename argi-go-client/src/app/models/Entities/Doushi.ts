@@ -2,10 +2,10 @@ import { IKotoba } from '../IKotoba';
 import { IKyougaku } from '../IKyougaku';
 
 export interface Doushi extends IKotoba, IKyougaku {
-  group: number;
-  teKei: string;
+  group: string;
+  tKei: string;
   taKei: string;
   jishoKei: string;
-  naiKei: string;
+  naKei: string;
   kanoKei: string;
 }

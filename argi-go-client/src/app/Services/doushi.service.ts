@@ -123,9 +123,9 @@ export class DoushiService {
       group: doushiData.group,
       kanji: doushiData.kanji,
       jishoKei: doushiData.jishoKei,
-      teKei: doushiData.teKei,
+      tKei: doushiData.tKei,
       taKei: doushiData.taKei,
-      naiKei: doushiData.naiKei,
+      naKei: doushiData.naKei,
       kanoKei: doushiData.kanoKei,
       present: doushiData.present,
       past: doushiData.past,
@@ -152,9 +152,9 @@ export class DoushiService {
       group: doushi.group,
       kanji: doushi.kanji,
       jishoKei: doushi.jishoKei,
-      teKei: doushi.teKei,
+      tKei: doushi.tKei,
       taKei: doushi.taKei,
-      naiKei: doushi.naiKei,
+      naKei: doushi.naKei,
       kanoKei: doushi.kanoKei,
       present: doushi.present,
       past: doushi.past,
@@ -172,13 +172,13 @@ export class DoushiService {
   setConjugationData(
     doushi: Partial<DoushiData>,
     doushiName: string,
-    group: number
+    group: string
   ) {
     doushi.jishoKei = this.kotobaService.ToJishoForm(doushiName, group);
     doushi.kanoKei = this.kotobaService.ToKanoForm(doushiName, group);
-    doushi.teKei = this.kotobaService.ToTeForm(doushiName, group);
+    doushi.tKei = this.kotobaService.ToTeForm(doushiName, group);
     doushi.taKei = this.kotobaService.ToTaForm(doushiName, group);
-    doushi.naiKei = this.kotobaService.ToNaiForm(doushiName, group);
+    doushi.naKei = this.kotobaService.ToNaiForm(doushiName, group);
   }
 
   setForms(doushi: Partial<DoushiData>, doushiName: string) {

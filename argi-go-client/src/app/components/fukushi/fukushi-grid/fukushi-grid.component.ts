@@ -57,22 +57,7 @@ export class FukushiGridComponent implements OnInit {
       });
   }
 
-  displayedColumns: string[] = [
-    'action',
-    'name',
-    'kanji',
-    'translation',
-    'group',
-    'teKei',
-    'taKei',
-    'jishoKei',
-    'naiKei',
-    'kanoKei',
-    'present',
-    'past',
-    'negative',
-    'negativePast',
-  ];
+  displayedColumns: string[] = ['action', 'name', 'kanji', 'translation'];
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

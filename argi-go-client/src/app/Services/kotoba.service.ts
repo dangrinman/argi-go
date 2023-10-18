@@ -42,12 +42,12 @@ export class KotobaService {
     );
   }
 
-  public ToTeForm(name: string, group: number): string {
+  public ToTeForm(name: string, group: string): string {
     if (name == 'いきます') {
-      return `い${this.getWord('いきます', 0, this.teDictionary)}`;
+      return `い${this.getWord('いきます', '0', this.teDictionary)}`;
     }
     const wordWithOutMasu =
-      group != 2
+      group != '2'
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -60,13 +60,13 @@ export class KotobaService {
     return `${wordWithOutMasu}${teWord}`;
   }
 
-  public ToTaForm(name: string, group: number): string {
+  public ToTaForm(name: string, group: string): string {
     if (name == 'いきます') {
-      return `い${this.getWord('いきます', 0, this.taDictionary)}`;
+      return `い${this.getWord('いきます', '0', this.taDictionary)}`;
     }
 
     const wordWithOutMasu =
-      group != 2
+      group != '2'
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -79,9 +79,9 @@ export class KotobaService {
     return `${wordWithOutMasu}${taWord}`;
   }
 
-  public ToJishoForm(name: string, group: number): string {
+  public ToJishoForm(name: string, group: string): string {
     const wordWithOutMasu =
-      group != 2
+      group != '2'
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -94,9 +94,9 @@ export class KotobaService {
     return `${wordWithOutMasu}${jishoWord}`;
   }
 
-  public ToNaiForm(name: string, group: number): string {
+  public ToNaiForm(name: string, group: string): string {
     const wordWithOutMasu =
-      group != 2
+      group != '2'
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -109,9 +109,9 @@ export class KotobaService {
     return `${wordWithOutMasu}${naiWord}`;
   }
 
-  public ToKanoForm(name: string, group: number): string {
+  public ToKanoForm(name: string, group: string): string {
     const wordWithOutMasu =
-      group != 2
+      group != '2'
         ? name.slice(0, name.length - 3)
         : name.slice(0, name.length - 2);
 
@@ -153,11 +153,11 @@ export class KotobaService {
 
   private getWord(
     name: string,
-    group: number,
+    group: string,
     dictionary: Map<string, string>
   ) {
     const word = name[name.length - 3];
-    const doushiKotoba = group != 2 ? `${group}${word}` : '2';
+    const doushiKotoba = group != '2' ? `${group}${word}` : '2';
     return dictionary.get(doushiKotoba);
   }
 

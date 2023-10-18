@@ -13,7 +13,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { BookService } from 'src/app/Services/book.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
 import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.component';
@@ -38,7 +38,8 @@ import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.
 export class CreateBookComponent implements OnDestroy {
   book: FormGroup;
   keywords: string[] = [];
-  public refresh$ = new Subject<void>();
+  refresh$ = new Subject<void>();
+  onDestroy$: Subject<void> = new Subject();
 
   @ViewChild(FormGroupDirective)
   private formDirective!: FormGroupDirective;
@@ -62,6 +63,8 @@ export class CreateBookComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.refresh$.next();
     this.refresh$.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   public onSubmit() {
@@ -70,6 +73,7 @@ export class CreateBookComponent implements OnDestroy {
     } else {
       this.bookService
         .createBook(this.book.value)
+        .pipe(takeUntil(this.onDestroy$))
         .subscribe((x) => this.refresh$.next());
       this.formDirective.resetForm(this.initialFormValue);
     }

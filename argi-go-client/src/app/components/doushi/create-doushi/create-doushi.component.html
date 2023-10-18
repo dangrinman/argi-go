@@ -14,7 +14,11 @@
 
       <mat-form-field>
         <mat-label>Group</mat-label>
-        <input matInput placeholder="Group" formControlName="group" />
+        <mat-select formControlName="group">
+          <mat-option *ngFor="let value of doushiGroup" [value]="value">
+            {{ value }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field>

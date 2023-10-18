@@ -105,7 +105,7 @@ export class CreateFukushiComponent {
       this.fukushiService
         .createFukushiData(this.fukushi.value)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe();
+        .subscribe((x) => this.refresh$.next());
     }
 
     this.formDirective.resetForm(this.initialFormValue);

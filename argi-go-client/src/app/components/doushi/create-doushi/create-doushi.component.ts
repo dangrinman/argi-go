@@ -51,6 +51,7 @@ export class CreateDoushiComponent implements OnDestroy {
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   doushi: FormGroup;
   keywords: string[] = [];
+  doushiGroup: string[] = ['1', '2', '3'];
   onDestroy$: Subject<void> = new Subject();
   public refresh = new Subject<void>();
   @ViewChild(FormGroupDirective)
