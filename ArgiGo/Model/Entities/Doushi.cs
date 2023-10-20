@@ -41,6 +41,7 @@ namespace ArgiGo.Model.Entities
         public string? Negative { get; set; }
 
         public string? NegativePast { get; set; }
+        public virtual DateTime Created { get; set; }
 
         public IEnumerable<Example> Examples => examples;
 

@@ -18,7 +18,15 @@ namespace ArgiGo.Controllers
         [HttpGet()]
         public IEnumerable<ExamData> GetAllExams()
         {
-            var exams = examService.GetExamsData();
+            var exams = examService.GetExams().ToList();
+
+            return examService.ToExamsData(exams);
+        }
+
+        [HttpGet("by-date")]
+        public IEnumerable<ExamData> GetExamsOrderedByDate()
+        {
+            var exams = examService.GetExamsOrderedByDate();
 
             return examService.ToExamsData(exams);
         }

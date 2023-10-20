@@ -20,14 +20,26 @@ namespace ArgiGo.Services
             this.examService = examService;
         }
 
-        public IQueryable<Keiyoushi> GetKeiyoushiList()
+        public IQueryable<Keiyoushi> GetKeiyoushi()
         {
             var keiyoushiList = _context.Keiyoushi.Include(x => x.Examples)
                                              .Include(x => x.Exams)
                                              .Include(x => x.Chapters)
-                                             .ThenInclude(x => x.Book)
-                                             .AsQueryable()
-                                             .OrderBy(x => x.Name);
+                                             .ThenInclude(x => x.Book);
+
+            return keiyoushiList;
+        }
+
+        public IQueryable<Keiyoushi> GetKeiyoushiList()
+        {
+            var keiyoushiList = GetKeiyoushiList().OrderBy(x => x.Name);
+
+            return keiyoushiList;
+        }
+
+        public IQueryable<Keiyoushi> GetKeiyoushiOrderedByDate()
+        {
+            var keiyoushiList = GetKeiyoushiList().OrderByDescending(x => x.Created).Take(10);
 
             return keiyoushiList;
         }
@@ -60,6 +72,7 @@ namespace ArgiGo.Services
                 Present = keiyoushiData.Present,
                 KeiyoushiType = keiyoushiData.KeiyoushiType,
                 Translation = keiyoushiData.Translation,
+                Created = new DateTime()
             };
 
             var examples = kotobaServices.CreateExamples(keiyoushiData.Examples);

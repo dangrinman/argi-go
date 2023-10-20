@@ -22,6 +22,14 @@ namespace ArgiGo.Controllers
             return keiyoushiService.ToKeiyoushiData(keiyoushi);
         }
 
+        [HttpGet("by-date")]
+        public IEnumerable<KeiyoushiData> GetKeiyoushiOrderedByDate()
+        {
+            var keiyoushi = keiyoushiService.GetKeiyoushiOrderedByDate().ToList();
+
+            return keiyoushiService.ToKeiyoushiData(keiyoushi);
+        }
+
         [HttpPost("by-chapters")]
         public IEnumerable<KeiyoushiData> GetKeiyoushiByChapters(IEnumerable<string> ids)
         {

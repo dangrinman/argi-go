@@ -23,6 +23,14 @@ namespace ArgiGo.Controllers
             return chapterService.ToChaptersData(chapters);
         }
 
+        [HttpGet("by-date")]
+        public IEnumerable<ChapterData> GetChaptersByDate()
+        {
+            var chapters = chapterService.GetChaptersOrderedByDate().ToList();
+
+            return chapterService.ToChaptersData(chapters);
+        }
+
         [HttpPost("by-books")]
         public IEnumerable<ChapterData> GetChaptersBybookIds(IEnumerable<string> bookIds)
         {

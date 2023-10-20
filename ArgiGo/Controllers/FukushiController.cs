@@ -25,6 +25,14 @@ namespace ArgiGo.Controllers
             return fukushiService.ToFukushiData(fukushiList);
         }
 
+        [HttpGet("by-date")]
+        public IEnumerable<FukushiData> GetFukushiOrderedByDate()
+        {
+            var fukushiList = fukushiService.GetFukushiOrderedByDate().ToList();
+
+            return fukushiService.ToFukushiData(fukushiList);
+        }
+
         [HttpPost("by-chapters")]
         public IEnumerable<FukushiData> GetFukushiByChapters(IEnumerable<string> ids)
         {

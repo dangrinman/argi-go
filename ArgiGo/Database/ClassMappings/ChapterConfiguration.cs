@@ -18,6 +18,8 @@ namespace ArgiGo.Database.ClassMappings
 
             builder.Property(x => x.Number);
 
+            builder.Property(x => x.Created);
+
             builder.Property(x => x.Topic);
         }
     }

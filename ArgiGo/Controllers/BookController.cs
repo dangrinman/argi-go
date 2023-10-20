@@ -18,7 +18,21 @@ namespace ArgiGo.Controllers
         [HttpGet()]
         public IEnumerable<BookData> GetAllDoushi()
         {
-            return bookService.GetBooksData();
+            var books = bookService.GetBooks().ToList();
+
+            var booksData = this.bookService.ToBooksData(books);
+
+            return booksData;
+        }
+
+        [HttpGet("by-date")]
+        public IEnumerable<BookData> GetDoushiListByDate()
+        {
+            var books = bookService.GetBooksOrderedByDate().ToList();
+
+            var booksData = this.bookService.ToBooksData(books);
+
+            return booksData;
         }
 
         [HttpPost("create")]

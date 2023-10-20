@@ -31,6 +31,7 @@ namespace ArgiGo.Model.Entities
         public string Name { get; set; }
 
         public string Kanji { get; set; }
+        public virtual DateTime Created { get; set; }
 
         public IEnumerable<Example> Examples => examples;
 

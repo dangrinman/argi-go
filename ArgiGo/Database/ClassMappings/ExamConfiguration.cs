@@ -17,6 +17,8 @@ namespace ArgiGo.Database.ClassMappings
             builder.Property(x => x.Description);
 
             builder.Property(x => x.Level);
+
+            builder.Property(x => x.Created);
         }
     }
 }

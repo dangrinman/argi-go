@@ -17,9 +17,17 @@ namespace ArgiGo.Controllers
         }
 
         [HttpGet()]
-        public IEnumerable<MeishiData> GetAll()
+        public IEnumerable<MeishiData> GetMeishiList()
         {
             var meishi = meishiService.GetMeishiList().ToList();
+
+            return meishiService.ToMeishiData(meishi);
+        }
+
+        [HttpGet("by-date")]
+        public IEnumerable<MeishiData> GetMeishiOrderedByDate()
+        {
+            var meishi = meishiService.GetMeishiOrderedByDate().ToList();
 
             return meishiService.ToMeishiData(meishi);
         }

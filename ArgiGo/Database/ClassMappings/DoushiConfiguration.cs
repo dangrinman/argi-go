@@ -14,7 +14,7 @@ namespace ArgiGo.Database.ClassMappings
 
             builder.Property(x => x.Name);
 
-            builder.HasIndex(x => x.Kanji).IsUnique(true);
+            builder.Property(x => x.Kanji);
 
             builder.Property(x => x.Translation);
 
@@ -37,6 +37,8 @@ namespace ArgiGo.Database.ClassMappings
             builder.Property(x => x.Negative);
 
             builder.Property(x => x.NegativePast);
+
+            builder.Property(x => x.Created);
 
             builder.HasMany(x => x.Examples)
                    .WithOne(t => t.Doushi)

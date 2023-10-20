@@ -21,6 +21,7 @@ namespace ArgiGo.Model.Entities
         public string Description { get; set; }
 
         public string Level { get; set; }
+        public virtual DateTime Created { get; set; }
 
         public virtual ICollection<Doushi> Doushi => doushiList;
 

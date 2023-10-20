@@ -13,13 +13,14 @@ namespace ArgiGo.Services
             _context = context;
         }
 
-        public IEnumerable<BookData> GetBooksData()
+        public IQueryable<Book> GetBooks()
         {
-            var bookList = _context.Books.OrderBy(x => x.Title).ToList();
+           return _context.Books.OrderBy(x => x.Title);
+        }
 
-            var booksData = ToBooksData(bookList);
-
-            return booksData;
+        public IEnumerable<Book> GetBooksOrderedByDate()
+        {
+            return _context.Books.OrderByDescending(x => x.Created).Take(10);
         }
 
         public IQueryable<Book> GetBookDataById(string id)
@@ -38,7 +39,8 @@ namespace ArgiGo.Services
                 Title = bookCreation.Title,
                 Author = bookCreation.Author,
                 Description = bookCreation.Description,
-                Edition = bookCreation.Edition
+                Edition = bookCreation.Edition,
+                Created = new DateTime()
             };
 
             _context.Add(book).Context.ContextId.InstanceId.ToString();

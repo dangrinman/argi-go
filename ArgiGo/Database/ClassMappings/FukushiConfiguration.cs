@@ -16,9 +16,9 @@ namespace ArgiGo.Database.ClassMappings
 
             builder.Property(x => x.Kanji);
 
-            builder.HasIndex(x => x.Kanji).IsUnique(true);
-
             builder.Property(x => x.Translation);
+
+            builder.Property(x => x.Created);
 
             builder.HasMany(x => x.Examples)
                    .WithOne(t => t.Fukushi)

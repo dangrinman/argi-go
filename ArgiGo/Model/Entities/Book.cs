@@ -19,6 +19,8 @@
 
         public virtual string Edition { get; set;}
 
+        public virtual DateTime Created { get; set; }
+
         public virtual IEnumerable<Chapter> Chapters => chapters;
 
         public void AddChapters(IEnumerable<Chapter> bookChapters)

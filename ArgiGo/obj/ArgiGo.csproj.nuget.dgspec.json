@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Dan\\argi-go\\ArgiGo\\ArgiGo.csproj": {}
+    "D:\\Dan\\Projects\\argi-go\\ArgiGo\\ArgiGo.csproj": {}
   },
   "projects": {
-    "D:\\Dan\\argi-go\\ArgiGo\\ArgiGo.csproj": {
+    "D:\\Dan\\Projects\\argi-go\\ArgiGo\\ArgiGo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Dan\\argi-go\\ArgiGo\\ArgiGo.csproj",
+        "projectUniqueName": "D:\\Dan\\Projects\\argi-go\\ArgiGo\\ArgiGo.csproj",
         "projectName": "ArgiGo",
-        "projectPath": "D:\\Dan\\argi-go\\ArgiGo\\ArgiGo.csproj",
+        "projectPath": "D:\\Dan\\Projects\\argi-go\\ArgiGo\\ArgiGo.csproj",
         "packagesPath": "C:\\Users\\dangr\\.nuget\\packages\\",
-        "outputPath": "D:\\Dan\\argi-go\\ArgiGo\\obj\\",
+        "outputPath": "D:\\Dan\\Projects\\argi-go\\ArgiGo\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\dangr\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -20,6 +20,8 @@ namespace ArgiGo.Database.ClassMappings
 
             builder.Property(x => x.Edition);
 
+            builder.Property(x => x.Created);
+
             builder.HasMany(x => x.Chapters)
                    .WithOne(x => x.Book);
         }

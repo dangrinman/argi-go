@@ -21,14 +21,26 @@ namespace ArgiGo.Services
             this.chapterService = chapterService;
         }
 
-        public IQueryable<Doushi> GetDoushiList()
+        public IQueryable<Doushi> GetDoushi()
         {
             var doushiList = _context.Doushi.Include(x => x.Examples)
                                              .Include(x => x.Exams)
                                              .Include(x => x.Chapters)
-                                             .ThenInclude(x => x.Book)
-                                             .AsQueryable()
-                                             .OrderBy(x => x.Name);
+                                             .ThenInclude(x => x.Book);
+
+            return doushiList;
+        }
+
+        public IQueryable<Doushi> GetDoushiOrderedByDate()
+        {
+            var doushiList = GetDoushi().OrderByDescending(x => x.Created).Take(10);
+
+            return doushiList;
+        }
+
+        public IQueryable<Doushi> GetDoushiList()
+        {
+            var doushiList = GetDoushi().OrderBy(x => x.Name);
 
             return doushiList;
         }
@@ -66,6 +78,7 @@ namespace ArgiGo.Services
                 Present = doushiCreate.Present,
                 TaKei = doushiCreate.TaKei,
                 TeKei = doushiCreate.TeKei,
+                Created = new DateTime()
             };
 
             var examples = kotobaServices.CreateExamples(doushiCreate.Examples);

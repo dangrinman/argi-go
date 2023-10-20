@@ -20,14 +20,26 @@ namespace ArgiGo.Services
             this.examService = examService;
         }
 
-        public IQueryable<Meishi> GetMeishiList()
+        public IQueryable<Meishi> GetMeishi()
         {
             var meishiList = _context.Meishi.Include(x => x.Examples)
                                              .Include(x => x.Exams)
                                              .Include(x => x.Chapters)
-                                             .ThenInclude(x => x.Book)
-                                             .AsQueryable()
-                                             .OrderBy(x => x.Name);
+                                             .ThenInclude(x => x.Book);
+
+            return meishiList;
+        }
+
+        public IQueryable<Meishi> GetMeishiOrderedByDate()
+        {
+            var meishiList = GetMeishi().OrderByDescending(x => x.Created).Take(10);
+
+            return meishiList;
+        }
+
+        public IQueryable<Meishi> GetMeishiList()
+        {
+            var meishiList = GetMeishi().OrderBy(x => x.Name);
 
             return meishiList;
         }
@@ -55,6 +67,7 @@ namespace ArgiGo.Services
                 Name = meishiData.Name,
                 Translation = meishiData.Translation,
                 Kanji = meishiData.Kanji,
+                Created = new DateTime()
             };
 
             var examples = kotobaServices.CreateExamples(meishiData.Examples);

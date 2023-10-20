@@ -23,6 +23,14 @@ namespace ArgiGo.Controllers
             return doushiService.ToDoushiData(doushi);
         }
 
+        [HttpGet("by-date")]
+        public IEnumerable<DoushiData> GetDoushiOrderedByDate()
+        {
+            var doushi = doushiService.GetDoushiOrderedByDate().ToList();
+
+            return doushiService.ToDoushiData(doushi);
+        }
+
         [HttpPost("by-chapters")]
         public IEnumerable<DoushiData> GetDoushiByChapters(IEnumerable<string> ids)
         {

@@ -1,8 +1,6 @@
 using ArgiGo.Database.Mapping;
 using ArgiGo.Services;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);

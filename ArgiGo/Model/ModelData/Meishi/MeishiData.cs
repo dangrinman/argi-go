@@ -1,5 +1,4 @@
-﻿using ArgiGo.Model.Entities;
-using ArgiGo.Model.ModelData.Chapters;
+﻿using ArgiGo.Model.ModelData.Chapters;
 using ArgiGo.Model.ModelData.Exam;
 using ArgiGo.Model.ModelData.Examples;
 

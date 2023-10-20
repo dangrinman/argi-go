@@ -13,9 +13,19 @@ namespace ArgiGo.Services
             _context = context;
         }
 
-        public IEnumerable<Exam> GetExamsData()
+        public IQueryable<Exam> GetExams()
         {
-            var examList = _context.Exams.OrderBy(x => x.Name).ToList();
+            return _context.Exams;
+        }
+
+        public IQueryable<Exam> GetExamsList()
+        {
+            return GetExams().OrderBy(x => x.Name);
+        }
+
+        public IQueryable<Exam> GetExamsOrderedByDate()
+        {
+            var examList = _context.Exams.OrderByDescending(x => x.Created).Take(10);
 
             return examList;
         }
@@ -44,6 +54,7 @@ namespace ArgiGo.Services
                 Name = examCreation.Name,
                 Level = examCreation.Level,
                 Description = examCreation.Description,
+                Created = new DateTime()
             };
 
             _context.Add(exam).Context.ContextId.InstanceId.ToString();

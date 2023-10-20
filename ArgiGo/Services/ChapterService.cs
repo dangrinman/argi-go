@@ -21,8 +21,21 @@ namespace ArgiGo.Services
 
         public IQueryable<Chapter> GetChapters()
         {
-            var chapters = _context.Chapters.Include(x => x.Book).AsQueryable()
-                                             .OrderBy(x => x.Number);
+            var chapters = _context.Chapters.Include(x => x.Book);
+
+            return chapters;
+        }
+
+        public IQueryable<Chapter> GetChaptersOrderedByDate()
+        {
+            var chapters = GetChapters().OrderByDescending(x => x.Created).Take(10);
+
+            return chapters;
+        }
+
+        public IQueryable<Chapter> GetAllChapters()
+        {
+            var chapters = _context.Chapters.Include(x => x.Book).OrderBy(x => x.Number);
 
             return chapters;
         }
@@ -60,6 +73,7 @@ namespace ArgiGo.Services
                 Name = chapterCreateOrUpdate.Name,
                 Number = chapterCreateOrUpdate.Number,
                 Topic = chapterCreateOrUpdate.Topic,
+                Created = new DateTime()
             };
 
             var book = bookService.GetBookDataById(chapterCreateOrUpdate.Book).FirstOrDefault();

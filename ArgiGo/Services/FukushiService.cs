@@ -20,14 +20,26 @@ namespace ArgiGo.Services
             this.chapterService = chapterService;
         }
 
-        public IQueryable<Fukushi> GetFukushiList()
+        public IQueryable<Fukushi> GetFukushi()
         {
             var FukushiList = _context.Fukushi.Include(x => x.Examples)
                                              .Include(x => x.Exams)
                                              .Include(x => x.Chapters)
-                                             .ThenInclude(x => x.Book)
-                                             .AsQueryable()
-                                             .OrderBy(x => x.Name);
+                                             .ThenInclude(x => x.Book);
+
+            return FukushiList;
+        }
+
+        public IQueryable<Fukushi> GetFukushiList()
+        {
+            var FukushiList = GetFukushi().OrderBy(x => x.Name);
+
+            return FukushiList;
+        }
+
+        public IQueryable<Fukushi> GetFukushiOrderedByDate()
+        {
+            var FukushiList = GetFukushi().OrderByDescending(x => x.Created).Take(10);
 
             return FukushiList;
         }
@@ -55,6 +67,7 @@ namespace ArgiGo.Services
                 Name = fukushiData.Name,
                 Kanji = fukushiData.Kanji,
                 Translation = fukushiData.Translation,
+                Created = new DateTime()
             };
 
             var examples = kotobaServices.CreateExamples(fukushiData.Examples);

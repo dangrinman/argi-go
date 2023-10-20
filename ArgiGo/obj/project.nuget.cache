@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lWP5rtL/hbYhtObrMi707sYe+gcnB+/l0HgxEH2y87CwjDLWLW3cAun9jvv1P3ccJojEQz5uD8RG4i3gNkjbqg==",
+  "dgSpecHash": "5KneGBxvM91iXt+h11B5xmzX7+FKQkXgHtKadr0Ftoyct4qzkS5VWhS3+xBHEg3H0LVY7Sb3vVtbR18Jdzu8+g==",
   "success": true,
-  "projectFilePath": "D:\\Dan\\argi-go\\ArgiGo\\ArgiGo.csproj",
+  "projectFilePath": "D:\\Dan\\Projects\\argi-go\\ArgiGo\\ArgiGo.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dangr\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\dangr\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
