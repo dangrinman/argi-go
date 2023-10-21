@@ -72,7 +72,7 @@ namespace ArgiGo.Services
                 Present = keiyoushiData.Present,
                 KeiyoushiType = keiyoushiData.KeiyoushiType,
                 Translation = keiyoushiData.Translation,
-                Created = new DateTime()
+                Created = DateTime.UtcNow
             };
 
             var examples = kotobaServices.CreateExamples(keiyoushiData.Examples);

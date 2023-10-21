@@ -54,7 +54,7 @@ namespace ArgiGo.Services
                 Name = examCreation.Name,
                 Level = examCreation.Level,
                 Description = examCreation.Description,
-                Created = new DateTime()
+                Created = DateTime.UtcNow
             };
 
             _context.Add(exam).Context.ContextId.InstanceId.ToString();

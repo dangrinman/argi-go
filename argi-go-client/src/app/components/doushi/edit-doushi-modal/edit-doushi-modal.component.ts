@@ -67,11 +67,6 @@ export class EditDoushiModalComponent {
     this.doushi = this.fb.group({
       name: [this.data.name, Validators.required],
       kanji: [this.data.kanji],
-      teKei: [this.data.tKei],
-      taKei: [this.data.taKei],
-      jishoKei: [this.data.jishoKei],
-      naKei: [this.data.naKei],
-      kanoKei: [this.data.kanoKei],
       past: [this.data.past],
       present: [this.data.present],
       negative: [this.data.negative],

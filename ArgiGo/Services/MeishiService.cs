@@ -67,7 +67,7 @@ namespace ArgiGo.Services
                 Name = meishiData.Name,
                 Translation = meishiData.Translation,
                 Kanji = meishiData.Kanji,
-                Created = new DateTime()
+                Created = DateTime.UtcNow
             };
 
             var examples = kotobaServices.CreateExamples(meishiData.Examples);

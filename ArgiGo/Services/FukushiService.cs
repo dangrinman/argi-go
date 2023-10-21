@@ -67,7 +67,7 @@ namespace ArgiGo.Services
                 Name = fukushiData.Name,
                 Kanji = fukushiData.Kanji,
                 Translation = fukushiData.Translation,
-                Created = new DateTime()
+                Created = DateTime.UtcNow
             };
 
             var examples = kotobaServices.CreateExamples(fukushiData.Examples);

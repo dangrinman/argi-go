@@ -78,7 +78,7 @@ namespace ArgiGo.Services
                 Present = doushiCreate.Present,
                 TaKei = doushiCreate.TaKei,
                 TeKei = doushiCreate.TeKei,
-                Created = new DateTime()
+                Created = DateTime.UtcNow
             };
 
             var examples = kotobaServices.CreateExamples(doushiCreate.Examples);
@@ -190,14 +190,14 @@ namespace ArgiGo.Services
                 JishoKei = doushiData.JishoKei,
                 Kanji = doushiData.Kanji,
                 KanoKei = doushiData.KanoKei,
-                NaiKei = doushiData.NaKei,
+                NaiKei = doushiData.NaiKei,
                 Name = doushiData.Name,
                 Negative = doushiData.Negative,
                 NegativePast = doushiData.NegativePast,
                 Past = doushiData.Past,
                 Present = doushiData.Present,
                 TaKei = doushiData.TaKei,
-                TeKei = doushiData.TKei,
+                TeKei = doushiData.TeKei,
             };
 
             return doushi;
@@ -231,14 +231,14 @@ namespace ArgiGo.Services
                 JishoKei = doushi.JishoKei,
                 Kanji = doushi.Kanji,
                 KanoKei = doushi.KanoKei,
-                NaKei = doushi.NaiKei,
+                NaiKei = doushi.NaiKei,
                 Name = doushi.Name,
                 Negative = doushi.Negative,
                 NegativePast = doushi.NegativePast,
                 Past = doushi.Past,
                 Present = doushi.Present,
                 TaKei = doushi.TaKei,
-                TKei = doushi.TeKei
+                TeKei = doushi.TeKei
             };
 
             return doushiData;

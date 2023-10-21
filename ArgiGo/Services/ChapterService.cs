@@ -73,7 +73,7 @@ namespace ArgiGo.Services
                 Name = chapterCreateOrUpdate.Name,
                 Number = chapterCreateOrUpdate.Number,
                 Topic = chapterCreateOrUpdate.Topic,
-                Created = new DateTime()
+                Created = DateTime.UtcNow
             };
 
             var book = bookService.GetBookDataById(chapterCreateOrUpdate.Book).FirstOrDefault();

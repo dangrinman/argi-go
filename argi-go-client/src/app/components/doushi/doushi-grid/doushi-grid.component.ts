@@ -60,7 +60,7 @@ export class DoushiGridComponent implements OnInit {
     'teKei',
     'taKei',
     'jishoKei',
-    'naKei',
+    'naiKei',
     'kanoKei',
     'present',
     'past',

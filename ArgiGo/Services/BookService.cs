@@ -20,7 +20,7 @@ namespace ArgiGo.Services
 
         public IEnumerable<Book> GetBooksOrderedByDate()
         {
-            return _context.Books.OrderByDescending(x => x.Created).Take(10);
+            return _context.Books.OrderBy(x => x.Created).Take(10);
         }
 
         public IQueryable<Book> GetBookDataById(string id)
@@ -40,7 +40,7 @@ namespace ArgiGo.Services
                 Author = bookCreation.Author,
                 Description = bookCreation.Description,
                 Edition = bookCreation.Edition,
-                Created = new DateTime()
+                Created = DateTime.UtcNow
             };
 
             _context.Add(book).Context.ContextId.InstanceId.ToString();
