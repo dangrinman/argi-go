@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="IIS Web Application Name" description="" value="Argi" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\Dan\\argi-go\\ArgiGo\\obj\\Debug\\net7\.0\\PubTmp\\Out\\$" />
-  </parameter>
-</parameters>
