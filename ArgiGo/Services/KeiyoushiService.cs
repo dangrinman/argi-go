@@ -32,7 +32,7 @@ namespace ArgiGo.Services
 
         public IQueryable<Keiyoushi> GetKeiyoushiList()
         {
-            var keiyoushiList = GetKeiyoushiList().OrderBy(x => x.Name);
+            var keiyoushiList = GetKeiyoushi().OrderBy(x => x.Name);
 
             return keiyoushiList;
         }

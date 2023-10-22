@@ -104,9 +104,7 @@ export class EditMeishiModalComponent {
       this.meishiService
         .updateMeishiData(this.data.id, this.meishi.value)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe((x) => {
-          const data = this.meishiService.toMeishi(x);
-        });
+        .subscribe();
     }
 
     this.onClose();

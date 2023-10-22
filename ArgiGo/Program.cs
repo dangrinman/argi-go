@@ -28,6 +28,7 @@ builder.Services.AddScoped<DoushiService>();
 builder.Services.AddScoped<KeiyoushiService>();
 builder.Services.AddScoped<MeishiService>();
 builder.Services.AddScoped<FukushiService>();
+builder.Services.AddScoped<KotobaService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

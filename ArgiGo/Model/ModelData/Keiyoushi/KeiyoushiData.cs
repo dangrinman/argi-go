@@ -4,7 +4,7 @@ using ArgiGo.Model.ModelData.Examples;
 
 namespace ArgiGo.Model.ModelData.Keiyoushi
 {
-    public class KeiyoushiData
+    public class KeiyoushiData : IKotobaData
     {
         public string Id { get; set; }
 
