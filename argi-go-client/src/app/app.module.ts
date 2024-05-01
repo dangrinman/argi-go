@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { GuessKeiComponent } from './components/guess-kei/guess-kei.component';
 import { GuessWordsComponent } from './components/guess-words/guess-words.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { MaterialModule } from './material.module';
@@ -21,6 +22,7 @@ import { SnackbarService } from './Services/snackbar.service';
     BrowserAnimationsModule,
     TopbarComponent,
     GuessWordsComponent,
+    GuessKeiComponent,
     HttpClientModule,
   ],
   providers: [

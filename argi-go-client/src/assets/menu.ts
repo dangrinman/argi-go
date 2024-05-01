@@ -8,6 +8,11 @@ export const listMenu = [
         icon: '',
         routerLink: '/guess-words',
       },
+      {
+        text: 'Guess Kei',
+        icon: '',
+        routerLink: '/guess-kei',
+      },
     ],
   },
   {

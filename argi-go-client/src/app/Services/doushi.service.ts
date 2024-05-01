@@ -49,7 +49,13 @@ export class DoushiService {
 
   public getSuffleDoushiList(chapters: string[]) {
     return this.GetDoushiByChapters(chapters).pipe(
-      map((x) => this.kotobaService.shuffleArray([...x]))
+      map((x) => this.kotobaService.shuffleArray<DoushiData>([...x]))
+    );
+  }
+
+  public suffleDoushiList() {
+    return this.getAllDoushi().pipe(
+      map((x) => this.kotobaService.shuffleArray<Doushi>([...x]))
     );
   }
 
@@ -234,7 +240,7 @@ export class DoushiService {
       doushi.examples = [];
     }
 
-    this.setConjugationData(doushi, doushi.name!, doushi.group!);
+    this.setConjugationData(doushi, doushi.kanji!, doushi.group!);
     this.setForms(doushi, doushi.name!);
   }
 

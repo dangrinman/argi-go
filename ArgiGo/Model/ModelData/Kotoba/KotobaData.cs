@@ -10,6 +10,8 @@ namespace ArgiGo.Model.ModelData.Kotoba
 
         public IEnumerable<string> Translation { get; set; }
 
+        public string Type { get; set; }
+
         public string Kanji { get; set; }
 
         public IEnumerable<ExamData> Exams { get; set; }

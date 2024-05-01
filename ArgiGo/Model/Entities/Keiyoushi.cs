@@ -33,6 +33,7 @@ namespace ArgiGo.Model.Entities
         public string Kanji { get; set; }
 
         public string? JoukenKei { get; set; }
+
         public virtual DateTime Created { get; set; }
 
         public IEnumerable<Example> Examples => examples;

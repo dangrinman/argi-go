@@ -57,6 +57,7 @@ export class KeiyoushiGridComponent implements OnInit {
     'kanji',
     'translation',
     'keiyoushiType',
+    'joukenKei',
     'present',
     'past',
     'negative',

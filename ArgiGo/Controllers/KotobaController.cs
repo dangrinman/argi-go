@@ -22,5 +22,13 @@ namespace ArgiGo.Controllers
 
             return kotobaList;
         }
+
+        [HttpGet]
+        public IEnumerable<KotobaData> GetKotoba()
+        {
+            var kotobaList = kotobaService.GetKotoba();
+
+            return kotobaList;
+        }
     }
 }

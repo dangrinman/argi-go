@@ -1,0 +1,33 @@
+.guess-content{
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.guess-card{
+  margin: auto
+}
+
+.guess-input{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto 0px auto;
+}
+
+.form-guess{
+  margin-top: 20px;
+}
+
+.form-guess-selects {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  max-width: 400px;
+  flex-direction: column;
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper{
+  height: 800px;
+}

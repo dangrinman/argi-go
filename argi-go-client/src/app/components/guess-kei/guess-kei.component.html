@@ -1,0 +1,35 @@
+<form [formGroup]="word" class="form-guess">
+  <div class="form-guess-selects">
+    <mat-form-field>
+      <mat-label> Select the conjugation: </mat-label>
+      <mat-select formControlName="kei" (ngModelChange)="changeKei($event)">
+        <mat-option *ngFor="let kei of conjugations" [value]="kei">
+          {{ kei }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <ng-container *ngIf="conjugationSelected">
+    <div class="guess-content">
+      <span style="margin: auto; margin-bottom: 10px"
+        >Quantity: {{ kotobaList.length }}</span
+      >
+      <argi-kei-card class="guess-card" [kotoba]="currentWord"></argi-kei-card>
+      <div class="guess-input">
+        <mat-form-field>
+          <mat-label>Word</mat-label>
+          <input matInput placeholder="Word" formControlName="name" />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="checkTypedValue()"
+        >
+          Try
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</form>

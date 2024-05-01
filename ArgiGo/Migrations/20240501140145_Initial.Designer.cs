@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArgiGo.Migrations
 {
     [DbContext(typeof(ArgiGoContext))]
-    [Migration("20240319133356_Initial")]
+    [Migration("20240501140145_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -102,6 +102,9 @@ namespace ArgiGo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JishoKei")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JoukenKei")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Kanji")
@@ -237,6 +240,9 @@ namespace ArgiGo.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("JoukenKei")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Kanji")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -281,6 +287,9 @@ namespace ArgiGo.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("JoukenKei")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Kanji")
                         .IsRequired()

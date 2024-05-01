@@ -101,6 +101,9 @@ namespace ArgiGo.Migrations
                     b.Property<string>("JishoKei")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("JoukenKei")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Kanji")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -234,6 +237,9 @@ namespace ArgiGo.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("JoukenKei")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Kanji")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -278,6 +284,9 @@ namespace ArgiGo.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("JoukenKei")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Kanji")
                         .IsRequired()

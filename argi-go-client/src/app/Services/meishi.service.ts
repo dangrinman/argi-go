@@ -155,6 +155,8 @@ export class MeishiService {
 
   createMeishiData(meishi: MeishiData): Observable<unknown> {
     this.ToMeishiData(meishi);
+
+    meishi.joukenKei = this.kotobaService.TojoukenFormByMeishi(meishi.name);
     return this.createMeishi(meishi);
   }
 

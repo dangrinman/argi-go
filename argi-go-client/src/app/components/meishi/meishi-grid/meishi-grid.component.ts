@@ -51,7 +51,13 @@ export class MeishiGridComponent implements OnInit {
       });
   }
 
-  displayedColumns: string[] = ['action', 'name', 'kanji', 'translation'];
+  displayedColumns: string[] = [
+    'action',
+    'name',
+    'kanji',
+    'translation',
+    'joukenKei',
+  ];
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

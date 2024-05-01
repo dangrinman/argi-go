@@ -47,9 +47,36 @@ namespace ArgiGo.Services
             return kotobaDataList;
         }
 
-        public void ToKotobaDataList(ICollection<KotobaData> kotobaDataList, IEnumerable<IKotobaData> kotobaList) 
+        public IEnumerable<KotobaData> GetKotoba()
         {
+            var kotobaDataList = new List<KotobaData>();
 
+            // Fukushi
+            var fukushiList = fukushiService.GetFukushiList().ToList();
+            var fokushiListData = fukushiService.ToFukushiData(fukushiList);
+            ToKotobaDataList(kotobaDataList, fokushiListData, "fukushi");
+
+            //Doushi
+            var doushiList = doushiService.GetDoushi().ToList();
+            var doushiListData = doushiService.ToDoushiData(doushiList);
+            ToKotobaDataList(kotobaDataList, doushiListData, "doushi");
+
+            //Keiyoushi
+            var keiyoushiList = keiyoushiService.GetKeiyoushi().ToList();
+            var keiyoushiListData = keiyoushiService.ToKeiyoushiListData(keiyoushiList);
+            ToKotobaDataList(kotobaDataList, keiyoushiListData, "keiyoushi");
+
+            //meishi
+            var meishiList = meishiService.GetMeishi().ToList();
+            var meishiListData = meishiService.ToMeishiData(meishiList);
+            ToKotobaDataList(kotobaDataList, meishiListData, "meishi");
+
+
+            return kotobaDataList;
+        }
+
+        public void ToKotobaDataList(ICollection<KotobaData> kotobaDataList, IEnumerable<IKotobaData> kotobaList, string type = null) 
+        {
             foreach (var kotoba in kotobaList) 
             {
                 var kotobaData = new KotobaData
@@ -59,7 +86,8 @@ namespace ArgiGo.Services
                     Kanji = kotoba.Kanji,
                     Examples = kotoba.Examples,
                     Chapters = kotoba.Chapters,
-                    Exams = kotoba.Exams
+                    Exams = kotoba.Exams,
+                    Type = type
                 };
 
                 kotobaDataList.Add(kotobaData);

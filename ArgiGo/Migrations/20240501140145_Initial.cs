@@ -39,6 +39,7 @@ namespace ArgiGo.Migrations
                     JishoKei = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NaiKei = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KanoKei = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JoukenKei = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Kanji = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Present = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -95,6 +96,7 @@ namespace ArgiGo.Migrations
                     NegativePast = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Kanji = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JoukenKei = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -110,6 +112,7 @@ namespace ArgiGo.Migrations
                     Translation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Kanji = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JoukenKei = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

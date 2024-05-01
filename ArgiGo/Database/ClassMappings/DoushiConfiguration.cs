@@ -30,7 +30,7 @@ namespace ArgiGo.Database.ClassMappings
 
             builder.Property(x => x.KanoKei);
 
-            builder.Property(x => x.joukenKei);
+            builder.Property(x => x.JoukenKei);
 
             builder.Property(x => x.Present);
 

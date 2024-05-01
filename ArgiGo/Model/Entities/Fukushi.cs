@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-
-namespace ArgiGo.Model.Entities
+﻿namespace ArgiGo.Model.Entities
 {
     public class Fukushi : IKotoba
     {
@@ -21,6 +18,7 @@ namespace ArgiGo.Model.Entities
         public string Translation { get; set; }
 
         public string Kanji { get; set; }
+
         public virtual DateTime Created { get; set; }
 
         public IEnumerable<Example> Examples => examples;

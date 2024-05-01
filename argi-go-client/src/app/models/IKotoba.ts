@@ -8,6 +8,7 @@ import { Example } from './Entities/Example';
 export interface IKotobaData extends IBaseData {
   name: string;
   translation: string[];
+  type?: string;
   kanji: string;
   examples: ExampleData[];
   chapters: ChapterData[];
@@ -18,6 +19,7 @@ export interface IKotoba extends IBaseData {
   name: string;
   translation: string[];
   kanji: string;
+  type?: string;
   examples: Example[];
   chapters: Chapter[];
   exams: Exam[];
@@ -44,4 +46,9 @@ export interface IKotobaCreationOrUpdate extends IBaseData {
 export interface IBaseData {
   id: string;
   created: Date;
+}
+
+export interface IKeiKotoba {
+  word: string;
+  keiWork: string;
 }

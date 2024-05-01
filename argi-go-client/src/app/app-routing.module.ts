@@ -17,6 +17,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'guess-kei',
+    loadComponent: () =>
+      import('./components/guess-kei/guess-kei.component').then(
+        (m) => m.GuessKeiComponent
+      ),
+  },
+  {
     path: 'doushi-creation',
     loadComponent: () =>
       import('./components/doushi/create-doushi/create-doushi.component').then(
