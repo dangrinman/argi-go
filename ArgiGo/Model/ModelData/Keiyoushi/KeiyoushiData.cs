@@ -6,15 +6,17 @@ namespace ArgiGo.Model.ModelData.Keiyoushi
 {
     public class KeiyoushiData : IKotobaData
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string KeiyoushiType { get; set; }
+        public string? KeiyoushiType { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Kanji { get; set; }
+        public string? Kanji { get; set; }
 
-        public string Translation { get; set; }
+        public IEnumerable<string>? Translation { get; set; }
+
+        public string? JoukenKei { get; set; }
 
         public string? Present { get; set; }
 

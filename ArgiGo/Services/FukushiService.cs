@@ -1,7 +1,9 @@
 ﻿using ArgiGo.Database.Mapping;
 using ArgiGo.Model.Entities;
 using ArgiGo.Model.ModelData.Fukushi;
+using ArgiGo.Model.ModelData.Meishi;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ArgiGo.Services
 {
@@ -61,12 +63,13 @@ namespace ArgiGo.Services
         public Fukushi CreateFukushi(FukushiCreationOrUpdateData fukushiData)
         {
             var id = Guid.NewGuid().ToString();
+            var translations = string.Join(", ", fukushiData.Translation);
 
             var fukushi = new Fukushi(id)
             {
                 Name = fukushiData.Name,
                 Kanji = fukushiData.Kanji,
-                Translation = fukushiData.Translation,
+                Translation = translations,
                 Created = DateTime.UtcNow
             };
 
@@ -98,9 +101,10 @@ namespace ArgiGo.Services
                 fukushi.Kanji = fukushiUpdate.Kanji;
             }
 
-            if (fukushiUpdate.Translation != fukushi.Translation)
+            if (fukushiUpdate.Translation.IsNullOrEmpty())
             {
-                fukushi.Translation = fukushiUpdate.Translation;
+                var translations = string.Join(", ", fukushiUpdate.Translation);
+                fukushi.Translation = translations;
             }
 
             var examples = kotobaServices.UpdateExamples(fukushi.Examples, fukushiUpdate.Examples);
@@ -144,11 +148,13 @@ namespace ArgiGo.Services
 
         public Fukushi ToFukushi(FukushiData fukushiData)
         {
+            var translations = string.Join(", ", fukushiData.Translation);
+
             var fukushi = new Fukushi(fukushiData.Id)
             {
                 Name = fukushiData.Name,
                 Kanji = fukushiData.Kanji,
-                Translation = fukushiData.Translation
+                Translation = translations
             };
 
             var examples = kotobaServices.GetExamplesById(fukushiData.Examples.Select(x => x.Id));
@@ -184,7 +190,7 @@ namespace ArgiGo.Services
                 Examples = kotobaServices.toExampleData(fukushi.Examples),
                 Chapters = chapterService.ToChaptersData(fukushi.Chapters),
                 Exams = examService.ToExamsData(fukushi.Exams),
-                Translation = fukushi.Translation,
+                Translation = fukushi.Translation.Split(", "),
                 Id = fukushi.Id,
                 Kanji = fukushi.Kanji,
                 Name = fukushi.Name

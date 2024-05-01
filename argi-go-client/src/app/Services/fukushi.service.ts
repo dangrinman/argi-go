@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, tap } from 'rxjs';
-import { FukushiData } from '../models/Data/FukushiData';
-import { Fukushi } from '../models/Entities/Fukushi';
+import {
+  FukushiCreationOrUpdateData,
+  FukushiData,
+} from '../models/Data/FukushiData';
+import { Fukushi, UpdateFukushi } from '../models/Entities/Fukushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { ChapterService } from './chapter.service';
 import { ExamService } from './exam.service';
@@ -58,11 +61,11 @@ export class FukushiService {
       );
   }
 
-  public updateFukushi(id: string, fukushi: Partial<FukushiData>) {
+  public updateFukushi(id: string, fukushi: FukushiCreationOrUpdateData) {
     fukushi.id = id;
 
     return this.http
-      .post<FukushiData>(`${this.fukushiURL}/update`, fukushi)
+      .post<FukushiCreationOrUpdateData>(`${this.fukushiURL}/update`, fukushi)
       .pipe(
         tap(() => {
           this.snackbarService.openSnackbar(
@@ -138,7 +141,22 @@ export class FukushiService {
     return fukushiData;
   }
 
-  ToFukushiData(fukushi: Partial<FukushiData>) {
+  toUpdateFukushiData(fukushi: UpdateFukushi) {
+    const fukushiData: FukushiCreationOrUpdateData = {
+      id: fukushi.id,
+      name: fukushi.name,
+      translation: fukushi.translation,
+      kanji: fukushi.kanji,
+      chapters: fukushi.chapters,
+      examples: fukushi.examples,
+      exams: fukushi.exams,
+      created: fukushi.created,
+    };
+
+    return fukushiData;
+  }
+
+  ToFukushiData(fukushi: FukushiData | FukushiCreationOrUpdateData) {
     if (!fukushi.chapters || fukushi.chapters.length === 0) {
       fukushi.chapters = [];
     }
@@ -148,11 +166,6 @@ export class FukushiService {
     if (!fukushi.examples || fukushi.examples.length === 0) {
       fukushi.examples = [];
     }
-  }
-
-  createFukushiData(fukushi: Partial<FukushiData>): Observable<unknown> {
-    this.ToFukushiData(fukushi);
-    return this.createFukushi(fukushi);
   }
 
   public GetFukushiByChapters(chapters: string[]) {
@@ -168,12 +181,15 @@ export class FukushiService {
     );
   }
 
-  updateFukushiData(
-    id: string,
-    fukushi: Partial<FukushiData>
-  ): Observable<FukushiData> {
+  createFukushiData(fukushi: FukushiData): Observable<unknown> {
     this.ToFukushiData(fukushi);
-    return this.updateFukushi(id, fukushi) as Observable<FukushiData>;
+    return this.createFukushi(fukushi);
+  }
+
+  updateFukushiData(id: string, fukushi: UpdateFukushi) {
+    const fukushiData = this.toUpdateFukushiData(fukushi);
+    this.ToFukushiData(fukushiData);
+    return this.updateFukushi(id, fukushiData) as Observable<FukushiData>;
   }
 
   deleteFukushi(fukushiList: Fukushi[]) {

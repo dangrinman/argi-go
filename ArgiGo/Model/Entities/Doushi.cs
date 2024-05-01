@@ -30,6 +30,8 @@ namespace ArgiGo.Model.Entities
 
         public string? KanoKei { get; set; }
 
+        public string? JoukenKei { get; set; }
+
         public string Name { get; set; }
 
         public string Kanji { get; set; }

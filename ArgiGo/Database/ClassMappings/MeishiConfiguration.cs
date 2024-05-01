@@ -18,6 +18,8 @@ namespace ArgiGo.Database.ClassMappings
 
             builder.Property(x => x.Translation);
 
+            builder.Property(x => x.joukenKei);
+
             builder.Property(x => x.Created);
 
             builder.HasMany(x => x.Examples)

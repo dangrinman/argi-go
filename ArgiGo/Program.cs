@@ -41,7 +41,7 @@ builder.Services.AddControllersWithViews().AddJsonOptions(o =>
 });
 
 builder.Services.AddDbContext<ArgiGoContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ProdConnection"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ArgiGoConnection"))
 );
 
 var app = builder.Build();

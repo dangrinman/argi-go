@@ -8,6 +8,7 @@ export interface DoushiData extends IKotobaData, IKyougaku {
   jishoKei: string;
   naiKei: string;
   kanoKei: string;
+  joukenKei: string;
 }
 
 export interface DoushiCreationOrUpdateData
@@ -19,4 +20,5 @@ export interface DoushiCreationOrUpdateData
   jishoKei: string;
   naiKei: string;
   kanoKei: string;
+  joukenKei: string;
 }

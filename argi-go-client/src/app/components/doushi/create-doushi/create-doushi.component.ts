@@ -10,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,6 +24,7 @@ import { DoushiService } from 'src/app/Services/doushi.service';
 import { ExamService } from 'src/app/Services/exam.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
 import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.component';
+import { BaseKotobaComponent } from '../../kotoba/edit-modal/base-kotoba.component';
 
 @Component({
   standalone: true,
@@ -46,11 +47,13 @@ import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.
   templateUrl: './create-doushi.component.html',
   styleUrls: ['./create-doushi.component.scss'],
 })
-export class CreateDoushiComponent implements OnDestroy {
+export class CreateDoushiComponent
+  extends BaseKotobaComponent
+  implements OnDestroy
+{
   chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   doushi: FormGroup;
-  keywords: string[] = [];
   doushiGroup: string[] = ['1', '2', '3'];
   onDestroy$: Subject<void> = new Subject();
   public refresh = new Subject<void>();
@@ -59,13 +62,14 @@ export class CreateDoushiComponent implements OnDestroy {
   private initialFormValue!: FormGroup;
 
   constructor(
+    announcer: LiveAnnouncer,
     private fb: FormBuilder,
-    private announcer: LiveAnnouncer,
     private chapterService: ChapterService,
     private doushiService: DoushiService,
     private examService: ExamService,
     private snackbarService: SnackbarService
   ) {
+    super(announcer);
     this.doushi = this.fb.group({
       name: ['', Validators.required],
       kanji: [''],
@@ -77,27 +81,6 @@ export class CreateDoushiComponent implements OnDestroy {
     });
 
     this.initialFormValue = this.doushi.value;
-  }
-
-  removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
-    if (index >= 0) {
-      this.keywords.splice(index, 1);
-
-      this.announcer.announce(`removed ${keyword}`);
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our keyword
-    if (value) {
-      this.keywords.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
   }
 
   public onSubmit() {

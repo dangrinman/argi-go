@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,14 +18,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { ExamData } from 'src/app/models/Data/ExamData';
 import { Chapter } from 'src/app/models/Entities/Chapter';
 import { Doushi } from 'src/app/models/Entities/Doushi';
+import { Exam } from 'src/app/models/Entities/Exam';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { DoushiService } from 'src/app/Services/doushi.service';
 import { ExamService } from 'src/app/Services/exam.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
+import { BaseKotobaComponent } from '../../kotoba/edit-modal/base-kotoba.component';
 
 @Component({
   selector: 'argi-edit-doushi-modal',
@@ -47,16 +48,15 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   styleUrls: ['./edit-doushi-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditDoushiModalComponent {
+export class EditDoushiModalComponent extends BaseKotobaComponent {
   chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
-  exams$: Observable<ExamData[]> = this.examService.getAllExams();
+  exams$: Observable<Exam[]> = this.examService.getAllExams();
   doushi!: FormGroup;
-  keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
 
   constructor(
+    announcer: LiveAnnouncer,
     private fb: FormBuilder,
-    private announcer: LiveAnnouncer,
     private chapterService: ChapterService,
     private doushiService: DoushiService,
     private examService: ExamService,
@@ -64,6 +64,7 @@ export class EditDoushiModalComponent {
     private dialogService: DialogsService,
     @Inject(MAT_DIALOG_DATA) public data: Doushi
   ) {
+    super(announcer);
     this.doushi = this.fb.group({
       name: [this.data.name, Validators.required],
       kanji: [this.data.kanji],
@@ -79,27 +80,7 @@ export class EditDoushiModalComponent {
     });
 
     this.keywords = this.data.examples.map((x) => x.example);
-  }
-
-  removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
-    if (index >= 0) {
-      this.keywords.splice(index, 1);
-
-      this.announcer.announce(`removed ${keyword}`);
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our keyword
-    if (value) {
-      this.keywords.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
+    this.translations = this.data.translation;
   }
 
   public onSubmit() {

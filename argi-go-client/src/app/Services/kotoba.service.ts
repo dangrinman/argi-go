@@ -16,6 +16,7 @@ export class KotobaService {
   private taDictionary = new Map<string, string>();
   private naiDictionary = new Map<string, string>();
   private kanoDictionary = new Map<string, string>();
+  private joukenDictionary = new Map<string, string>();
   public kotobaURL: string;
 
   constructor(
@@ -123,6 +124,40 @@ export class KotobaService {
     return `${wordWithOutMasu}${kanoWord}ます`;
   }
 
+  public TojoukenFormByDoushi(name: string, group: string): string {
+    const wordWithOutMasu =
+      group != '2'
+        ? name.slice(0, name.length - 3)
+        : name.slice(0, name.length - 2);
+
+    const joukenForm = this.getWord(name, group, this.joukenDictionary);
+
+    if (!joukenForm) {
+      return '';
+    }
+    return `${wordWithOutMasu}${joukenForm}`;
+  }
+
+  public TojoukenFormByKeiyoushi(name: string, type: string): string {
+    const word = type == 'い' ? name.slice(0, name.length - 1) : name;
+
+    const joukenForm = this.getKeiyoushiWord(name, type, this.joukenDictionary);
+
+    if (!joukenForm) {
+      return '';
+    }
+    return `${word}${joukenForm}`;
+  }
+
+  public TojoukenFormByMeishi(name: string): string {
+    const joukenForm = this.joukenDictionary.get('meishi');
+
+    if (!joukenForm) {
+      return '';
+    }
+    return `${name}${joukenForm}`;
+  }
+
   public shuffleArray(array: IKotobaData[]): IKotobaData[] {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -161,12 +196,23 @@ export class KotobaService {
     return dictionary.get(doushiKotoba);
   }
 
+  private getKeiyoushiWord(
+    name: string,
+    type: string,
+    dictionary: Map<string, string>
+  ) {
+    const word = name[name.length - 3];
+    const keiyoushiKotoba = type != 'い' ? `ikeiyoushi` : 'nakeiyoushi';
+    return dictionary.get(keiyoushiKotoba);
+  }
+
   private initializeDictionaries() {
     this.initializeTeForm();
     this.initializeTaForm();
     this.initializeJishoForm();
     this.initializeNaiForm();
     this.initializeKanoForm();
+    this.initializeConditionalForm();
   }
 
   private initializeTeForm() {
@@ -244,5 +290,23 @@ export class KotobaService {
     this.kanoDictionary.set('2', 'られ');
     this.kanoDictionary.set('3し', 'でき');
     this.kanoDictionary.set('3き', 'こられ');
+  }
+
+  private initializeConditionalForm() {
+    this.joukenDictionary.set('1い', 'えば');
+    this.joukenDictionary.set('1ち', 'てば');
+    this.joukenDictionary.set('1り', 'れば');
+    this.joukenDictionary.set('1き', 'けば');
+    this.joukenDictionary.set('1ぎ', 'げば');
+    this.joukenDictionary.set('1み', 'めば');
+    this.joukenDictionary.set('1び', 'べば');
+    this.joukenDictionary.set('1に', 'ねば');
+    this.joukenDictionary.set('1し', 'せば');
+    this.joukenDictionary.set('2', 'れば');
+    this.joukenDictionary.set('3し', 'すれば');
+    this.joukenDictionary.set('3き', 'くれば');
+    this.joukenDictionary.set('meishi', 'なら');
+    this.joukenDictionary.set('ikeiyoushi', 'ければ');
+    this.joukenDictionary.set('nakeiyoushi', 'なら');
   }
 }

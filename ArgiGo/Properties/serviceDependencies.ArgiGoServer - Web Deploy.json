@@ -5,7 +5,7 @@
       "secretStore": "AzureAppSettings",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/argigoconnection/databases/ArgiGoConnection",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:ProdConnection",
+      "connectionId": "ConnectionStrings:ArgiGoConnection",
       "dynamicId": null
     }
   }

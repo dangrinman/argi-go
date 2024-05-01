@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace ArgiGo.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDB : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +19,8 @@ namespace ArgiGo.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Edition = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Edition = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,11 +40,12 @@ namespace ArgiGo.Migrations
                     NaiKei = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KanoKei = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Kanji = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Kanji = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Present = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Past = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Negative = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NegativePast = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    NegativePast = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +59,8 @@ namespace ArgiGo.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Level = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,7 +74,8 @@ namespace ArgiGo.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Translation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Kanji = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Kanji = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,7 +94,8 @@ namespace ArgiGo.Migrations
                     Negative = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NegativePast = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Kanji = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Kanji = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,7 +109,8 @@ namespace ArgiGo.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Translation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Kanji = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Kanji = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,14 +125,16 @@ namespace ArgiGo.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Topic = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BookId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Chapter", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Chapter_Book_Id",
-                        column: x => x.Id,
+                        name: "FK_Chapter_Book_BookId",
+                        column: x => x.BookId,
                         principalTable: "Book",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -364,6 +373,11 @@ namespace ArgiGo.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Chapter_BookId",
+                table: "Chapter",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChapterDoushi_DoushiId",
                 table: "ChapterDoushi",
                 column: "DoushiId");
@@ -382,12 +396,6 @@ namespace ArgiGo.Migrations
                 name: "IX_ChapterMeishi_MeishiId",
                 table: "ChapterMeishi",
                 column: "MeishiId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Doushi_Kanji",
-                table: "Doushi",
-                column: "Kanji",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DoushiExam_ExamsId",
@@ -428,24 +436,6 @@ namespace ArgiGo.Migrations
                 name: "IX_Example_MeishiId",
                 table: "Example",
                 column: "MeishiId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Fukushi_Kanji",
-                table: "Fukushi",
-                column: "Kanji",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Keiyoushi_Kanji",
-                table: "Keiyoushi",
-                column: "Kanji",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Meishi_Kanji",
-                table: "Meishi",
-                column: "Kanji",
-                unique: true);
         }
 
         /// <inheritdoc />

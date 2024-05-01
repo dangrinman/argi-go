@@ -7,7 +7,7 @@ import { Example } from './Entities/Example';
 
 export interface IKotobaData extends IBaseData {
   name: string;
-  translation: string;
+  translation: string[];
   kanji: string;
   examples: ExampleData[];
   chapters: ChapterData[];
@@ -16,7 +16,7 @@ export interface IKotobaData extends IBaseData {
 
 export interface IKotoba extends IBaseData {
   name: string;
-  translation: string;
+  translation: string[];
   kanji: string;
   examples: Example[];
   chapters: Chapter[];
@@ -25,7 +25,16 @@ export interface IKotoba extends IBaseData {
 
 export interface IKotobaCreationOrUpdateData extends IBaseData {
   name: string;
-  translation: string;
+  translation: string[];
+  kanji: string;
+  examples: string[];
+  chapters: string[];
+  exams: string[];
+}
+
+export interface IKotobaCreationOrUpdate extends IBaseData {
+  name: string;
+  translation: string[];
   kanji: string;
   examples: string[];
   chapters: string[];

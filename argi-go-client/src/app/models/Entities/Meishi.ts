@@ -1,4 +1,10 @@
-import { IKotoba } from '../IKotoba';
+import { IKotoba, IKotobaCreationOrUpdate } from '../IKotoba';
 import { IKyougaku } from '../IKyougaku';
 
-export interface Meishi extends IKotoba, IKyougaku {}
+export interface Meishi extends IKotoba, IKyougaku {
+  joukenKei: string;
+}
+
+export interface UpdateMeishi extends IKotobaCreationOrUpdate {
+  joukenKei: string;
+}

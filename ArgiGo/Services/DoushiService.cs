@@ -2,7 +2,9 @@
 using ArgiGo.Model.Entities;
 using ArgiGo.Model.ModelData.Doushi;
 using ArgiGo.Model.ModelData.Keiyoushi;
+using ArgiGo.Model.ModelData.Meishi;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ArgiGo.Services
 {
@@ -62,15 +64,17 @@ namespace ArgiGo.Services
         public Doushi CreateDoushi(DoushiCreationOrUpdate doushiCreate) 
         {
             var doushiId = Guid.NewGuid().ToString();
+            var translations = string.Join(", ", doushiCreate.Translation);
 
             var doushi = new Doushi(doushiId)
             {
                 Group = doushiCreate.Group,
-                Translation = doushiCreate.Translation,
+                Translation = translations,
                 JishoKei = doushiCreate.JishoKei,
                 Kanji = doushiCreate.Kanji,
                 KanoKei = doushiCreate.KanoKei,
                 NaiKei = doushiCreate.NaiKei,
+                JoukenKei = doushiCreate.JoukenKei,
                 Name = doushiCreate.Name,
                 Negative = doushiCreate.Negative,
                 NegativePast = doushiCreate.NegativePast,
@@ -108,9 +112,10 @@ namespace ArgiGo.Services
                 doushi.Kanji = doushiUpdate.Kanji;
             }
 
-            if (doushiUpdate.Translation != doushi.Translation)
+            if (doushiUpdate.Translation.IsNullOrEmpty())
             {
-                doushi.Translation = doushiUpdate.Translation;
+                var translations = string.Join(", ", doushiUpdate.Translation);
+                doushi.Translation = translations;
             }
 
             if (doushiUpdate.Group != doushi.Group)
@@ -138,9 +143,9 @@ namespace ArgiGo.Services
                 doushi.KanoKei = doushiUpdate.KanoKei;
             }
 
-            if (doushiUpdate.KanoKei != doushi.KanoKei)
+            if (doushiUpdate.JoukenKei != doushi.JoukenKei)
             {
-                doushi.KanoKei = doushiUpdate.KanoKei;
+                doushi.JoukenKei = doushiUpdate.JoukenKei;
             }
 
             var examples = kotobaServices.UpdateExamples(doushi.Examples, doushiUpdate.Examples);
@@ -183,14 +188,17 @@ namespace ArgiGo.Services
 
         public Doushi ToDoushi(DoushiData doushiData)
         {
+            var translations = string.Join(", ", doushiData.Translation);
+
             var doushi = new Doushi(doushiData.Id)
             {
                 Group = doushiData.Group,
-                Translation = doushiData.Translation,
+                Translation = translations,
                 JishoKei = doushiData.JishoKei,
                 Kanji = doushiData.Kanji,
                 KanoKei = doushiData.KanoKei,
                 NaiKei = doushiData.NaiKei,
+                JoukenKei = doushiData.JoukenKei,
                 Name = doushiData.Name,
                 Negative = doushiData.Negative,
                 NegativePast = doushiData.NegativePast,
@@ -226,11 +234,12 @@ namespace ArgiGo.Services
                 Group = doushi.Group,
                 Exams = examService.ToExamsData(doushi.Exams),
                 Chapters = chapterService.ToChaptersData(doushi.Chapters),
-                Translation = doushi.Translation,
+                Translation = doushi.Translation.Split(", "),
                 Id = doushi.Id,
                 JishoKei = doushi.JishoKei,
                 Kanji = doushi.Kanji,
                 KanoKei = doushi.KanoKei,
+                JoukenKei = doushi.JoukenKei,
                 NaiKei = doushi.NaiKei,
                 Name = doushi.Name,
                 Negative = doushi.Negative,

@@ -1,5 +1,6 @@
 ﻿using ArgiGo.Database.ClassMappings;
 using ArgiGo.Model.Entities;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArgiGo.Database.Mapping
@@ -37,6 +38,15 @@ namespace ArgiGo.Database.Mapping
             modelBuilder.ApplyConfiguration(new ExamConfiguration());
             modelBuilder.ApplyConfiguration(new BookConfiguration());
             modelBuilder.ApplyConfiguration(new ChapterConfiguration());
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Data Source=localhost,1433;Initial Catalog=ArgiGoConnection;User ID=sa;Password=Password1;Trust Server Certificate=true;", builder =>
+            {
+                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            });
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }

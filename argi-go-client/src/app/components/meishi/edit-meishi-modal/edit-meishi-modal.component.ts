@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,13 +19,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { ExamData } from 'src/app/models/Data/ExamData';
-import { MeishiData } from 'src/app/models/Data/MeishiData';
 import { Chapter } from 'src/app/models/Entities/Chapter';
+import { Meishi } from 'src/app/models/Entities/Meishi';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { ExamService } from 'src/app/Services/exam.service';
 import { MeishiService } from 'src/app/Services/meishi.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
+import { BaseKotobaComponent } from '../../kotoba/edit-modal/base-kotoba.component';
 
 @Component({
   selector: 'argi-edit-meishi-modal',
@@ -47,23 +48,23 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   styleUrls: ['./edit-meishi-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditMeishiModalComponent {
+export class EditMeishiModalComponent extends BaseKotobaComponent {
   chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   meishi!: FormGroup;
-  keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
 
   constructor(
+    announcer: LiveAnnouncer,
     private fb: FormBuilder,
-    private announcer: LiveAnnouncer,
     private chapterService: ChapterService,
     private meishiService: MeishiService,
     private examService: ExamService,
     private snackbarService: SnackbarService,
     private dialogService: DialogsService,
-    @Inject(MAT_DIALOG_DATA) public data: MeishiData
+    @Inject(MAT_DIALOG_DATA) public data: Meishi
   ) {
+    super(announcer);
     this.meishi = this.fb.group({
       name: [this.data.name, Validators.required],
       kanji: [this.data.kanji],
@@ -74,27 +75,7 @@ export class EditMeishiModalComponent {
     });
 
     this.keywords = this.data.examples.map((x) => x.example);
-  }
-
-  removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
-    if (index >= 0) {
-      this.keywords.splice(index, 1);
-
-      this.announcer.announce(`removed ${keyword}`);
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our keyword
-    if (value) {
-      this.keywords.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
+    this.translations = this.data.translation;
   }
 
   public onSubmit() {
@@ -104,10 +85,8 @@ export class EditMeishiModalComponent {
       this.meishiService
         .updateMeishiData(this.data.id, this.meishi.value)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe();
+        .subscribe((x) => this.onClose());
     }
-
-    this.onClose();
   }
 
   public onClose() {

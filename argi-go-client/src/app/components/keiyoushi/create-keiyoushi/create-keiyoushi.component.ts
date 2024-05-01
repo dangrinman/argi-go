@@ -10,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,6 +24,7 @@ import { ExamService } from 'src/app/Services/exam.service';
 import { KeiyoushiService } from 'src/app/Services/keiyoushi.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
 import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.component';
+import { BaseKotobaComponent } from '../../kotoba/edit-modal/base-kotoba.component';
 
 @Component({
   standalone: true,
@@ -45,12 +46,14 @@ import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.
   templateUrl: './create-keiyoushi.component.html',
   styleUrls: ['./create-keiyoushi.component.scss'],
 })
-export class CreateKeiyoushiComponent implements OnDestroy {
+export class CreateKeiyoushiComponent
+  extends BaseKotobaComponent
+  implements OnDestroy
+{
   chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   ktypes: string[] = ['い', 'な'];
   keiyoushi: FormGroup;
-  keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
   public refresh$ = new Subject<void>();
 
@@ -59,13 +62,14 @@ export class CreateKeiyoushiComponent implements OnDestroy {
   private initialFormValue!: FormGroup;
 
   constructor(
+    announcer: LiveAnnouncer,
     private fb: FormBuilder,
     private keiyoushiService: KeiyoushiService,
     private chapterService: ChapterService,
     private examService: ExamService,
-    private snackbarService: SnackbarService,
-    private announcer: LiveAnnouncer
+    private snackbarService: SnackbarService
   ) {
+    super(announcer);
     this.keiyoushi = this.fb.group({
       name: ['', Validators.required],
       kanji: [''],
@@ -77,27 +81,6 @@ export class CreateKeiyoushiComponent implements OnDestroy {
     });
 
     this.initialFormValue = this.keiyoushi.value;
-  }
-
-  removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
-    if (index >= 0) {
-      this.keywords.splice(index, 1);
-
-      this.announcer.announce(`removed ${keyword}`);
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our keyword
-    if (value) {
-      this.keywords.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
   }
 
   public onSubmit() {

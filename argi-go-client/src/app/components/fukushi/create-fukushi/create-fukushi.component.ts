@@ -10,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,6 +24,7 @@ import { ExamService } from 'src/app/Services/exam.service';
 import { FukushiService } from 'src/app/Services/fukushi.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
 import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.component';
+import { BaseKotobaComponent } from '../../kotoba/edit-modal/base-kotoba.component';
 
 @Component({
   standalone: true,
@@ -45,11 +46,10 @@ import { CreationGridComponent } from '../../kotoba/creation-grid/creation-grid.
   templateUrl: './create-fukushi.component.html',
   styleUrls: ['./create-fukushi.component.scss'],
 })
-export class CreateFukushiComponent {
+export class CreateFukushiComponent extends BaseKotobaComponent {
   chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   fukushi: FormGroup;
-  keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
   public refresh$ = new Subject<void>();
 
@@ -58,13 +58,14 @@ export class CreateFukushiComponent {
   private initialFormValue!: FormGroup;
 
   constructor(
+    announcer: LiveAnnouncer,
     private fb: FormBuilder,
     private fukushiService: FukushiService,
     private chapterService: ChapterService,
     private examService: ExamService,
-    private snackbarService: SnackbarService,
-    private announcer: LiveAnnouncer
+    private snackbarService: SnackbarService
   ) {
+    super(announcer);
     this.fukushi = this.fb.group({
       name: ['', Validators.required],
       kanji: [''],
@@ -77,29 +78,22 @@ export class CreateFukushiComponent {
     this.initialFormValue = this.fukushi.value;
   }
 
-  removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
-    if (index >= 0) {
-      this.keywords.splice(index, 1);
+  private formatTranslation() {
+    // Obtén el FormControl utilizando el método get del FormGroup
+    const control = this.fukushi.get('translation');
 
-      this.announcer.announce(`removed ${keyword}`);
+    // Verifica si el control existe para evitar errores
+    if (control) {
+      const translation: string = this.translations.join('-');
+      // Cambia el valor del control
+      control.setValue(translation);
     }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our keyword
-    if (value) {
-      this.keywords.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
   }
 
   public onSubmit() {
     let valid = this.validateData();
+
+    this.formatTranslation();
 
     if (valid) {
       this.fukushiService
@@ -110,6 +104,7 @@ export class CreateFukushiComponent {
 
     this.formDirective.resetForm(this.initialFormValue);
     this.keywords = [];
+    this.translations = [];
   }
 
   private validateData(): boolean {

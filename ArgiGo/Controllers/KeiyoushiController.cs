@@ -19,7 +19,7 @@ namespace ArgiGo.Controllers
         {
             var keiyoushi = keiyoushiService.GetKeiyoushiList().ToList();
 
-            return keiyoushiService.ToKeiyoushiData(keiyoushi);
+            return keiyoushiService.ToKeiyoushiListData(keiyoushi);
         }
 
         [HttpGet("by-date")]
@@ -27,7 +27,7 @@ namespace ArgiGo.Controllers
         {
             var keiyoushi = keiyoushiService.GetKeiyoushiOrderedByDate().ToList();
 
-            return keiyoushiService.ToKeiyoushiData(keiyoushi);
+            return keiyoushiService.ToKeiyoushiListData(keiyoushi);
         }
 
         [HttpPost("by-chapters")]
@@ -35,7 +35,7 @@ namespace ArgiGo.Controllers
         {
             var keiyoushi = keiyoushiService.GetKeiyoushiListByChaptersId(ids).ToList();
 
-            return keiyoushiService.ToKeiyoushiData(keiyoushi);
+            return keiyoushiService.ToKeiyoushiListData(keiyoushi);
         }
 
         [HttpPost("create")]

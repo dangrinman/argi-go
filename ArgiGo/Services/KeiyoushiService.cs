@@ -1,7 +1,9 @@
 ﻿using ArgiGo.Database.Mapping;
 using ArgiGo.Model.Entities;
+using ArgiGo.Model.ModelData.Fukushi;
 using ArgiGo.Model.ModelData.Keiyoushi;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ArgiGo.Services
 {
@@ -61,6 +63,7 @@ namespace ArgiGo.Services
         public Keiyoushi createKeiyoushi(KeiyoushiCreationOrUpdateData keiyoushiData)
         {
             var id = Guid.NewGuid().ToString();
+            var translations = string.Join(", ", keiyoushiData.Translation);
 
             var keiyoushi = new Keiyoushi(id)
             {
@@ -68,10 +71,11 @@ namespace ArgiGo.Services
                 Name = keiyoushiData.Name,
                 Negative = keiyoushiData.Negative,
                 NegativePast = keiyoushiData.NegativePast,
+                JoukenKei = keiyoushiData.JoukenKei,
                 Past = keiyoushiData.Past,
                 Present = keiyoushiData.Present,
                 KeiyoushiType = keiyoushiData.KeiyoushiType,
-                Translation = keiyoushiData.Translation,
+                Translation = translations,
                 Created = DateTime.UtcNow
             };
 
@@ -102,9 +106,15 @@ namespace ArgiGo.Services
                 keiyoushi.Kanji = keiyoushiUpdate.Kanji;
             }
 
-            if (keiyoushiUpdate.Translation != keiyoushi.Translation)
+            if (!keiyoushiUpdate.Translation.IsNullOrEmpty())
             {
-                keiyoushi.Translation = keiyoushiUpdate.Translation;
+                var translations = string.Join(", ", keiyoushiUpdate.Translation);
+                keiyoushi.Translation = translations;
+            }
+
+            if (keiyoushiUpdate.JoukenKei != keiyoushi.JoukenKei)
+            {
+                keiyoushi.JoukenKei = keiyoushiUpdate.JoukenKei;
             }
 
             var examples = kotobaServices.UpdateExamples(keiyoushi.Examples, keiyoushiUpdate.Examples);
@@ -148,16 +158,19 @@ namespace ArgiGo.Services
 
         public Keiyoushi ToKeiyoushi(KeiyoushiData keiyoushiData)
         {
+            var translations = string.Join(", ", keiyoushiData.Translation);
+
             var keiyoushi = new Keiyoushi(keiyoushiData.Id)
             {
                 Kanji = keiyoushiData.Kanji,
                 Name = keiyoushiData.Name,
                 Negative = keiyoushiData.Negative,
                 NegativePast = keiyoushiData.NegativePast,
+                JoukenKei = keiyoushiData.JoukenKei,
                 Past = keiyoushiData.Past,
                 Present = keiyoushiData.Present,
                 KeiyoushiType = keiyoushiData.KeiyoushiType,
-                Translation = keiyoushiData.Translation,
+                Translation = translations,
             };
 
             var examples = kotobaServices.GetExamplesById(keiyoushiData.Examples.Select(x => x.Id));
@@ -171,7 +184,7 @@ namespace ArgiGo.Services
             return keiyoushi;
         }
 
-        public IEnumerable<KeiyoushiData> ToKeiyoushiData(IEnumerable<Keiyoushi> keiyoushiData)
+        public IEnumerable<KeiyoushiData> ToKeiyoushiListData(IEnumerable<Keiyoushi> keiyoushiData)
         {
             List<KeiyoushiData> KeiyoushiDataList = new List<KeiyoushiData>();
 
@@ -194,7 +207,8 @@ namespace ArgiGo.Services
                 Exams = examService.ToExamsData(keiyoushi.Exams),
                 Chapters = chapterService.ToChaptersData(keiyoushi.Chapters),
                 KeiyoushiType = keiyoushi.KeiyoushiType,
-                Translation = keiyoushi.Translation,
+                Translation = keiyoushi.Translation.Split(", "),
+                JoukenKei = keiyoushi.JoukenKei,
                 Id = keiyoushi.Id,
                 Kanji = keiyoushi.Kanji,
                 Name = keiyoushi.Name,

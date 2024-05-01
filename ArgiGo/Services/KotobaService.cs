@@ -35,7 +35,7 @@ namespace ArgiGo.Services
 
             //Keiyoushi
             var keiyoushiList = keiyoushiService.GetKeiyoushiListByChaptersId(chaptersIds).ToList();
-            var keiyoushiListData = keiyoushiService.ToKeiyoushiData(keiyoushiList);
+            var keiyoushiListData = keiyoushiService.ToKeiyoushiListData(keiyoushiList);
             ToKotobaDataList(kotobaDataList, keiyoushiListData);
             
             //meishi

@@ -5,7 +5,7 @@ import {
   DoushiCreationOrUpdateData,
   DoushiData,
 } from '../models/Data/DoushiData';
-import { Doushi } from '../models/Entities/Doushi';
+import { Doushi, UpdateDoushi } from '../models/Entities/Doushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { ChapterService } from './chapter.service';
 import { ExamService } from './exam.service';
@@ -127,6 +127,7 @@ export class DoushiService {
       taKei: doushiData.taKei,
       naiKei: doushiData.naiKei,
       kanoKei: doushiData.kanoKei,
+      joukenKei: doushiData.joukenKei,
       present: doushiData.present,
       past: doushiData.past,
       negative: doushiData.negative,
@@ -156,6 +157,7 @@ export class DoushiService {
       taKei: doushi.taKei,
       naiKei: doushi.naiKei,
       kanoKei: doushi.kanoKei,
+      joukenKei: doushi.joukenKei,
       present: doushi.present,
       past: doushi.past,
       negative: doushi.negative,
@@ -163,6 +165,32 @@ export class DoushiService {
       chapters: this.chaptersService.toChaptersData(doushi.chapters),
       examples: doushi.examples,
       exams: this.examsService.toExamsData(doushi.exams),
+      created: doushi.created,
+    };
+
+    return doushiData;
+  }
+
+  toUpdateDoushiData(doushi: UpdateDoushi) {
+    const doushiData: DoushiCreationOrUpdateData = {
+      id: doushi.id,
+      name: doushi.name,
+      translation: doushi.translation,
+      group: doushi.group,
+      kanji: doushi.kanji,
+      jishoKei: doushi.jishoKei,
+      teKei: doushi.teKei,
+      taKei: doushi.taKei,
+      naiKei: doushi.naiKei,
+      kanoKei: doushi.kanoKei,
+      joukenKei: doushi.joukenKei,
+      present: doushi.present,
+      past: doushi.past,
+      negative: doushi.negative,
+      negativePast: doushi.negativePast,
+      chapters: doushi.chapters,
+      examples: doushi.examples,
+      exams: doushi.exams,
       created: doushi.created,
     };
 
@@ -179,6 +207,10 @@ export class DoushiService {
     doushi.teKei = this.kotobaService.ToTeForm(doushiName, group);
     doushi.taKei = this.kotobaService.ToTaForm(doushiName, group);
     doushi.naiKei = this.kotobaService.ToNaiForm(doushiName, group);
+    doushi.joukenKei = this.kotobaService.TojoukenFormByDoushi(
+      doushiName,
+      group
+    );
   }
 
   setForms(doushi: Partial<DoushiData>, doushiName: string) {
@@ -211,11 +243,9 @@ export class DoushiService {
     return this.createDoushi(doushi);
   }
 
-  updateDoushiData(
-    id: string,
-    doushi: DoushiCreationOrUpdateData
-  ): Observable<DoushiData> {
-    return this.updateDoushi(id, doushi) as Observable<DoushiData>;
+  updateDoushiData(id: string, doushi: UpdateDoushi) {
+    const doushiData = this.toUpdateDoushiData(doushi);
+    return this.updateDoushi(id, doushiData) as Observable<DoushiData>;
   }
 
   deleteDoushi(doushiList: Doushi[]) {

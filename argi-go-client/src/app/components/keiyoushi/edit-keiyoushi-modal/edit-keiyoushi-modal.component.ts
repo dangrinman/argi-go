@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,6 +26,7 @@ import { DialogsService } from 'src/app/Services/dialogs.service';
 import { ExamService } from 'src/app/Services/exam.service';
 import { KeiyoushiService } from 'src/app/Services/keiyoushi.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
+import { BaseKotobaComponent } from '../../kotoba/edit-modal/base-kotoba.component';
 
 @Component({
   selector: 'argi-edit-keiyoushi-modal',
@@ -47,16 +48,15 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   styleUrls: ['./edit-keiyoushi-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditKeiyoushiModalComponent {
+export class EditKeiyoushiModalComponent extends BaseKotobaComponent {
   chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   keiyoushi!: FormGroup;
-  keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
 
   constructor(
+    announcer: LiveAnnouncer,
     private fb: FormBuilder,
-    private announcer: LiveAnnouncer,
     private chapterService: ChapterService,
     private keiyoushiService: KeiyoushiService,
     private examService: ExamService,
@@ -64,6 +64,7 @@ export class EditKeiyoushiModalComponent {
     private dialogService: DialogsService,
     @Inject(MAT_DIALOG_DATA) public data: Keiyoushi
   ) {
+    super(announcer);
     this.keiyoushi = this.fb.group({
       name: [this.data.name, Validators.required],
       kanji: [this.data.kanji],
@@ -75,27 +76,7 @@ export class EditKeiyoushiModalComponent {
     });
 
     this.keywords = this.data.examples.map((x) => x.example);
-  }
-
-  removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
-    if (index >= 0) {
-      this.keywords.splice(index, 1);
-
-      this.announcer.announce(`removed ${keyword}`);
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our keyword
-    if (value) {
-      this.keywords.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
+    this.translations = this.data.translation;
   }
 
   public onSubmit() {

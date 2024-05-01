@@ -18,7 +18,26 @@
 
     <mat-form-field>
       <mat-label>Translation</mat-label>
-      <input matInput placeholder="Translation" formControlName="translation" />
+      <mat-chip-grid
+        #chipTranslation
+        aria-label="Enter translation"
+        formControlName="translation"
+      >
+        <mat-chip-row
+          *ngFor="let keyword of translations"
+          (removed)="removeTranslation(keyword)"
+        >
+          {{ keyword }}
+          <button matChipRemove aria-label="'remove ' + keyword">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </mat-chip-grid>
+      <input
+        placeholder="New Translation..."
+        [matChipInputFor]="chipTranslation"
+        (matChipInputTokenEnd)="addTranslation($event)"
+      />
     </mat-form-field>
 
     <mat-form-field>

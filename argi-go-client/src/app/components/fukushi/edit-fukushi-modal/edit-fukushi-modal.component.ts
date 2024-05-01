@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,13 +19,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { ExamData } from 'src/app/models/Data/ExamData';
-import { FukushiData } from 'src/app/models/Data/FukushiData';
 import { Chapter } from 'src/app/models/Entities/Chapter';
+import { Fukushi } from 'src/app/models/Entities/Fukushi';
 import { ChapterService } from 'src/app/Services/chapter.service';
 import { DialogsService } from 'src/app/Services/dialogs.service';
 import { ExamService } from 'src/app/Services/exam.service';
 import { FukushiService } from 'src/app/Services/fukushi.service';
 import { SnackbarService } from 'src/app/Services/snackbar.service';
+import { BaseKotobaComponent } from '../../kotoba/edit-modal/base-kotoba.component';
 
 @Component({
   selector: 'app-edit-fukushi-modal',
@@ -46,23 +47,23 @@ import { SnackbarService } from 'src/app/Services/snackbar.service';
   templateUrl: './edit-fukushi-modal.component.html',
   styleUrls: ['./edit-fukushi-modal.component.scss'],
 })
-export class EditFukushiModalComponent {
+export class EditFukushiModalComponent extends BaseKotobaComponent {
   chapters$: Observable<Chapter[]> = this.chapterService.getAllChapters();
   exams$: Observable<ExamData[]> = this.examService.getAllExams();
   fukushi!: FormGroup;
-  keywords: string[] = [];
   onDestroy$: Subject<void> = new Subject();
 
   constructor(
+    announcer: LiveAnnouncer,
     private fb: FormBuilder,
-    private announcer: LiveAnnouncer,
     private chapterService: ChapterService,
     private fukushiService: FukushiService,
     private examService: ExamService,
     private snackbarService: SnackbarService,
     private dialogService: DialogsService,
-    @Inject(MAT_DIALOG_DATA) public data: FukushiData
+    @Inject(MAT_DIALOG_DATA) public data: Fukushi
   ) {
+    super(announcer);
     this.fukushi = this.fb.group({
       name: [this.data.name, Validators.required],
       kanji: [this.data.kanji],
@@ -73,27 +74,7 @@ export class EditFukushiModalComponent {
     });
 
     this.keywords = this.data.examples.map((x) => x.example);
-  }
-
-  removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
-    if (index >= 0) {
-      this.keywords.splice(index, 1);
-
-      this.announcer.announce(`removed ${keyword}`);
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our keyword
-    if (value) {
-      this.keywords.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
+    this.translations = this.data.translation;
   }
 
   public onSubmit() {

@@ -10,7 +10,7 @@ namespace ArgiGo.Model.ModelData.Fukushi
 
         public string Name { get; set; }
 
-        public string Translation { get; set; }
+        public IEnumerable<string> Translation { get; set; }
 
         public string Kanji { get; set; }
 

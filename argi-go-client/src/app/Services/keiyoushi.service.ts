@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, tap } from 'rxjs';
-import { KeiyoushiData } from '../models/Data/KeiyoushiData';
-import { Keiyoushi } from '../models/Entities/Keiyoushi';
+import {
+  KeiyoushiCreationOrUpdateData,
+  KeiyoushiData,
+} from '../models/Data/KeiyoushiData';
+import { Keiyoushi, UpdateKeiyoushi } from '../models/Entities/Keiyoushi';
 import { BaseURLToken } from '../models/Tokens/BaseURLToken';
 import { ChapterService } from './chapter.service';
 import { ExamService } from './exam.service';
@@ -58,11 +61,14 @@ export class KeiyoushiService {
       );
   }
 
-  public updateKeiyoushi(id: string, keiyoushi: Partial<KeiyoushiData>) {
+  public updateKeiyoushi(id: string, keiyoushi: KeiyoushiCreationOrUpdateData) {
     keiyoushi.id = id;
 
     return this.http
-      .post<KeiyoushiData>(`${this.keiyoushiURL}/update`, keiyoushi)
+      .post<KeiyoushiCreationOrUpdateData>(
+        `${this.keiyoushiURL}/update`,
+        keiyoushi
+      )
       .pipe(
         tap(() => {
           this.snackbarService.openSnackbar(
@@ -87,6 +93,7 @@ export class KeiyoushiService {
       translation: keiyoushiData.translation,
       kanji: keiyoushiData.kanji,
       keiyoushiType: keiyoushiData.keiyoushiType,
+      joukenKei: keiyoushiData.joukenKei,
       present: keiyoushiData.present,
       past: keiyoushiData.past,
       negative: keiyoushiData.negative,
@@ -111,6 +118,7 @@ export class KeiyoushiService {
       translation: keiyoush.translation,
       kanji: keiyoush.kanji,
       keiyoushiType: keiyoush.keiyoushiType,
+      joukenKei: keiyoush.joukenKei,
       present: keiyoush.present,
       past: keiyoush.past,
       negative: keiyoush.negative,
@@ -119,6 +127,27 @@ export class KeiyoushiService {
       examples: keiyoush.examples,
       exams: this.examsService.toExamsData(keiyoush.exams),
       created: keiyoush.created,
+    };
+
+    return keiyoushiData;
+  }
+
+  toUpdateKeiyoushiData(keiyoushi: UpdateKeiyoushi) {
+    const keiyoushiData: KeiyoushiCreationOrUpdateData = {
+      id: keiyoushi.id,
+      name: keiyoushi.name,
+      translation: keiyoushi.translation,
+      kanji: keiyoushi.kanji,
+      keiyoushiType: keiyoushi.keiyoushiType,
+      joukenKei: keiyoushi.joukenKei,
+      present: keiyoushi.present,
+      past: keiyoushi.past,
+      negative: keiyoushi.negative,
+      negativePast: keiyoushi.negativePast,
+      chapters: keiyoushi.chapters,
+      examples: keiyoushi.examples,
+      exams: keiyoushi.exams,
+      created: keiyoushi.created,
     };
 
     return keiyoushiData;
@@ -148,7 +177,7 @@ export class KeiyoushiService {
       );
   }
 
-  setForms(keiyoushi: Partial<KeiyoushiData>) {
+  setForms(keiyoushi: KeiyoushiData | KeiyoushiCreationOrUpdateData) {
     const keiyoushiName = keiyoushi.name!;
     const nameWithoutDesu = keiyoushiName.slice(0, keiyoushiName.length - 2);
 
@@ -165,7 +194,7 @@ export class KeiyoushiService {
     }
   }
 
-  ToKeiyoushiData(keiyoushi: Partial<KeiyoushiData>) {
+  ToKeiyoushiData(keiyoushi: KeiyoushiData | KeiyoushiCreationOrUpdateData) {
     if (!keiyoushi.kanji) keiyoushi.kanji = '';
     if (!keiyoushi.chapters || keiyoushi.chapters.length === 0) {
       keiyoushi.chapters = [];
@@ -177,10 +206,14 @@ export class KeiyoushiService {
       keiyoushi.examples = [];
     }
 
+    keiyoushi.joukenKei = this.kotobaService.TojoukenFormByKeiyoushi(
+      keiyoushi.name,
+      keiyoushi.keiyoushiType
+    );
     this.setForms(keiyoushi);
   }
 
-  createKeiyoushiData(keiyoushi: Partial<KeiyoushiData>): Observable<unknown> {
+  createKeiyoushiData(keiyoushi: KeiyoushiData): Observable<unknown> {
     this.ToKeiyoushiData(keiyoushi);
     return this.createKeiyoushi(keiyoushi);
   }
@@ -198,12 +231,10 @@ export class KeiyoushiService {
     );
   }
 
-  updateKeiyoushiData(
-    id: string,
-    keiyoushi: Partial<KeiyoushiData>
-  ): Observable<KeiyoushiData> {
-    this.ToKeiyoushiData(keiyoushi);
-    return this.updateKeiyoushi(id, keiyoushi) as Observable<KeiyoushiData>;
+  updateKeiyoushiData(id: string, keiyoushi: UpdateKeiyoushi) {
+    const keiyoushiData = this.toUpdateKeiyoushiData(keiyoushi);
+    this.ToKeiyoushiData(keiyoushiData);
+    return this.updateKeiyoushi(id, keiyoushiData) as Observable<KeiyoushiData>;
   }
 
   deleteKeiyoushi(keiyoushiList: Keiyoushi[]) {

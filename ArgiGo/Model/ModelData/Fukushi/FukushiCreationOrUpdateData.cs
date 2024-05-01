@@ -8,7 +8,7 @@
 
         public string? Kanji { get; set; }
 
-        public string? Translation { get; set; }
+        public IEnumerable<string>? Translation { get; set; }
 
         public IEnumerable<string>? Examples { get; set; }
 

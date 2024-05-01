@@ -2,6 +2,7 @@
 using ArgiGo.Model.Entities;
 using ArgiGo.Model.ModelData.Meishi;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ArgiGo.Services
 {
@@ -62,12 +63,15 @@ namespace ArgiGo.Services
         {
             var id = Guid.NewGuid().ToString();
 
+            var translations = string.Join(", ", meishiData.Translation);
+
             var meishi = new Meishi(id)
             {
                 Name = meishiData.Name,
-                Translation = meishiData.Translation,
+                Translation = translations,
                 Kanji = meishiData.Kanji,
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
+                JoukenKei = meishiData.JoukenKei,
             };
 
             var examples = kotobaServices.CreateExamples(meishiData.Examples);
@@ -98,9 +102,16 @@ namespace ArgiGo.Services
                 meishi.Kanji = meishiUpdate.Kanji;
             }
 
-            if (meishiUpdate.Translation != meishi.Translation)
+            if (meishiUpdate.JoukenKei != meishi.JoukenKei)
             {
-                meishi.Translation = meishiUpdate.Translation;
+                meishi.JoukenKei = meishiUpdate.JoukenKei;
+            }
+
+            if (meishiUpdate.Translation.IsNullOrEmpty())
+            {
+                var translations = string.Join(", ", meishiUpdate.Translation);
+
+                meishi.Translation = translations;
             }
 
             var examples = kotobaServices.UpdateExamples(meishi.Examples, meishiUpdate.Examples);
@@ -144,11 +155,14 @@ namespace ArgiGo.Services
 
         public Meishi ToMeishi(MeishiData meishiData)
         {
+            var translations = string.Join(", ", meishiData.Translation);
+
             var meishi = new Meishi(meishiData.Id)
             {
                 Name = meishiData.Name,
-                Translation = meishiData.Translation,
+                Translation = translations,
                 Kanji = meishiData.Kanji,
+                JoukenKei = meishiData.JoukenKei,
             };
 
             var examples = kotobaServices.ToExamples(meishiData.Examples);
@@ -184,7 +198,8 @@ namespace ArgiGo.Services
                 Examples = kotobaServices.toExampleData(meishi.Examples),
                 Exams = examService.ToExamsData(meishi.Exams),
                 Chapters = chapterService.ToChaptersData(meishi.Chapters),
-                Translation = meishi.Translation,
+                Translation = meishi.Translation.Split(", "),
+                JoukenKei = meishi.JoukenKei,
                 Id = meishi.Id,
                 Kanji = meishi.Kanji,
                 Name = meishi.Name
